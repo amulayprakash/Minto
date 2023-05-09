@@ -1,0 +1,376 @@
+.container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.box {
+  width: 30%;
+  height: 43vh;
+  margin: 10px;
+  float: left;
+}
+
+.breadcrumb-div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breadcrumb-tabs{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-container {
+  min-height: 160vh;
+}
+
+.footer--pin{
+  position: relative;
+  left: 0;
+  bottom: 0;
+  top: 90vh;
+}
+
+.mint-creator-button{
+  margin-top: 3 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-class{
+  width: 70vh;
+}
+
+.save-changes-btn{
+  width: inherit;
+}
+
+.table-div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+/* LOGIN CARD CSS */
+
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.Auth-form {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.Auth-form-content {
+  padding-left: 12%;
+  padding-right: 12%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+/* .nav-link{
+  color: white !important;
+} */
+
+.profile-image{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+}
+
+.collection-image{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+}
+
+.dropdown-container{
+  border: 2px solid;
+}
+
+.modal-content{
+  width: 90%;
+}
+.create-dropdown{
+  font-size: 15px;
+  font-weight: bold;
+  /* border-radius: 10%; */
+}
+
+.box {
+  display: inline-block;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.img-preview {
+  overflow: hidden;
+}
+
+.modal-content{
+  width:400 !important;
+}
+
+.outer-div{
+  display: flex;
+}
+.inner-left-div{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner-rigth-div{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cards-div{
+  /* display: flex; */
+  justify-content: center;
+}
+.login-name{
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.collection-container{
+  margin-top: 30px;
+}
+
+
+
+
+
+.tempcard-card {
+  width: 600px;
+  height: 400px;
+  margin: 1% 1% 1% 2%;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.tempcard-card:hover{
+  background-color:rgb(247, 244, 244)
+}
+
+.tempcard-banner {
+  height: 35%;
+  position: relative;
+}
+
+.tempcard-banner-img {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tempcard-dropdown-btn {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  padding: 10px;
+  font-weight: bold;
+  line-height: 10px;
+  height: 35px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.tempcard-dropdown {
+  position: absolute;
+  top: calc(20% + 10px);
+  right: 10px;
+  width: 100px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.tempcard-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.tempcard-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tempcard-dropdown ul li {
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tempcard-dropdown ul li:hover {
+  background-color: #eee;
+}
+
+.tempcard-profile-img {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  width: 20%;
+  height: 75%;
+  z-index: 1;
+}
+
+.tempcard-content {
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tempcard-heading {
+  font-size: 30px;
+  font-weight:1000;
+  text-align: center;
+}
+
+.tempcard-text {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.MuiBox-root{
+  min-height: 60vh;
+  padding: 0 17% !important;
+}
+
+.detail-banner{
+  position: relative;
+}
+
+.detail-banner-img {
+  height: 10% !important;
+  width: 100%;
+  /* background-size: cover; */
+  background-size: 100% auto;
+  background-position: center;
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 0; */
+  z-index: 1;
+}
+
+.detail-image-div{
+  padding: 0 17% !important;
+  position: absolute;
+  top: 50vh;
+  left: 0;
+  z-index: 2;
+}
+
+.detail-image{
+  height: 150px;
+  width: 150px;
+  border-radius: 15%;
+  /* border: 2px black; */
+  border: 5px solid white;
+}
+
+.detail-deploy-button{  
+  margin-top: 10px;
+  padding: 0 17% 10px !important;
+  /* display: flex; */
+  /* justify-items: left; */
+  text-align: right;
+}
+
+.detail-collection-name{
+  font-weight: 1000;
+}
+/* .nav-link{ */
+  /* color: black !important; */
+/* } */
+
+.nav-link.active {
+  border-bottom: 2px solid black;
+}
+
+.nav-link:hover {
+  color: black;
+}
+
+.overview-card{
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* .modal-content{
+  border-radius:0%;
+} */
+
+.modal-header{
+  border-bottom: 0cm;
+}
+
+.modal-footer{
+  border-top: 0cm;
+}
+
+.form-check-input:checked {
+  background-color: #000;
+  border-color: #000;
+}
+
+.form-check-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+
+footer {
+  margin-top: auto;
+}
+/* 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+} */
