@@ -3,8 +3,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import AuthNavbar from '../Navbar-Components/AuthNavbar' 
-import Footer from '../Footer-Components/Footer'    
+import AuthNavbar from "../Navbar-Components/AuthNavbar";
+import Footer from "../Footer-Components/Footer";
 
 function RegisterC() {
   const [cookies] = useCookies(["cookie-name"]);
@@ -15,7 +15,12 @@ function RegisterC() {
     }
   }, [cookies, navigate]);
 
-  const [values, setValues] = useState({ email: "",username:"", name:"", password: "" });
+  const [values, setValues] = useState({
+    email: "",
+    username: "",
+    name: "",
+    password: "",
+  });
   const generateError = (error) =>
     toast.error(error, {
       position: "bottom-right",
@@ -23,9 +28,9 @@ function RegisterC() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(values)
+      console.log(values);
       const { data } = await axios.post(
-        "http://localhost:4000/register",
+        process.env.REACT_APP_PRODUCTION_URL + "/register",
         {
           ...values,
         },
@@ -39,71 +44,71 @@ function RegisterC() {
         } else {
           navigate("/");
         }
-      } 
+      }
     } catch (ex) {
       console.log(ex);
     }
   };
   return (
     <>
-    <AuthNavbar></AuthNavbar>
-    <div className="container">
-      <h2>Register Account</h2>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="name">Username</label>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="name">Full Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <button type="submit">Submit</button>
-        <span>
-          Already have an account ?<Link to="/login"> Login</Link>
-        </span>
-      </form>
-      <ToastContainer />
-    </div>
-    <div className="footer--pin">
+      <AuthNavbar></AuthNavbar>
+      <div className="container">
+        <h2>Register Account</h2>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="name">Username</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="name">Full Name</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
+            />
+          </div>
+          <button type="submit">Submit</button>
+          <span>
+            Already have an account ?<Link to="/login"> Login</Link>
+          </span>
+        </form>
+        <ToastContainer />
+      </div>
+      <div className="footer--pin">
         <Footer />
-    </div>
+      </div>
     </>
   );
 }
