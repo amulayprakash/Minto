@@ -39,9 +39,28 @@ mongoose
     console.warn("Connected");
   });
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:4000"];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:4000",
+  "https://minto-dev.onrender.com",
+];
 
-app.use(cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+
+      return callback(null, true);
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.post("/createPresalelistEntry", (req, res) => {
   const { collectionID } = req.body;
