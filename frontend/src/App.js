@@ -1,9 +1,7 @@
 import React from "react";
 import Register from "./pages/Auth-Components/Register";
-import RegisterC from "./pages/Auth-Components/RegisterC";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Login from "./pages/Auth-Components/Login";
-import LoginC from "./pages/Auth-Components/LoginC";
 import Dashboard from "./pages/Dashboard-Components/Dashboard";
 import Detail from "./pages/Collection-Components/Detail";
 import Home from "./pages/Home";

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
+const bodyParser = require('body-parser')
 const Collection = require("./model/collectionModel");
 const Presalelist = require("./model/preSaleListModel");
 const Waitlist = require("./model/waitlistModel");
@@ -13,6 +14,9 @@ const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 const app = express();
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.use(express.json());
 const storage = multer.diskStorage({
@@ -313,7 +317,7 @@ app.listen(4000, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log("Server Started Successfully.");
+    console.log("Server Started Successfully at PORT 4000.");
   }
 });
 

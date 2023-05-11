@@ -7,6 +7,7 @@ import Footer from './Footer-Components/Footer'
 export default function Home() {
   // const [childData, setChildData] = useState('');
   const handleChildData = (data) => {
+    console.log("Called from Home!")
     // setChildData(data);
     console.log(data);
   };

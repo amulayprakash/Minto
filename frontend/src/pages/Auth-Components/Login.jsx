@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import AuthNavbar from "../Navbar-Components/AuthNavbar";
 import Footer from "../Footer-Components/Footer";
 import "../../index.css";
+const PREFIX ='MINTO-'; 
 
 function Login() {
   const [cookies] = useCookies([]);
@@ -36,6 +37,9 @@ function Login() {
         },
         { withCredentials: true }
       );
+      localStorage.setItem(PREFIX+'name',JSON.stringify(data.user.name));
+      localStorage.setItem(PREFIX+'username',JSON.stringify(data.user.username));
+      localStorage.setItem(PREFIX+'imageURL',JSON.stringify(data.user.photo));
       if (data) {
         if (data.errors) {
           const { email, username, password } = data.errors;

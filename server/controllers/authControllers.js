@@ -37,7 +37,15 @@ const handleErrors = (err) => {
 
 module.exports.register = async (req, res, next) => {
   try {
+    console.log("Register called!")
+    console.log(req.body)
     const { email, username, name, password } = req.body;
+
+    console.log(email)
+    console.log(username)
+    console.log(name)
+    console.log(password)
+
     const user = new User({ email,username,name,password});
     if (req.files && req.files.photo) {
       const photo = req.files.photo;

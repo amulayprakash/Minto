@@ -20,7 +20,7 @@ import MyPass from "./MyPass";
 import RevenveSplit from "./RevenveSplit";
 import { Column } from "../../FooterStyles";
 
-const PREFIX = "REIGNKIT-";
+const PREFIX = "MINTO-";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("collections");
@@ -64,7 +64,7 @@ export default function Dashboard() {
     const formData = new FormData();
     formData.append(
       "username",
-      localStorage.getItem("REIGNKIT-username").replace(/['"]+/g, "")
+      localStorage.getItem("MINTO-username").replace(/['"]+/g, "")
     );
     formData.append("name", name);
     formData.append("symbol", symbol);
@@ -151,7 +151,7 @@ export default function Dashboard() {
           <div className="box box1">
             <div>
               <div style={styles1}>
-                {localStorage.getItem("REIGNKIT-imageURL") == null ? (
+                {localStorage.getItem("MINTO-imageURL") == null ? (
                   <div>Loading...</div>
                 ) : (
                   <img
@@ -159,7 +159,7 @@ export default function Dashboard() {
                     src={
                       process.env.REACT_APP_PRODUCTION_URL +
                       `/${localStorage
-                        .getItem("REIGNKIT-imageURL")
+                        .getItem("MINTO-imageURL")
                         .replace(/['"]+/g, "")}`
                     }
                   />
@@ -167,21 +167,21 @@ export default function Dashboard() {
               </div>
               <div style={styles2}>
                 <p className="login-name">
-                  {localStorage.getItem("REIGNKIT-name") == null ? (
+                  {localStorage.getItem("MINTO-name") == null ? (
                     <div>Loading...</div>
                   ) : (
-                    localStorage.getItem("REIGNKIT-name").replace(/['"]+/g, "")
+                    localStorage.getItem("MINTO-name").replace(/['"]+/g, "")
                   )}
                 </p>
               </div>
               <div style={styles2}>
-                {localStorage.getItem("REIGNKIT-name") == null ? (
+                {localStorage.getItem("MINTO-name") == null ? (
                   <div>Loading...</div>
                 ) : (
                   <h5>
                     @
                     {localStorage
-                      .getItem("REIGNKIT-username")
+                      .getItem("MINTO-username")
                       .replace(/['"]+/g, "")}
                   </h5>
                 )}

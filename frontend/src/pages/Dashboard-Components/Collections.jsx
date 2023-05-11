@@ -13,7 +13,7 @@ export default function Collections() {
   const [collections, setCollections] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("REIGNKIT-username") == null) {
+    if (localStorage.getItem("MINTO-username") == null) {
       console.log("No collection found!");
     }
     const getCollections = async () => {
@@ -21,7 +21,7 @@ export default function Collections() {
         const res = await axios.get(
           process.env.REACT_APP_PRODUCTION_URL +
             `/viewCollections?username=${localStorage
-              .getItem("REIGNKIT-username")
+              .getItem("MINTO-username")
               .replace(/['"]+/g, "")}`
         );
         setCollections(res.data);
@@ -33,7 +33,7 @@ export default function Collections() {
       }
     };
     getCollections();
-  }, [localStorage.getItem("REIGNKIT-username").replace(/['"]+/g, "")]);
+  }, [localStorage.getItem("MINTO-username").replace(/['"]+/g, "")]);
 
   const handleCardClick = (item) => {
     console.log(item);

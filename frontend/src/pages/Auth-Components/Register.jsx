@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthNavbar from "../Navbar-Components/AuthNavbar";
 import Footer from "../Footer-Components/Footer";
 import "../../index.css";
+const PREFIX ='MINTO-'; 
+
 
 function Register() {
   const [cookies] = useCookies(["cookie-name"]);
@@ -37,6 +39,10 @@ function Register() {
         },
         { withCredentials: true }
       );
+      localStorage.setItem(PREFIX+'name',JSON.stringify(data.user.name));
+      localStorage.setItem(PREFIX+'username',JSON.stringify(data.user.username));
+      localStorage.setItem(PREFIX+'imageURL',JSON.stringify(data.user.photo));
+
       if (data) {
         if (data.errors) {
           const { email, username, name, password } = data.errors;
