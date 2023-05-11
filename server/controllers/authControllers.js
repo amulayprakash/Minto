@@ -56,12 +56,18 @@ module.exports.register = async (req, res, next) => {
     await user.save();
     const token = createToken(user._id);
 
-    res.cookie("jwt", token, {
-      withCredentials: true,
-      maxAge: maxAge * 1000,
-    });
+    // res.cookie("jwt", token, {
+    //   withCredentials: true,
+    //   httpOnly: false,
+    //   maxAge: maxAge * 1000,
+    // });
 
-    res.status(201).json({ user: user, created: true });
+    const cokie = {
+      token,
+      maxAge: maxAge * 1000,
+    };
+
+    res.status(201).json({ user: user, created: true, cokie });
   } catch (err) {
     console.log(err);
     const errors = handleErrors(err);
@@ -74,8 +80,14 @@ module.exports.login = async (req, res) => {
   try {
     const user = await User.login(email, username, password);
     const token = createToken(user._id);
-    res.cookie("jwt", token, { maxAge: maxAge * 1000 });
-    res.status(200).json({ user: user, status: true });
+    // res.cookie("jwt", token, { httpOnly: false, maxAge: maxAge * 1000 });
+
+    const cokie = {
+      token,
+      maxAge: maxAge * 1000,
+    };
+
+    res.status(200).json({ user: user, status: true, cookie: cokie });
   } catch (err) {
     const errors = handleErrors(err);
     res.json({ errors, status: false });
