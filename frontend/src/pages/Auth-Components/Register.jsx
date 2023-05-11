@@ -5,12 +5,13 @@ import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import AuthNavbar from "../Navbar-Components/AuthNavbar";
 import Footer from "../Footer-Components/Footer";
+import Cookies from "universal-cookie";
 import "../../index.css";
-const PREFIX ='MINTO-'; 
-
+const PREFIX = "MINTO-";
 
 function Register() {
   const [cookies] = useCookies(["cookie-name"]);
+  const ckies = new Cookies();
   const navigate = useNavigate();
   useEffect(() => {
     if (cookies.jwt) {
@@ -39,9 +40,19 @@ function Register() {
         },
         { withCredentials: true }
       );
-      localStorage.setItem(PREFIX+'name',JSON.stringify(data.user.name));
-      localStorage.setItem(PREFIX+'username',JSON.stringify(data.user.username));
-      localStorage.setItem(PREFIX+'imageURL',JSON.stringify(data.user.photo));
+      ckies.set("jwt", data.cookie.token, {
+        path: "/",
+        maxAge: data.cookie.maxAge,
+      });
+      localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
+      localStorage.setItem(
+        PREFIX + "username",
+        JSON.stringify(data.user.username)
+      );
+      localStorage.setItem(
+        PREFIX + "imageURL",
+        JSON.stringify(data.user.photo)
+      );
 
       if (data) {
         if (data.errors) {
