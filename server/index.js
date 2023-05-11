@@ -322,3 +322,4 @@ app.listen(4000, (err) => {
 });
 
 app.use("/", authRoutes);
+// https://minto-dev.onrender.com/register
