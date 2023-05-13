@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const Collection = require("./model/collectionModel");
 const Presalelist = require("./model/preSaleListModel");
 const Waitlist = require("./model/waitlistModel");
@@ -14,9 +14,11 @@ const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 const app = express();
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 app.use(express.json());
 const storage = multer.diskStorage({
@@ -32,7 +34,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-app.use("/uploads", express.static("uploads"));
+app.use("api/uploads", express.static("uploads"));
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -47,6 +49,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:4000",
   "https://minto-dev.onrender.com",
+  "http://3.136.161.65",
 ];
 
 app.use(
@@ -66,7 +69,7 @@ app.use(
   })
 );
 
-app.post("/createPresalelistEntry", (req, res) => {
+app.post("api/createPresalelistEntry", (req, res) => {
   const { collectionID } = req.body;
   const { addedVia } = req.body;
   const { walletAddress } = req.body;
@@ -90,7 +93,7 @@ app.post("/createPresalelistEntry", (req, res) => {
   });
 });
 
-app.get("/viewPreSaleListbyCollectionID", async (req, res) => {
+app.get("api/viewPreSaleListbyCollectionID", async (req, res) => {
   try {
     const collectionID = req.query.collectionID;
     console.log(collectionID);
@@ -102,7 +105,7 @@ app.get("/viewPreSaleListbyCollectionID", async (req, res) => {
   }
 });
 
-app.post("/createWaitlist", (req, res) => {
+app.post("api/createWaitlist", (req, res) => {
   const { collectionID } = req.body;
   const { name } = req.body;
   const { email } = req.body;
@@ -130,7 +133,7 @@ app.post("/createWaitlist", (req, res) => {
 });
 
 app.post(
-  "/createCollection",
+  "api/createCollection",
   upload.fields([
     { name: "image", maxCount: 1 },
     { name: "banner", maxCount: 1 },
@@ -174,7 +177,7 @@ app.post(
   }
 );
 
-app.get("/viewCollections", async (req, res) => {
+app.get("api/viewCollections", async (req, res) => {
   try {
     const username = req.query.username;
     console.log(username);
@@ -186,7 +189,7 @@ app.get("/viewCollections", async (req, res) => {
   }
 });
 
-app.get("/viewCollectionsbyID", async (req, res) => {
+app.get("api/viewCollectionsbyID", async (req, res) => {
   try {
     const id = req.query.id;
     console.log(id);
@@ -198,7 +201,7 @@ app.get("/viewCollectionsbyID", async (req, res) => {
   }
 });
 
-app.delete("/deleteCollection", async (req, res) => {
+app.delete("api/deleteCollection", async (req, res) => {
   const { id } = req.query;
   console.log(id);
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -221,7 +224,7 @@ app.delete("/deleteCollection", async (req, res) => {
   }
 });
 
-app.put("/updateCollection", async (req, res) => {
+app.put("api/updateCollection", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const address = req.query.address;
@@ -237,7 +240,7 @@ app.put("/updateCollection", async (req, res) => {
   }
 });
 
-app.put("/updateCollectionPreSale", async (req, res) => {
+app.put("api/updateCollectionPreSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const preSaleLive = req.query.preSaleLive;
@@ -253,7 +256,7 @@ app.put("/updateCollectionPreSale", async (req, res) => {
   }
 });
 
-app.put("/updateCollectionPublicSale", async (req, res) => {
+app.put("api/updateCollectionPublicSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const publicSaleLive = req.query.publicSaleLive;
@@ -271,7 +274,7 @@ app.put("/updateCollectionPublicSale", async (req, res) => {
   }
 });
 
-app.put("/updateCollectionTotalWeiEarned", async (req, res) => {
+app.put("api/updateCollectionTotalWeiEarned", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const totalWeiEarned = req.query.totalWeiEarned;
@@ -288,7 +291,7 @@ app.put("/updateCollectionTotalWeiEarned", async (req, res) => {
 });
 
 app.put(
-  "/updateCollectionPreReveal",
+  "api/updateCollectionPreReveal",
   upload.fields([{ name: "preRevealImage", maxCount: 1 }]),
   async (req, res) => {
     try {
@@ -321,5 +324,5 @@ app.listen(4000, (err) => {
   }
 });
 
-app.use("/", authRoutes);
+app.use("api/", authRoutes);
 // https://minto-dev.onrender.com/register
