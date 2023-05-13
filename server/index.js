@@ -34,7 +34,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-app.use("api/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"));
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -69,7 +69,7 @@ app.use(
   })
 );
 
-app.post("api/createPresalelistEntry", (req, res) => {
+app.post("/api/createPresalelistEntry", (req, res) => {
   const { collectionID } = req.body;
   const { addedVia } = req.body;
   const { walletAddress } = req.body;
@@ -93,7 +93,7 @@ app.post("api/createPresalelistEntry", (req, res) => {
   });
 });
 
-app.get("api/viewPreSaleListbyCollectionID", async (req, res) => {
+app.get("/api/viewPreSaleListbyCollectionID", async (req, res) => {
   try {
     const collectionID = req.query.collectionID;
     console.log(collectionID);
@@ -105,7 +105,7 @@ app.get("api/viewPreSaleListbyCollectionID", async (req, res) => {
   }
 });
 
-app.post("api/createWaitlist", (req, res) => {
+app.post("/api/createWaitlist", (req, res) => {
   const { collectionID } = req.body;
   const { name } = req.body;
   const { email } = req.body;
@@ -133,7 +133,7 @@ app.post("api/createWaitlist", (req, res) => {
 });
 
 app.post(
-  "api/createCollection",
+  "/api/createCollection",
   upload.fields([
     { name: "image", maxCount: 1 },
     { name: "banner", maxCount: 1 },
@@ -177,7 +177,7 @@ app.post(
   }
 );
 
-app.get("api/viewCollections", async (req, res) => {
+app.get("/api/viewCollections", async (req, res) => {
   try {
     const username = req.query.username;
     console.log(username);
@@ -189,7 +189,7 @@ app.get("api/viewCollections", async (req, res) => {
   }
 });
 
-app.get("api/viewCollectionsbyID", async (req, res) => {
+app.get("/api/viewCollectionsbyID", async (req, res) => {
   try {
     const id = req.query.id;
     console.log(id);
@@ -201,7 +201,7 @@ app.get("api/viewCollectionsbyID", async (req, res) => {
   }
 });
 
-app.delete("api/deleteCollection", async (req, res) => {
+app.delete("/api/deleteCollection", async (req, res) => {
   const { id } = req.query;
   console.log(id);
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -224,7 +224,7 @@ app.delete("api/deleteCollection", async (req, res) => {
   }
 });
 
-app.put("api/updateCollection", async (req, res) => {
+app.put("/api/updateCollection", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const address = req.query.address;
@@ -240,7 +240,7 @@ app.put("api/updateCollection", async (req, res) => {
   }
 });
 
-app.put("api/updateCollectionPreSale", async (req, res) => {
+app.put("/api/updateCollectionPreSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const preSaleLive = req.query.preSaleLive;
@@ -256,7 +256,7 @@ app.put("api/updateCollectionPreSale", async (req, res) => {
   }
 });
 
-app.put("api/updateCollectionPublicSale", async (req, res) => {
+app.put("/api/updateCollectionPublicSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const publicSaleLive = req.query.publicSaleLive;
@@ -274,7 +274,7 @@ app.put("api/updateCollectionPublicSale", async (req, res) => {
   }
 });
 
-app.put("api/updateCollectionTotalWeiEarned", async (req, res) => {
+app.put("/api/updateCollectionTotalWeiEarned", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const totalWeiEarned = req.query.totalWeiEarned;
@@ -291,7 +291,7 @@ app.put("api/updateCollectionTotalWeiEarned", async (req, res) => {
 });
 
 app.put(
-  "api/updateCollectionPreReveal",
+  "/api/updateCollectionPreReveal",
   upload.fields([{ name: "preRevealImage", maxCount: 1 }]),
   async (req, res) => {
     try {
@@ -324,5 +324,5 @@ app.listen(4000, (err) => {
   }
 });
 
-app.use("/api", authRoutes);
+app.use("//api", authRoutes);
 // https://minto-dev.onrender.com/register
