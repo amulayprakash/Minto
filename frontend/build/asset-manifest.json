@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.72410bd8.css",
-    "main.js": "/static/js/main.beefe78a.js",
+    "main.css": "/static/css/main.e73f771e.css",
+    "main.js": "/static/js/main.56aa0e85.js",
     "static/media/banner.png": "/static/media/banner.84b15ef823d85c4df4b2.png",
     "static/media/image.jpg": "/static/media/image.58326d1e4dd82806276d.jpg",
     "static/media/ReignLabsLogo.png": "/static/media/ReignLabsLogo.1249c7380ef14275f01b.png",
     "index.html": "/index.html",
-    "main.72410bd8.css.map": "/static/css/main.72410bd8.css.map",
-    "main.beefe78a.js.map": "/static/js/main.beefe78a.js.map"
+    "main.e73f771e.css.map": "/static/css/main.e73f771e.css.map",
+    "main.56aa0e85.js.map": "/static/js/main.56aa0e85.js.map"
   },
   "entrypoints": [
-    "static/css/main.72410bd8.css",
-    "static/js/main.beefe78a.js"
+    "static/css/main.e73f771e.css",
+    "static/js/main.56aa0e85.js"
   ]
 }
