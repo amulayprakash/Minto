@@ -121,11 +121,11 @@ export default function Detail() {
       DropKitPassAddress,
       DropKitPass.abi,
       signer
-      );
+      ); 
     console.log(userAddress);
     const result = await dropkitpass.getActivatedTokenByOwner(userAddress);
     console.log(result);
-      // if(result===0)
+      // if(result===0) 
     const factory = new ethers.ContractFactory(
         DropCollection.abi,
         DropCollection.bytecode,
