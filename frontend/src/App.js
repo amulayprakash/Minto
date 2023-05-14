@@ -25,7 +25,7 @@ export default function App() {
         <Route exact path="/pass" element={<MintPass />} /> 
         <Route exact path="/" element={<Home />} /> 
         <Route exact path="/build/:id" element={<Detail />} /> 
-        <Route exact path="/collection/:id" element={<WaitlistDrop />} /> 
+        <Route exact path="/collection/presale/:id" element={<WaitlistDrop />} /> 
         <Route exact path="/collection/public-mint/:id" element={<PublicMint />} /> 
       </Routes>
     </BrowserRouter>

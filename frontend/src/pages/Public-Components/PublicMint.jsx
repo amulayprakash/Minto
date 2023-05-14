@@ -5,65 +5,54 @@ import { ethers } from "ethers";
 import DropCollection from "../../artifacts/contracts/DropCollection.sol/DropCollection.json";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import "../../index.css";
+
+import axios from "axios"; 
+import "../../index.css"; 
 
 export default function PublicMint() {
   const [address, setAddress] = useState("");
   const [collection, setCollection] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedOption, setSelectedOption] = useState("");
+
   const [totalSupply, setTotalSupply] = useState("");
   const [cards, setCards] = useState([]);
-
-  const handleSelect = (eventKey) => {
-    setSelectedOption(eventKey);
-    console.log("Selected option: ", eventKey);
-  };
 
   const { id } = useParams();
 
   useEffect(() => {
-    // async function getAddress() {
-    //     if (typeof window.ethereum !== 'undefined') {
-    //         const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //         await window.ethereum.enable();
-    //         const signer = provider.getSigner();
-    //         const address = await signer.getAddress();
-    //         // const myContract = new ethers.Contract(collection.deployedAddress, DropCollection.abi, signer);
-    //         // const totalSupply = await myContract.totalSupply();
-    //         // setTotalSupply(totalSupply.toNumber());
-
-    //         setAddress(address);
-    //     } else {
-    //         setAddress('Please install MetaMask');
-    //     }
-    // }
     const getCollections = async () => {
       try {
         const res = await axios.get(
           process.env.REACT_APP_PRODUCTION_URL + `/viewCollectionsbyID?id=${id}`
         );
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await window.ethereum.enable();
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const myContract = new ethers.Contract(
-          res.data[0].deployedAddress,
-          DropCollection.abi,
-          signer
-        );
-        const totalSupply = await myContract.totalSupply();
-        setTotalSupply(totalSupply.toNumber());
-        setAddress(address);
 
-        const newCards = [];
-        for (let i = 0; i < totalSupply.toNumber(); i++) {
-          newCards.push({ index: i });
+        if (window.ethereum) {
+          try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const myContract = new ethers.Contract(res.data[0].deployedAddress,DropCollection.abi,signer);
+            const totalSupply = await myContract.totalSupply();
+            setTotalSupply(totalSupply.toNumber());
+            setAddress(accounts[0]);
+            const newCards = [];
+            for (let i = 0; i < totalSupply.toNumber(); i++) {
+              newCards.push({ index: i });
+            }
+            setCollection(res.data[0]);
+            setCards(newCards);
+          } catch (error) {
+            if (error.code === 4001) {
+              console.log(error)
+            }
+            console.log(error)
+          
+          }
         }
-
-        setCollection(res.data[0]);
-        setCards(newCards);
+        
+        // await window.ethereum.enable();
+        // const address = await signer.getAddress();
+        // setAddress(address);
         setIsLoading(false);
       } catch (err) {
         console.error(err.message);
@@ -125,7 +114,7 @@ export default function PublicMint() {
             <hr></hr>
           </div>
 
-          <Container>
+          <Container  style={{ marginBottom: "5.5rem" }}>
             <Row style={{ justifyContent: "center", marginTop: "1.5rem" }}>
               {cards.map((card, index) => (
                 <Col
@@ -174,32 +163,20 @@ export default function PublicMint() {
           </Container>
 
           <footer
-            className="fixed-bottom bg-light"
+            className="fixed-bottom public-mint-footer"
             style={{
-              backgroundColor: "dodgerblue",
               paddingTop: "1rem",
               paddingBottom: "1rem",
             }}
           >
             <Container>
               <Row>
-                <Col lg="10">
+                <Col lg="10" style={{paddingTop:"1rem"}}>
                   <h5>&copy; 2023 Minto Company</h5>
                 </Col>
                 <Col className="text-right" lg="2">
-                  {/* <Dropdown onSelect={handleSelect} dropup="true">
-                <Dropdown.Toggle as={Button} variant="dark" id="dropdown-basic">
-                    MINT NFT
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item eventKey="1">1</Dropdown.Item>
-                    <Dropdown.Item eventKey="2">2</Dropdown.Item>
-                    <Dropdown.Item eventKey="3">3</Dropdown.Item>
-                </Dropdown.Menu>
-                </Dropdown> */}
-                  <Button variant="dark" size="lg" onClick={handleMintNFT}>
-                    MINT A NFT
-                  </Button>
+                  <Button variant="outline-light" size="lg" onClick={handleMintNFT}> MINT A NFT </Button>
+                  
                 </Col>
               </Row>
             </Container>

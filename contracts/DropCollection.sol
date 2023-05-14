@@ -117,7 +117,6 @@ contract DropCollection is ERC721, ERC721Enumerable, AccessControl, ERC2981{
             ),
             "Presale invalid"
         );
-
         _purchaseMint(quantity, recipient);
     }
 
@@ -130,11 +129,11 @@ contract DropCollection is ERC721, ERC721Enumerable, AccessControl, ERC2981{
 
         for (uint256 i = 0; i < length; ) {
             _mint(quantities[i], recipients[i]);
-            unchecked {
-                i++;
-            }
-        }
-    }
+            unchecked { 
+                i++; 
+            } 
+        } 
+    } 
 
     function setMerkleRoot(bytes32 newRoot)
         external
@@ -200,9 +199,9 @@ contract DropCollection is ERC721, ERC721Enumerable, AccessControl, ERC2981{
         return _saleActive;
     }
 
-    function _baseURI() internal view virtual override returns (string memory) {
-        return _tokenBaseURI;
-    }
+    function _baseURI() internal view virtual override returns (string memory) { 
+        return _tokenBaseURI; 
+    } 
     
     function totalRevenue() external view returns (uint256) {
         return _totalRevenue;
@@ -210,7 +209,7 @@ contract DropCollection is ERC721, ERC721Enumerable, AccessControl, ERC2981{
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
-    }
+    } 
 
     function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(address(this).balance > 0, "0 balance");

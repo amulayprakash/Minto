@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 const presalelistSchema = new mongoose.Schema({
 //   collectionRef:{
 //     type: mongoose.Schema.Types.ObjectId,
@@ -9,7 +10,7 @@ const presalelistSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: (new Date()).toLocaleDateString("en-US", options)
   },
   addedVia: {
     type: String,
@@ -19,6 +20,7 @@ const presalelistSchema = new mongoose.Schema({
   }, 
   quantity: {
     type: Number,
+    default: 1
   }
 });
 

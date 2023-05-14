@@ -116,11 +116,6 @@ label {
 .modal-content{
   width: 90%;
 }
-.create-dropdown{
-  font-size: 15px;
-  font-weight: bold;
-  /* border-radius: 10%; */
-}
 
 .box {
   display: inline-block;
@@ -368,9 +363,9 @@ label {
 footer {
   margin-top: auto;
 }
-/* 
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-} */
+
+
+.public-mint-footer{
+  color: white;
+  background-color: black;
+}

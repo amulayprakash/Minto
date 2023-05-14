@@ -80,6 +80,10 @@ const collectionSchema = new mongoose.Schema({
     type:String,
     default:""
   },
+  waitlistlive:{
+    type:Boolean,
+    default:false
+  },
   network: {
     type: String,
     enum: ['Ethereum Mainnet','Polygon Mainnet','Arbitrum'],

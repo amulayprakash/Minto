@@ -194,9 +194,8 @@ export default function Dashboard() {
               <div style={styles1}></div>
               <div style={styles3}>
                 {/* <Button onClick={handleShow} size="lg" variant="dark">Create</Button> */}
-                <Dropdown>
+                <Dropdown drop="down-centered">
                   <Dropdown.Toggle
-                    className="create-dropdown"
                     variant="dark"
                     size="md"
                     id="dropdown-basic"
@@ -204,12 +203,12 @@ export default function Dashboard() {
                     {"CREATE"}&nbsp;
                   </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
+                  <Dropdown.Menu variant="dark">
                     <Dropdown.Item onClick={handleFirstModalShow}>
-                      Collection
+                      COLLECTION
                     </Dropdown.Item>
                     <Dropdown.Item href="#/action-2">
-                      Revenue Split
+                      REVENUE SPLIT
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

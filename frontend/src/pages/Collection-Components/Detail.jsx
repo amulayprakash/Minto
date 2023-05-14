@@ -138,19 +138,24 @@ export default function Detail() {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload(false);
     event.preventDefault();
     handleModalClose();
   };
 
   const handleStartPreSale = async (event) => {
     event.preventDefault();
+    if(collection.publicSaleLive || collection.waitlistlive || collection.preSaleLive) {
+      toast("Presale/Waitlist/Publicsale is already live!");
+      return;
+    }
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await window.ethereum.enable();
     const signer = provider.getSigner();
     const myContract = new ethers.Contract(
       collection.deployedAddress,
       DropCollection.abi,
-      signer
+      signer 
     );
     const transaction = await myContract.startSale(
       NFTCount,
@@ -171,6 +176,7 @@ export default function Detail() {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload(false);
     toast("Presale is now LIVE!");
     console.log(event);
   };
@@ -207,13 +213,22 @@ export default function Detail() {
     toast("Public Sale is now LIVE!");
     console.log(event);
     // navigate()
+    window.location.reload(false);
     window.open(`/collection/public-mint/${id}`, "_blank");
     handleModal5Close();
   };
 
   const handleViewPublicMintPage = (e) => {
     e.preventDefault();
+    window.location.reload(false);
     window.open(`/collection/public-mint/${id}`, "_blank");
+    handleModal5Close();
+  };
+
+  const handleViewWaitlistPage = (e) => {
+    e.preventDefault();
+    window.open(`/collection/presale/${id}`, "_blank");
+    window.location.reload(false);
     handleModal5Close();
   };
 
@@ -241,6 +256,7 @@ export default function Detail() {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload(false);
     toast("Presale is STOPPED!");
     console.log(event);
   };
@@ -269,7 +285,25 @@ export default function Detail() {
       console.log(error);
     }
     handleModal5Close();
+    window.location.reload(false);
     toast("Public Sale is STOPPED!");
+    console.log(event);
+  };
+
+  const handleStopWaitList = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.put(
+        process.env.REACT_APP_PRODUCTION_URL +
+          `/updateCollectionWaitlist?collectionID=${id}&waitlistlive=false`
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    handleModal2Close();
+    window.location.reload(false);
+    toast("Waitlist Stopped!");
     console.log(event);
   };
 
@@ -308,11 +342,22 @@ export default function Detail() {
     setFormData((prevFormData) => ({ ...prevFormData, textAreaValue: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(options);
-    console.log(formData.textAreaValue);
-    navigate(`/collection/${id}`);
+    // console.log(options);
+    // console.log(formData.textAreaValue);
+    try {
+      const response = await axios.put(
+        process.env.REACT_APP_PRODUCTION_URL +
+        `/updateCollectionWaitlist?collectionID=${id}&waitlistlive=true`
+      );
+      console.log(response.data);
+      handleModal4Close();
+      window.open(`/collection/presale/${id}`, "_blank");
+      window.location.reload(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -455,91 +500,41 @@ export default function Detail() {
               <Modal.Body>
                 {collection.publicSaleLive ? (
                   <>
-                    <Button
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        boxSizing: "border-box",
-                      }}
-                      onClick={handleStopPublicSale}
-                      variant="dark"
-                    >
-                      STOP PUBLIC SALE
-                    </Button>{" "}
+                    <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleStopPublicSale}  variant="dark" > STOP PUBLIC SALE </Button>{" "}
                     <br></br>
-                    <Button
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        boxSizing: "border-box",
-                      }}
-                      onClick={handleViewPublicMintPage}
-                      variant="dark"
-                    >
-                      VIEW PUBLIC MINT PAGE
-                    </Button>{" "}
+                    <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleViewPublicMintPage} variant="dark"> VIEW PUBLIC MINT PAGE </Button>{" "}
                     <br></br>
                   </>
                 ) : (
-                  <>
-                    <Button
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        boxSizing: "border-box",
-                      }}
-                      onClick={handleWailistMoadalClick}
-                      variant="dark"
-                      disabled
-                    >
-                      WAITLIST
-                    </Button>{" "}
+                  collection.waitlistlive ? (
+                    <>
+                    <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleStopWaitList}  variant="dark" > STOP WAITLIST </Button>{" "}
                     <br></br>
-                    {!collection.preSaleLive ? (
+                    <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleViewWaitlistPage} variant="dark"> VIEW WAITLIST PAGE</Button>{" "}
+                    <br></br>
+                   </>
+                  ) : (
+                    <>
+                    {collection.preSaleLive ? (
                       <>
-                        <Button
-                          style={{
-                            display: "block",
-                            width: "100%",
-                            boxSizing: "border-box",
-                          }}
-                          onClick={handlePreSaleClick}
-                          variant="dark"
-                          disabled
-                        >
-                          START PRESALE
-                        </Button>{" "}
-                        <br></br>
+                      <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleStopPreSale} variant="dark" > STOP PRESALE</Button>{" "}
+                      <br></br>
+                      <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleViewWaitlistPage} variant="dark"> VIEW PRESALE PAGE</Button>{" "}
+                      <br></br>
                       </>
                     ) : (
                       <>
-                        <Button
-                          style={{
-                            display: "block",
-                            width: "100%",
-                            boxSizing: "border-box",
-                          }}
-                          onClick={handleStopPreSale}
-                          variant="dark"
-                          disabled
-                        >
-                          STOP PRESALE
-                        </Button>{" "}
+                        <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleWailistMoadalClick} variant="dark" > CONFIGURE WAITLIST </Button>{" "}
+                        <br></br>
+                        <Button style={{ display: "block", width: "100%", boxSizing: "border-box",}} onClick={handlePreSaleClick} variant="dark"> START PRESALE </Button>{" "}
+                        <br></br>
+                        <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handlePublicSaleClick} variant="dark"> START PUBLIC SALE </Button>
                         <br></br>
                       </>
                     )}
-                    <Button
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        boxSizing: "border-box",
-                      }}
-                      onClick={handlePublicSaleClick}
-                      variant="dark"
-                    >
-                      PUBLIC SALE
-                    </Button>
-                  </>
+                    
+                    </>
+                  )
                 )}
               </Modal.Body>
               <Modal.Footer>
@@ -562,6 +557,9 @@ export default function Detail() {
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
+                <p>
+                With this tool, you can create a list of eligible participants and assign them a specific allocation of NFTs. This list is stored in a Merkle tree, which allows for secure verification of participants' eligibility without revealing their identities. When the pre-sale begins, participants can prove their eligibility by submitting a Merkle proof, which will grant them access to purchase their allocated NFTs. By using OpenZeppelin's Merkle Proof, we are ensuring a fair and transparent pre-sale process for your NFTs.
+                </p>
                 <Form className="form-class">
                   <Form.Group className="mb-3" controlId="formBasic">
                     <Form.Label>NUMBER OF NFTS IN THIS PRESALE</Form.Label>
@@ -602,29 +600,9 @@ export default function Detail() {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                  variant="outline-dark"
-                  onClick={handleStartPreSale}
-                >
-                  START PRESALE
-                </Button>
-                <Button
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                  variant="dark"
-                  onClick={handleModal3Close}
-                >
-                  CANCEL
-                </Button>
-              </Modal.Footer>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} variant="outline-dark" onClick={handleStartPreSale} > START PRESALE</Button>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} variant="dark" onClick={handleModal3Close} > CANCEL </Button>
+              </Modal.Footer> 
             </Modal>
 
             <Modal
@@ -743,7 +721,7 @@ export default function Detail() {
                       disabled
                     />
                   </Form.Group>
-                  <br></br>
+                  {/* <br></br>
                   <Form.Group controlId="formBasicCheckbox1">
                     <Form.Check
                       type="checkbox"
@@ -792,32 +770,12 @@ export default function Detail() {
                         onChange={handleTextAreaChange}
                       />
                     </Form.Group>
-                  )}
+                  )} */}
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                  variant="outline-dark"
-                  onClick={handleSubmit}
-                >
-                  START WAITLIST
-                </Button>
-                <Button
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                  variant="dark"
-                  onClick={handleModal4Close}
-                >
-                  CANCEL
-                </Button>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} variant="outline-dark" onClick={handleSubmit} > START WAITLIST </Button>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} variant="dark" onClick={handleModal4Close} > CANCEL </Button>
               </Modal.Footer>
             </Modal>
           </>

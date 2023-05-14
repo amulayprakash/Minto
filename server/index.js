@@ -66,36 +66,37 @@ app.use(
   })
 );
 
-app.post("/createPresalelistEntry", (req, res) => {
-  const { collectionID } = req.body;
-  const { addedVia } = req.body;
-  const { walletAddress } = req.body;
-  const { quantity } = req.body;
-
-  const document = new Presalelist({
-    collectionID: collectionID,
-    addedVia: addedVia,
-    walletAddress: walletAddress,
-    quantity: quantity,
-  });
-
-  document.save((err) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(500);
-    } else {
-      console.log("New Document Saved");
-      res.sendStatus(200);
-    }
-  });
+app.post("/createPresalelistEntry",async (req, res) => {
+  try {
+    const { documents } = req.body;
+    console.log(documents)
+    const result = await Presalelist.insertMany(documents);
+    console.log(result)
+    res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error saving documents');
+  }
 });
 
 app.get("/viewPreSaleListbyCollectionID", async (req, res) => {
   try {
-    const collectionID = req.query.collectionID;
-    console.log(collectionID);
+    const collectionID = req.query.collectionID; 
+    console.log(collectionID); 
     const doc = await Presalelist.find({ collectionID: collectionID });
     res.json(doc);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+app.get("/checkInPreSaleList", async (req, res) => {
+  try {
+    const collectionID = req.query.collectionID;
+    const walletAddress = req.query.walletAddress;
+    const entry = await Presalelist.find({ collectionID:collectionID, walletAddress: walletAddress.toLowerCase() });
+    res.json(entry); 
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
@@ -129,9 +130,7 @@ app.post("/createWaitlist", (req, res) => {
   });
 });
 
-app.post(
-  "/createCollection",
-  upload.fields([
+app.post( "/createCollection", upload.fields([
     { name: "image", maxCount: 1 },
     { name: "banner", maxCount: 1 },
   ]),
@@ -253,6 +252,22 @@ app.put("/updateCollectionPreSale", async (req, res) => {
   }
 });
 
+app.put("/updateCollectionWaitlist", async (req, res) => {
+  try {
+    const id = req.query.collectionID;
+    const waitlistlive = req.query.waitlistlive;
+    const doc = await Collection.findOneAndUpdate(
+      { collectionID: id },
+      { waitlistlive: waitlistlive },
+      { new: true }
+    );
+    res.json(doc);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
 app.put("/updateCollectionPublicSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
@@ -287,10 +302,7 @@ app.put("/updateCollectionTotalWeiEarned", async (req, res) => {
   }
 });
 
-app.put(
-  "/updateCollectionPreReveal",
-  upload.fields([{ name: "preRevealImage", maxCount: 1 }]),
-  async (req, res) => {
+app.put("/updateCollectionPreReveal", upload.fields([{ name: "preRevealImage", maxCount: 1 }]), async (req, res) => {
     try {
       const id = req.body.collectionID;
       const preRevealName = req.body.preRevealName;

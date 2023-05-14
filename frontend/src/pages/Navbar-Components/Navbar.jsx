@@ -74,7 +74,9 @@ function MyNavbar(props) {
 
   const logOut = () => {
     removeCookie("jwt");
-    navigate("/");
+    console.log("Logout called")
+    // navigate("/dashboard");
+    window.location.reload();
   };
 
   return (

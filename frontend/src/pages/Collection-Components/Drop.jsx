@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import MyNavbar from "../Navbar-Components/Navbar";
 import Footer from "../Footer-Components/Footer";
 import { useParams } from "react-router-dom";
+import Papa from "papaparse";
 import Nav from "react-bootstrap/Nav";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
@@ -36,6 +37,10 @@ export default function Drop({ collection }) {
 
   const handleButtonClick = () => setModalShow(true);
   const handleButton2Click = () => setModal2Show(true);
+  const [parsedData, setParsedData] = useState([]);
+  const [tableRows, setTableRows] = useState([]);
+  const [values, setValues] = useState([]);
+
 
   const handleAirdropClick = async (event) => {
     event.preventDefault();
@@ -50,10 +55,66 @@ export default function Drop({ collection }) {
     const transaction = await myContract.batchAirdrop([quantity], [address]);
     toast("Transaction Started");
     handleModalClose();
+    window.location.reload(false);
     await transaction.wait();
     toast("AirDrop Done Successfully!");
     // console.log(event);
   };
+
+  const changeHandler = (event) => {
+    // Passing file data (event.target.files[0]) to parse using Papa.parse
+    Papa.parse(event.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        const rowsArray = [];
+        const valuesArray = [];
+
+        results.data.map((d) => {
+          rowsArray.push(Object.keys(d));
+          valuesArray.push(Object.values(d));
+        });
+        setParsedData(results.data);
+        setTableRows(rowsArray[0]);
+        setValues(valuesArray); 
+
+      },
+    });
+  };
+
+  const handleAirdropCSV = async (event) => {
+    event.preventDefault();
+    let addresses=[];
+    let quantities=[];
+    console.log(values);
+    for(let i=0; i<values.length;i++){
+      addresses.push(values[i][0])
+      quantities.push(Number(values[i][1]))
+    }
+    console.log(addresses)
+    console.log(quantities)
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await window.ethereum.enable();
+      const signer = provider.getSigner();
+      const myContract = new ethers.Contract(
+        collection.deployedAddress,
+        DropCollection.abi,
+        signer
+      );
+      const transaction = await myContract.batchAirdrop(quantities, addresses);
+      toast("Transaction Started");
+      handleModalClose();
+      // window.location.reload(false);
+      await transaction.wait();
+      toast("AirDrop Done Successfully!");
+    } catch (ex) {
+      console.log(ex);
+    }
+     
+    handleModalClose(); 
+  };    
+
 
   const handlePlaceHolderUpdate = async (event) => {
     event.preventDefault();
@@ -203,6 +264,28 @@ export default function Drop({ collection }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>
+          Air dropping NFTs is a great way to distribute your digital assets to a large group of people quickly and efficiently. You can do this by uploading a CSV file containing the addresses and quantities, or by manually entering each address and quantity. Either way, make sure to double-check your list before you initiate the drop to avoid any mistakes. Happy air dropping!
+          </p>
+        <input
+            type="file"
+            name="file"
+            onChange={changeHandler}
+            accept=".csv"
+            style={{ display: "block", margin: "10px auto", paddingLeft: "2rem" }}
+          />
+          <br></br>
+          {collection.isDeployed ?
+          <>
+          <Button style={{ display: "block", width: "100%", boxSizing: "border-box" }} onClick={handleAirdropCSV} variant="dark" > AIRDROP NFTs VIA CSV </Button>{" "}
+          </>
+          :
+          <>
+          <Button style={{ display: "block", width: "100%", boxSizing: "border-box" }} onClick={handleAirdropCSV} variant="dark" disabled> CONTRACT NOT DEPLOYED (DISABLED)</Button>{" "}
+          </>
+          }
+          <br></br>
+
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>ADDRESS</Form.Label>

@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
+import Papa from "papaparse";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 // import { solidityKeccak256 } from 'ethereumjs-abi';
 import DropCollection from "../../artifacts/contracts/DropCollection.sol/DropCollection.json";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,6 +28,9 @@ export default function Waitlist({ collection }) {
   const handleModalClose = () => setModalShow(false);
   const handleButtonClick = () => setModalShow(true);
 
+  const [parsedData, setParsedData] = useState([]);
+  const [tableRows, setTableRows] = useState([]);
+  const [values, setValues] = useState([]);
   useEffect(() => {
     const getCollections = async () => {
       try {
@@ -33,8 +38,9 @@ export default function Waitlist({ collection }) {
           process.env.REACT_APP_PRODUCTION_URL +
             `/viewPreSaleListbyCollectionID?collectionID=${id}`
         );
-        console.log(res.data);
+        // console.log(res.data);
         setPresalelist(res.data);
+        // console.log((res.data[0].createdAt).toLocaleDateString());
         setIsLoading(false);
       } catch (err) {
         console.error(err.message);
@@ -44,52 +50,116 @@ export default function Waitlist({ collection }) {
     getCollections();
   }, []);
 
+  const changeHandler = (event) => {
+    // Passing file data (event.target.files[0]) to parse using Papa.parse
+    Papa.parse(event.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        const rowsArray = [];
+        const valuesArray = [];
+
+        results.data.map((d) => {
+          rowsArray.push(Object.keys(d));
+          valuesArray.push(Object.values(d));
+        });
+        setParsedData(results.data);
+        setTableRows(rowsArray[0]);
+        setValues(valuesArray); 
+
+      },
+    });
+  };
+
   const handleAddAddress = async (event) => {
-    // console.log(address,quantity);
+    // console.log(address,quantity); 
     console.log(id);
     event.preventDefault();
     try {
+      const document={
+        collectionID: id,
+        addedVia: "Manual",
+        walletAddress: address.toLowerCase(),
+        quantity: quantity,
+      }
       const { data } = await axios.post(
         process.env.REACT_APP_PRODUCTION_URL + "/createPresalelistEntry",
         {
-          collectionID: id,
-          addedVia: "Manual",
-          walletAddress: address,
-          quantity: quantity,
+          documents:[document]
         },
         { withCredentials: true }
       );
       console.log(data);
     } catch (ex) {
       console.log(ex);
-    }
-
+    } 
+    window.location.reload(false);
     handleModalClose();
-  };
+  };  
+
+  const handleAddAddressCSV = async (event) => {
+    event.preventDefault();
+    let array=[];
+    try {
+      for(let i=0;i<values.length; i++){
+        let document={ 
+            collectionID: id,
+            addedVia: "CSV",
+            walletAddress: values[i][0].toLowerCase(),
+            quantity: values[i][1], 
+        };
+        array.push(document); 
+      }
+
+      const { data } = await axios.post(
+        process.env.REACT_APP_PRODUCTION_URL + "/createPresalelistEntry",
+        {
+          documents:array
+        },
+        { withCredentials: true }
+      );
+      window.location.reload(false);
+      console.log(data);
+    } catch (ex) {
+      console.log(ex);
+    }
+     
+    handleModalClose(); 
+       
+  };    
 
   const handlePublishButton = async (event) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await window.ethereum.enable();
     const signer = provider.getSigner();
-    const myContract = new ethers.Contract(
-      collection.deployedAddress,
-      DropCollection.abi,
-      signer
-    );
+    const myContract = new ethers.Contract(collection.deployedAddress, DropCollection.abi, signer );
 
-    const leaves = presalelist.map((item) => {
-      // const encodedParams = solidityKeccak256(['address', 'uint256'], [item.walletAddress, item.quantity]);
-      const hash = keccak256(item.walletAddress);
-      return hash;
-    });
+    const merkleTree = new MerkleTree(
+      presalelist.map(({ walletAddress, quantity }) => {
+        return ethers.utils.keccak256(
+          ethers.utils.solidityPack(["address", "uint256"], [walletAddress, quantity])
+        );
+      })
+      , ethers.utils.keccak256 
+      , { sortPairs: true }  
+    ); 
+    console.log(merkleTree);
+    const buf2hex = (x) => "0x" + x.toString("hex"); 
+    console.log("Root -:",buf2hex(merkleTree.getRoot()))
 
-    console.log(leaves);
+    // const leaves = presalelist.map((item) => {
+    //   // const encodedParams = solidityKeccak256(['address', 'uint256'], [item.walletAddress, item.quantity]);
+    //   const hash = keccak256(item.walletAddress);
+    //   return hash;
+    // });
 
-    const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
-    const buf2hex = (x) => "0x" + x.toString("hex");
-    const root = buf2hex(tree.getRoot());
-    console.log("Root -:", root);
-    const transaction = await myContract.setMerkleRoot(root);
+    // console.log(leaves);
+
+    // const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
+    // const buf2hex = (x) => "0x" + x.toString("hex");
+    // const root = buf2hex(tree.getRoot());
+    // console.log("Root -:", root);
+    const transaction = await myContract.setMerkleRoot(buf2hex(merkleTree.getRoot()));
     toast("Transaction Initiated To Set The Merkle Root");
     await transaction.wait();
     toast("Merkle Root Updated");
@@ -109,7 +179,7 @@ export default function Waitlist({ collection }) {
         pauseOnHover
         theme="light"
       />
-      <div class="drop-button-row">
+      <div className="drop-button-row">
         <Button
           style={{ borderRadius: 0 }}
           variant="outline-dark"
@@ -117,13 +187,18 @@ export default function Waitlist({ collection }) {
         >
           IMPORT/ADD
         </Button>
+        <OverlayTrigger placement="bottom" overlay={
+            <Tooltip id="tooltip-text">
+              Publish the Merkle Root for the Waitlist Addresses
+            </Tooltip>}>
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
           onClick={handlePublishButton}
-        >
+          >
           PUBLISH
         </Button>
+        </OverlayTrigger>
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
@@ -157,7 +232,7 @@ export default function Waitlist({ collection }) {
           <td>@mdo</td>
         </tr> */}
           {isLoading ? (
-            <div>Loading...</div>
+            <p>Loading...</p>
           ) : presalelist.length === 0 ? (
             <p>No Address Found</p>
           ) : (
@@ -166,6 +241,7 @@ export default function Waitlist({ collection }) {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.createdAt}</td>
+                  {/* <td>{item.createdAt.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</td> */}
                   <td>{item.addedVia}</td>
                   <td>{item.walletAddress}</td>
                   <td>{item.quantity}</td>
@@ -196,6 +272,22 @@ export default function Waitlist({ collection }) {
             appended to the existing presale list. Uploading a new CSV will not
             overwrite your existing presale list or waitlist data.
           </p>
+          <input
+            type="file"
+            name="file"
+            onChange={changeHandler}
+            accept=".csv"
+            style={{ display: "block", margin: "10px auto", paddingLeft: "2rem" }}
+          />
+          <br></br>
+          <Button
+            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
+            onClick={handleAddAddressCSV}
+            variant="dark"
+          >
+            UPLOAD ADDRESSES VIA CSV
+          </Button>{" "}
+          <br></br>
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>ADDRESS</Form.Label>
@@ -217,7 +309,7 @@ export default function Waitlist({ collection }) {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer> 
           {/* <Button onClick={handleModalClose}>Close</Button> */}
           {/* <Button variant="outline-dark" onClick={handleAddAddress}>Add</Button> */}
           <Button
@@ -233,7 +325,7 @@ export default function Waitlist({ collection }) {
             onClick={handleAddAddress}
             variant="dark"
           >
-            ADD ADDRESS
+            ADD AN ADDRESS MANUALLY
           </Button>{" "}
           <br></br>
         </Modal.Footer>
