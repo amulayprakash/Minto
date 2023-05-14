@@ -42,7 +42,8 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(values);
+      // console.log("Values",values);
+      // console.log("REACT_APP_PRODUCTION_URL",process.env.REACT_APP_PRODUCTION_URL)
       const { data } = await axios.post(
         process.env.REACT_APP_PRODUCTION_URL + "/register",
         {
@@ -50,26 +51,23 @@ function Register() {
         },
         { withCredentials: true }
       );
+      console.log("data",data)
       // ckies.set("jwt", data.cookie.token, {
       //   path: "/",
       //   maxAge: data.cookie.maxAge,
       // });
       localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
-      localStorage.setItem(
-        PREFIX + "username",
-        JSON.stringify(data.user.username)
-      );
-      localStorage.setItem(
-        PREFIX + "imageURL",
-        JSON.stringify(data.user.photo)
-      );
+      localStorage.setItem(PREFIX + "username",JSON.stringify(data.user.username));
+      localStorage.setItem(PREFIX + "imageURL",JSON.stringify(data.user.photo));
 
       if (data) {
         if (data.errors) {
+          console.log("data.errors")
           const { email, username, name, password } = data.errors;
           if (email) generateError(email);
           else if (password) generateError(password);
         } else {
+          console.log("/")
           navigate("/");
         }
       }

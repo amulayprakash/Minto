@@ -52,7 +52,11 @@ export default function Dashboard() {
   const handleFourthModalShow = () => setShowFourthModal(true);
 
   useEffect(() => {
-    console.log("sdsdsdsds");
+    // console.log("sdsdsdsds");
+
+    console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL);
+    console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL + `/${localStorage.getItem("MINTO-imageURL").replace(/['"]+/g, "")}`);
+    // console.log(localStorage.getItem("MINTO-imageURL"));
     return () => {
       setShowFirstModal(false);
       setShowSecondModal(false);
@@ -178,10 +182,7 @@ export default function Dashboard() {
                   <img
                     className="profile-image"
                     src={
-                      process.env.REACT_APP_PRODUCTION_URL +
-                      `/${localStorage
-                        .getItem("MINTO-imageURL")
-                        .replace(/['"]+/g, "")}`
+                      process.env.REACT_APP_PRODUCTION_URL + `/${localStorage.getItem("MINTO-imageURL").replace(/['"]+/g, "")}`
                     }
                   />
                 )}

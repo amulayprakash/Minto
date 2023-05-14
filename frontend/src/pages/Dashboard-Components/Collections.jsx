@@ -18,12 +18,9 @@ export default function Collections() {
     }
     const getCollections = async () => {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_PRODUCTION_URL +
-            `/viewCollections?username=${localStorage
-              .getItem("MINTO-username")
-              .replace(/['"]+/g, "")}`
-        );
+        console.log("Hello");
+        const res = await axios.get(process.env.REACT_APP_PRODUCTION_URL + `/viewCollections?username=${localStorage.getItem("MINTO-username").replace(/['"]+/g, "")}`);
+        console.log(res.data);
         setCollections(res.data);
         setIsLoading(false);
         console.log("Collections- ", res.data);

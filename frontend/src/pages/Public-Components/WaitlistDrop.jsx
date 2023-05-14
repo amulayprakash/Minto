@@ -22,9 +22,11 @@ export default function WaitlistDrop() {
   const { id } = useParams();
   useEffect(() => {
     const getAddress = async () => {
+      console.log(id);
       const res = await axios.get(
         process.env.REACT_APP_PRODUCTION_URL + `/viewCollectionsbyID?id=${id}`
       );
+      console.log(res.data[0]);
       setCollection(res.data[0]);
       if (window.ethereum) {
         try {
@@ -54,11 +56,11 @@ export default function WaitlistDrop() {
     };
     getAddress();
 
-    return () => {
-      setAddress("");
-      setShow(false);
-      setWalletAddress(address);
-    };
+    // return () => {
+      // setAddress("");
+      // setShow(false);
+      // setWalletAddress(address);
+    // };
   }, []);
 
   // const handleClose = () => setShow(false);

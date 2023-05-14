@@ -69,7 +69,7 @@ app.use(
   })
 );
 
-app.post("/createPresalelistEntry",async (req, res) => {
+app.post("/api/createPresalelistEntry",async (req, res) => {
   try {
     const { documents } = req.body;
     console.log(documents)
@@ -94,7 +94,7 @@ app.get("/api/viewPreSaleListbyCollectionID", async (req, res) => {
   }
 });
 
-app.get("/checkInPreSaleList", async (req, res) => {
+app.get("/api/checkInPreSaleList", async (req, res) => {
   try {
     const collectionID = req.query.collectionID;
     const walletAddress = req.query.walletAddress;
@@ -106,7 +106,7 @@ app.get("/checkInPreSaleList", async (req, res) => {
   }
 });
 
-app.post("/createWaitlist", (req, res) => {
+app.post("/api/createWaitlist", (req, res) => {
   const { collectionID } = req.body;
   const { name } = req.body;
   const { email } = req.body;
@@ -133,7 +133,7 @@ app.post("/createWaitlist", (req, res) => {
   });
 });
 
-app.post( "/createCollection", upload.fields([
+app.post( "/api/createCollection", upload.fields([
     { name: "image", maxCount: 1 },
     { name: "banner", maxCount: 1 },
   ]),
@@ -255,7 +255,7 @@ app.put("/api/updateCollectionPreSale", async (req, res) => {
   }
 });
 
-app.put("/updateCollectionWaitlist", async (req, res) => {
+app.put("/api/updateCollectionWaitlist", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const waitlistlive = req.query.waitlistlive;
@@ -271,7 +271,7 @@ app.put("/updateCollectionWaitlist", async (req, res) => {
   }
 });
 
-app.put("/updateCollectionPublicSale", async (req, res) => {
+app.put("/api/updateCollectionPublicSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
     const publicSaleLive = req.query.publicSaleLive;
@@ -305,7 +305,7 @@ app.put("/api/updateCollectionTotalWeiEarned", async (req, res) => {
   }
 });
 
-app.put("/updateCollectionPreReveal", upload.fields([{ name: "preRevealImage", maxCount: 1 }]), async (req, res) => {
+app.put("/api/updateCollectionPreReveal", upload.fields([{ name: "preRevealImage", maxCount: 1 }]), async (req, res) => {
     try {
       const id = req.body.collectionID;
       const preRevealName = req.body.preRevealName;

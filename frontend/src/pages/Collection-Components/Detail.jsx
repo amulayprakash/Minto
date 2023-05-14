@@ -113,8 +113,7 @@ export default function Detail() {
   };
 
   const handleDeployContract = async (event) => {
-    // console.log(collection);
-
+    
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
@@ -122,17 +121,18 @@ export default function Detail() {
       DropKitPassAddress,
       DropKitPass.abi,
       signer
-    );
+      );
     console.log(userAddress);
     const result = await dropkitpass.getActivatedTokenByOwner(userAddress);
     console.log(result);
-    // if(result===0)
+      // if(result===0)
     const factory = new ethers.ContractFactory(
-      DropCollection.abi,
-      DropCollection.bytecode,
-      signer
+        DropCollection.abi,
+        DropCollection.bytecode,
+        signer
     );
-
+    console.log("handleDeployContract",factory);
+      
     const contract = await factory.deploy(
       collection.name,
       collection.symbol,

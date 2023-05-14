@@ -28,6 +28,7 @@ const Cards = ({ collection, idx }) => {
       }
     };
 
+    console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL + `/uploads/${collection.banner}`)
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
@@ -78,8 +79,7 @@ const Cards = ({ collection, idx }) => {
         <img
           className="tempcard-banner-img"
           src={
-            process.env.REACT_APP_PRODUCTION_URL +
-            `/uploads/${collection.banner}`
+            process.env.REACT_APP_PRODUCTION_URL + `/uploads/${collection.banner}`
           }
           alt="Banner"
         />
