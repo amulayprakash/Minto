@@ -51,6 +51,27 @@ export default function Dashboard() {
   const handleFourthModalClose = () => setShowFourthModal(false);
   const handleFourthModalShow = () => setShowFourthModal(true);
 
+  useEffect(() => {
+    console.log("sdsdsdsds");
+    return () => {
+      setShowFirstModal(false);
+      setShowSecondModal(false);
+      setShowThirdModal(false);
+      setShowFourthModal(false);
+
+      setName("");
+      setSymbol("");
+      setUrl("");
+
+      setPrimary("");
+      setSecondary("");
+      setRpercent("");
+
+      setImage("");
+      setBanner("");
+      setSelectedOption("Ethereum Mainnet");
+    };
+  }, []);
   const [selectedOption, setSelectedOption] = useState("Ethereum Mainnet");
 
   const handleSelect = (eventKey) => {

@@ -26,6 +26,8 @@ function AuthNavbar(props) {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+    setNavbarSticky(false);
+    setAddress(null);
 
     const verifyUser = async () => {
       if (!cookies.jwt) {
@@ -47,7 +49,9 @@ function AuthNavbar(props) {
     };
 
     verifyUser();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [cookies, navigate, removeCookie]);
 
   const handleScroll = () => {

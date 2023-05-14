@@ -91,6 +91,21 @@ export default function Detail() {
       }
     };
     getCollections();
+
+    return () => {
+      setCollection(null);
+      setAddress(null);
+      setNFTCount(null);
+      setPerNFTPrice(null);
+      setQuantityW(null);
+      setQuantityT(null);
+
+      setNFTCountPublic(null);
+      setPerNFTPricePublic(null);
+      setQuantityWPublic(null);
+      setQuantityTPublic(null);
+      setActiveKey("/overview");
+    };
   }, []);
 
   const handleChildData = (data) => {

@@ -22,7 +22,7 @@ export default function Membership() {
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
   const [contractInstance, setContractInstance] = useState("");
-  
+
   const [activeModal, setActiveModal] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
 
@@ -70,7 +70,7 @@ export default function Membership() {
 
   async function DeactivatePass() {
     try {
-      console.log("HERE",activeItem);
+      console.log("HERE", activeItem);
       const tx = await contractInstance.deactivatePass(activeItem.tokenID);
       toast("Transaction Initiated!");
       handleClose();
@@ -127,6 +127,15 @@ export default function Membership() {
     }
 
     connectToMetamask();
+
+    return () => {
+      setAddress("");
+      setContractInstance("");
+      setActiveModal(null);
+      setActiveItem(null);
+      setIsLoading(null);
+      setData(null);
+    };
   }, []);
 
   return (
@@ -166,7 +175,7 @@ export default function Membership() {
                     </Card>
                   </Col>
                 ))}
-                
+
                 <Modal
                   size="lg"
                   aria-labelledby="contained-modal-title-vcenter"

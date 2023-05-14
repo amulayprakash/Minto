@@ -25,6 +25,12 @@ export default function WaitlistDrop() {
       }
     }
     getAddress();
+
+    return () => {
+      setAddress("");
+      setShow(false);
+      setWalletAddress(address);
+    };
   }, []);
 
   const handleClose = () => setShow(false);

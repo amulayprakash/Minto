@@ -13,10 +13,20 @@ function Register() {
   const [cookies] = useCookies(["cookie-name"]);
   const ckies = new Cookies();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (cookies.jwt) {
       navigate("/dashboard");
     }
+
+    return () => {
+      setValues({
+        email: "",
+        username: "",
+        name: "",
+        password: "",
+      });
+    };
   }, [cookies, navigate]);
 
   const [values, setValues] = useState({
@@ -40,10 +50,10 @@ function Register() {
         },
         { withCredentials: true }
       );
-      ckies.set("jwt", data.cookie.token, {
-        path: "/",
-        maxAge: data.cookie.maxAge,
-      });
+      // ckies.set("jwt", data.cookie.token, {
+      //   path: "/",
+      //   maxAge: data.cookie.maxAge,
+      // });
       localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
       localStorage.setItem(
         PREFIX + "username",

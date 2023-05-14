@@ -11,12 +11,21 @@ const PREFIX = "MINTO-";
 
 function Login() {
   const ckies = new Cookies();
-  const [cookies] = useCookies([]);
+  const [cookies, setCookie] = useCookies([]);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (cookies.jwt) {
       navigate("/dashboard");
     }
+
+    return () => {
+      setValues({
+        email: "",
+        username: "",
+        password: "",
+      });
+    };
   }, [cookies, navigate]);
 
   const [values, setValues] = useState({
@@ -40,7 +49,12 @@ function Login() {
         { withCredentials: true }
       );
 
-      ckies.set("jwt", data.cookie.token, {
+      // ckies.set("jwt", data.cookie.token, {
+      //   path: "/",
+      //   maxAge: data.cookie.maxAge,
+      // });
+
+      setCookie("jwt", data.cookie.token, {
         path: "/",
         maxAge: data.cookie.maxAge,
       });
@@ -54,6 +68,7 @@ function Login() {
         PREFIX + "imageURL",
         JSON.stringify(data.user.photo)
       );
+      console.log(data);
       if (data) {
         if (data.errors) {
           const { email, username, password } = data.errors;

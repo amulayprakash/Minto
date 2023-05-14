@@ -49,6 +49,11 @@ export default function Profile() {
     };
 
     verifyUser();
+
+    return () => {
+      setActiveTab("myaccount");
+      setAccount("");
+    };
   }, [cookies, navigate, removeCookie]);
 
   const styles1 = {

@@ -1,13 +1,12 @@
-import React from 'react'
-import { useEffect, useState, useRef} from 'react';
-import MyNavbar from './Navbar-Components/Navbar'
-import Footer from './Footer-Components/Footer'    
-
+import React from "react";
+// import { useEffect, useState, useRef} from 'react';
+import MyNavbar from "./Navbar-Components/Navbar";
+import Footer from "./Footer-Components/Footer";
 
 export default function Home() {
   // const [childData, setChildData] = useState('');
   const handleChildData = (data) => {
-    console.log("Called from Home!")
+    console.log("Called from Home!");
     // setChildData(data);
     console.log(data);
   };
@@ -19,5 +18,5 @@ export default function Home() {
         <Footer />
       </div>
     </>
-  )
+  );
 }

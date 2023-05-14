@@ -42,6 +42,15 @@ export default function Waitlist({ collection }) {
       }
     };
     getCollections();
+
+    return () => {
+      setModalShow(false);
+      setIsLoading(true);
+      setPresalelist(null);
+
+      setAddress("");
+      setQuantity("");
+    };
   }, []);
 
   const handleAddAddress = async (event) => {
