@@ -27,26 +27,44 @@ function MyNavbar(props) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     const verifyUser = async () => {
+      console.log(cookies);
       if (!cookies.jwt) {
         navigate("/register");
       } else {
         const { data } = await axios.post(
           process.env.REACT_APP_PRODUCTION_URL,
-          {},
+          {
+            token: cookies.jwt,
+          },
           {
             withCredentials: true,
           }
         );
+
+        console.log(data);
         props.onData(data);
         if (!data.status) {
-          removeCookie("jwt");
+          // removeCookie("jwt");
           navigate("/login");
-        } else console.log("Loggedin successfully!");
+        } else {
+          console.log("Loggedin successfully!");
+          // navigate("/dashboard");
+        }
       }
     };
 
     verifyUser();
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      setNavbarSticky(false);
+      setAddress(() => {
+        const key = PREFIX + "address";
+        const account = localStorage.getItem(key);
+        if (account == null || account == undefined) return null;
+        return JSON.parse(account);
+      });
+    };
   }, [cookies, navigate, removeCookie]);
 
   const handleScroll = () => {

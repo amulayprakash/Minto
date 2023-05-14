@@ -33,7 +33,9 @@ export default function Profile() {
       } else {
         const { data } = await axios.post(
           process.env.REACT_APP_PRODUCTION_URL,
-          {},
+          {
+            token: cookies.jwt,
+          },
           {
             withCredentials: true,
           }
@@ -49,6 +51,11 @@ export default function Profile() {
     };
 
     verifyUser();
+
+    return () => {
+      setActiveTab("myaccount");
+      setAccount("");
+    };
   }, [cookies, navigate, removeCookie]);
 
   const styles1 = {

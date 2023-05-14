@@ -33,6 +33,11 @@ export default function Collections() {
       }
     };
     getCollections();
+
+    return () => {
+      setIsLoading(true);
+      setCollections(null);
+    };
   }, [localStorage.getItem("MINTO-username").replace(/['"]+/g, "")]);
 
   const handleCardClick = (item) => {

@@ -32,6 +32,7 @@ const Cards = ({ collection, idx }) => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      setShowDropdown(false);
     };
   }, [dropdownRef]);
 
