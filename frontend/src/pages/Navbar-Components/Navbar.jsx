@@ -46,7 +46,10 @@ function MyNavbar(props) {
         if (!data.status) {
           // removeCookie("jwt");
           navigate("/login");
-        } else console.log("Loggedin successfully!");
+        } else {
+          console.log("Loggedin successfully!");
+          // navigate("/dashboard");
+        }
       }
     };
 

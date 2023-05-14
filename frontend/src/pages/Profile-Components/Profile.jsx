@@ -33,7 +33,9 @@ export default function Profile() {
       } else {
         const { data } = await axios.post(
           process.env.REACT_APP_PRODUCTION_URL,
-          {},
+          {
+            token: cookies.jwt,
+          },
           {
             withCredentials: true,
           }
