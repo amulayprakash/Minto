@@ -87,7 +87,7 @@ export default function Account({ childData }) {
   return (
     <>
       <Form className="form-class" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasic">
+        <Form.Group className="mb-3" controlId="formBasic1">
           <Form.Label>Upload image</Form.Label>
           <Form.Control
             type="file"
@@ -95,7 +95,7 @@ export default function Account({ childData }) {
             onChange={onChange}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasic">
+        <Form.Group className="mb-3" controlId="formBasic2">
           <Form.Label>Full Name</Form.Label>
           <Form.Control
             type="text"
@@ -104,7 +104,7 @@ export default function Account({ childData }) {
             onChange={(event) => setFullName(event.target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasic">
+        <Form.Group className="mb-3" controlId="formBasic3">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"

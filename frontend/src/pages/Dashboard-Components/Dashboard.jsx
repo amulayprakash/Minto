@@ -9,6 +9,7 @@ import Container from "react-bootstrap/Container";
 // import Dropdown from 'react-bootstrap/Dropdown';
 import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
+import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import { Button, Dropdown } from "react-bootstrap";
@@ -50,6 +51,12 @@ export default function Dashboard() {
   const handleThirdModalShow = () => setShowThirdModal(true);
   const handleFourthModalClose = () => setShowFourthModal(false);
   const handleFourthModalShow = () => setShowFourthModal(true);
+  
+  const [activeKey, setActiveKey] = useState("/collections");
+  const handleSelectKey = (selectedKey) => {
+    setActiveKey(selectedKey);
+  };
+
 
   useEffect(() => {
     // console.log("sdsdsdsds");
@@ -241,7 +248,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="breadcrumb-div">
+        {/* <div className="breadcrumb-div">
           <Breadcrumb>
             <Breadcrumb.Item
               onClick={() => handleTabClick("collections")}
@@ -266,10 +273,38 @@ export default function Dashboard() {
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>
+
         <hr></hr>
         {activeTab === "collections" && <Collections />}
         {activeTab === "mypass" && <MyPass />}
-        {activeTab === "revenvesplit" && <RevenveSplit />}
+        {activeTab === "revenvesplit" && <RevenveSplit />} */}
+
+        <div className="MuiBox-root">
+        <Nav
+          fill
+          variant="tabs"
+          defaultActiveKey="/home"
+          activeKey={activeKey}
+          onSelect={handleSelectKey}
+          >
+          <Nav.Item>
+            <Nav.Link eventKey="/collections">COLLECTIONS</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="/revenvesplit">REVENUE SPLIT</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="/mypass">MY ACTIVATED PASS</Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <br></br>
+        <div className="profile-content-div">
+          {activeKey === "/collections" && ( <Collections />)}
+          {activeKey === "/mypass" && <MyPass />}
+          {activeKey === "/revenvesplit" && <RevenveSplit />}
+        </div>
+      </div>
+
       </div>
 
       <Modal

@@ -491,12 +491,50 @@ export default function Detail() {
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <p>Terms and Conditions...</p>
+                <p>
+                Congratulations on creating your NFT on Minto! To complete the process, you will need to deploy your NFT contract on the Matic test network. Don't worry, it's a simple process and we'll guide you through it.
+
+                Here's what you need to do:
+                <ul>
+                  <li>
+                    Make sure you have an account on the Matic test network. If you don't have one yet, you can create one by visiting the Matic Wallet website.
+                  </li>
+                  <li>
+                    Once you have your Matic test network account set up, click on the "Deploy Contract" button on the Minto website.
+                  </li>
+                  <li>
+                    On the contract deployment page, select the Matic test network from the dropdown menu.
+                  </li>
+                  <li>
+                    Fill in the necessary details for your contract, such as the contract name and description.
+                  </li>
+                  <li>
+                    Click on the "Deploy Contract" button to deploy your contract on the Matic test network.
+                  </li>
+                  <li>
+                    Wait for a few moments for your contract to be deployed.
+                  </li>
+                  <li>
+                    Use this contract address to interact with your NFT contract on the Matic test network.
+                  </li>
+                </ul>
+
+                Please note that deploying your contract on the Matic test network may require a small fee in MATIC tokens. Make sure you have enough tokens in your Matic wallet to cover these fees before deploying your contract.
+                Thank you for choosing Minto for your NFT creation needs!
+
+
+
+
+
+
+
+
+                </p>
               </Modal.Body>
               <Modal.Footer>
-                <Button onClick={handleModalClose}>Close</Button>
-                <Button variant="outline-dark" onClick={handleDeployContract}>
-                  Deploy
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} variant="outline-dark" onClick={handleModalClose}>CLOSE</Button>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} variant="dark" onClick={handleDeployContract}>
+                  DEPLOY CONTRACT
                 </Button>
               </Modal.Footer>
             </Modal>

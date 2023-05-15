@@ -275,6 +275,12 @@ label {
 .MuiBox-root{
   min-height: 60vh;
   padding: 0 17% !important;
+  /* text-align: center; */
+}
+.profile-content-div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detail-banner{
@@ -359,7 +365,6 @@ label {
   color: rgb(34, 34, 34);
 }
 
-
 footer {
   margin-top: auto;
 }
@@ -368,4 +373,10 @@ footer {
 .public-mint-footer{
   color: white;
   background-color: black;
+}
+
+.pass-cards-outer-div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

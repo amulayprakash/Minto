@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import MyNavbar from "../Navbar-Components/Navbar";
 import axios from "axios";
+import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Account from "./Account";
@@ -17,6 +18,10 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("myaccount");
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const [account, setAccount] = useState("");
+  const [activeKey, setActiveKey] = useState("/myaccount");
+  const handleSelect = (selectedKey) => {
+    setActiveKey(selectedKey);
+  };
 
   const [childData, setChildData] = useState("");
   const handleChildData = (data) => {
@@ -75,47 +80,39 @@ export default function Profile() {
       <MyNavbar onData={handleChildData}></MyNavbar>
       <div>
         <div style={styles1}>
-          <img
-            className="profile-image"
-            src={process.env.REACT_APP_PRODUCTION_URL + `/${account.photo}`}
-          />
-          {/* <h2>{account.photo}</h2> */}
+          <img className="profile-image" src={process.env.REACT_APP_PRODUCTION_URL + `/${account.photo}`}/>
+
         </div>
         <div style={styles2}>
           <h2>{account.username}</h2>
         </div>
       </div>
-      <div className="breadcrumb-div">
-        <Breadcrumb>
-          <Breadcrumb.Item
-            onClick={() => handleTabClick("myaccount")}
-            active={activeTab === "myaccount"}
+      <div className="MuiBox-root">
+        <Nav
+          fill
+          variant="tabs"
+          defaultActiveKey="/home"
+          activeKey={activeKey}
+          onSelect={handleSelect}
           >
-            {" "}
-            ACCOUNT{" "}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item
-            onClick={() => handleTabClick("membership")}
-            active={activeTab === "membership"}
-          >
-            {" "}
-            MEMBERSHIP{" "}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item
-            onClick={() => handleTabClick("notification")}
-            active={activeTab === "notification"}
-          >
-            {" "}
-            NOTIFICATION{" "}
-          </Breadcrumb.Item>
-        </Breadcrumb>
+          <Nav.Item>
+            <Nav.Link eventKey="/myaccount">MY ACCOUNT</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="/membership">MEMBERSHIP</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="/notification">NOTIFICATION</Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <br></br>
+        <div className="profile-content-div">
+          {activeKey === "/myaccount" && ( <Account childData={account} />)}
+          {activeKey === "/membership" && <Membership />}
+          {activeKey === "/notification" && <Notification />}
+        </div>
       </div>
-      <hr></hr>
-      <div className="breadcrumb-tabs">
-        {activeTab === "myaccount" && <Account childData={account} />}
-        {activeTab === "membership" && <Membership />}
-        {activeTab === "notification" && <Notification />}
-      </div>
+
       <div className="footer--pin">
         <Footer />
       </div>

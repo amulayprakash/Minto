@@ -63,6 +63,9 @@ export default function MintPass() {
     alignItems: "center",
     justifyContent: "center",
     height: "20vh",
+    width: "100%",
+    paddingLeft: "20rem",
+    paddingRight: "20rem"
   };
 
   async function handleClick() {
@@ -77,51 +80,62 @@ export default function MintPass() {
       console.error(error); // Replace with your desired error handling
     }
   }
+  // console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL + `/uploads/${collection.banner}`)
 
   return (
     <>
       <MyNavbar onData={handleChildData}></MyNavbar>
-      <div style={styles}>{address && <h2>{address}</h2>}</div>
-      <Container>
+      <div style={styles}>
+        <h2 style={{fontWeight:"bold"}}> 
+          CREATOR PASS MINTING PAGE
+        </h2>
+        {/* <h2>
+        Great! You are about to mint an NFT on Minto. Before you proceed, 
+        please note that we offer three different types of passes - Basic, Advanced, and Pro. 
+        Each pass offers varying degrees of access to the features of our Node code NFT creation website.
+        </h2> */}
+      </div>
+      <Container className="pass-cards-outer-div">
         <Row>
           <Col>
-            <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
+            <Card style={{ width: "22rem", marginLeft: "2rem", marginRight: "2rem" }}>
+
+              <Card.Img variant="top" src={ process.env.REACT_APP_PRODUCTION_URL + `/uploads/pass/CREATOR_PASS_BASIC.png`} />
               <Card.Body>
-                <Card.Title>Basic Pass</Card.Title>
+                {/* <Card.Title>Basic Pass</Card.Title> */}
                 <Card.Text>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <Button onClick={handleClick} variant="dark">
-                  Mint Now
+                <Button style={{width: "100%"}} onClick={handleClick} variant="dark" size="lg">
+                MINT BASIC PASS
                 </Button>
               </Card.Body>
             </Card>
           </Col>
           <Col>
-            <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
+            <Card style={{ width: "22rem", marginLeft: "2rem", marginRight: "2rem" }}>
+            <Card.Img variant="top" src={ process.env.REACT_APP_PRODUCTION_URL + `/uploads/pass/CREATOR_PASS_ADVANCED.png`} />
               <Card.Body>
-                <Card.Title>Advanced Pass</Card.Title>
+                {/* <Card.Title>Advanced Pass</Card.Title> */}
                 <Card.Text>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <Button variant="dark">Mint Now</Button>
+                <Button style={{width: "100%"}} variant="dark" size="lg">MINT ADVANCED PASS</Button>
               </Card.Body>
             </Card>
           </Col>
           <Col>
-            <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
+            <Card style={{ width: "22rem", marginLeft: "2rem", marginRight: "2rem" }}>
+            <Card.Img variant="top" src={ process.env.REACT_APP_PRODUCTION_URL + `/uploads/pass/CREATOR_PASS_PRO.png`} />
               <Card.Body>
-                <Card.Title>Pro Pass</Card.Title>
+                {/* <Card.Title>Pro Pass</Card.Title> */}
                 <Card.Text>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <Button variant="dark">Mint Now</Button>
+                <Button style={{width: "100%"}} variant="dark" size="lg">MINT PRO PASS</Button>
               </Card.Body>
             </Card>
           </Col>

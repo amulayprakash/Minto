@@ -19,7 +19,7 @@ export default function Notification() {
     <Container>
     <Row>
       <div className='mint-creator-button'>
-        <Button variant="dark" size="lg">Delete all Notifications</Button><br></br>
+        <Button variant="dark" size="lg">DELETE ALL NOTIFICATIONS</Button><br></br>
       </div>
     </Row>
     <br></br>

@@ -92,9 +92,7 @@ export default function Membership() {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         await provider.send("eth_requestAccounts", []);
 
-        const MaticProvider = new ethers.providers.JsonRpcProvider(
-          "https://rpc-mumbai.maticvigil.com"
-        );
+        const MaticProvider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com");
         const maticSigner = provider.getSigner();
         const maticContract = new ethers.Contract(
           contractAddress,
@@ -143,8 +141,8 @@ export default function Membership() {
       <Container>
         <Row>
           <div className="mint-creator-button">
-            <Button as={Link} to="/pass" variant="dark" size="lg">
-              Mint Creator Pass
+            <Button as={Link}  to="/pass" variant="dark" size="lg">
+              MINT CREATOR PASS
             </Button>
             <br></br>
           </div>
@@ -159,8 +157,8 @@ export default function Membership() {
               <Row className="g-4">
                 {data.map((e, idx) => (
                   <Col>
-                    <Card key={idx} onClick={() => handleCardClick(e)}>
-                      <Card.Img variant="top" src="holder.js/100px160" />
+                    <Card key={idx} onClick={() => handleCardClick(e)} style={{ width: "22rem"}}>
+                    <Card.Img variant="top" src={ process.env.REACT_APP_PRODUCTION_URL + `/uploads/pass/CREATOR_PASS_BASIC.png`} />
                       <Card.Body>
                         <Card.Title>Token ID- {e.tokenID}</Card.Title>
                         <Card.Text>
@@ -185,18 +183,18 @@ export default function Membership() {
                 >
                   <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                      Activate ReignLabs Creator Pass
+                      Activate Minto Creator Pass
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <p>
                       Welcome and gm! If you currently hold a Creator Pass,
                       you'll need to activate it to receive special access on
-                      the ReignLabs platform.
+                      the Minto platform.
                     </p>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button variant="dark" onClick={ActivatePass}>
+                    <Button variant="dark" style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={ActivatePass}>
                       ACTIVATE MY PASS
                     </Button>
                   </Modal.Footer>
@@ -211,18 +209,18 @@ export default function Membership() {
                 >
                   <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                      Deactivate ReignLabs Creator Pass
+                      Deactivate Minto Creator Pass
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <p>
                       Welcome and gm! If you currently hold a Creator Pass,
                       you'll need to activate it to receive special access on
-                      the ReignLabs platform.
+                      the Minto platform.
                     </p>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button variant="dark" onClick={DeactivatePass}>
+                    <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }}   variant="dark" onClick={DeactivatePass}>
                       DEACTIVATE MY PASS
                     </Button>
                   </Modal.Footer>
