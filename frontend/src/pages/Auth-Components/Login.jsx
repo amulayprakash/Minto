@@ -75,6 +75,7 @@ function Login() {
           if (email) generateError(email);
           else if (password) generateError(password);
         } else {
+          console.log("Navigate to dashboard")
           navigate("/dashboard");
         }
       }

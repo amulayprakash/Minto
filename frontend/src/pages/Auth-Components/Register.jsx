@@ -67,8 +67,8 @@ function Register() {
           if (email) generateError(email);
           else if (password) generateError(password);
         } else {
-          console.log("/")
-          navigate("/");
+          console.log("Navigate to login")
+          navigate("/login");
         }
       }
     } catch (ex) {
