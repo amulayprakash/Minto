@@ -35,10 +35,16 @@ function Register() {
     name: "",
     password: "",
   });
+
   const generateError = (error) =>
     toast.error(error, {
       position: "bottom-right",
     });
+
+  const handleChildData = (data) => {
+    console.log(data);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -77,7 +83,7 @@ function Register() {
   };
   return (
     <>
-      <AuthNavbar></AuthNavbar>
+      <AuthNavbar onData={handleChildData}></AuthNavbar>
       <div className="Auth-form-container">
         <form onSubmit={(e) => handleSubmit(e)} className="Auth-form">
           <div className="Auth-form-content">

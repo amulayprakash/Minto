@@ -34,6 +34,10 @@ function Login() {
     password: "",
   });
 
+  const handleChildData = (data) => {
+    console.log(data);
+  };
+
   const generateError = (error) =>
     toast.error(error, {
       position: "bottom-right",
@@ -85,7 +89,7 @@ function Login() {
   };
   return (
     <>
-      <AuthNavbar></AuthNavbar>
+      <AuthNavbar onData={handleChildData}></AuthNavbar>
       <div className="Auth-form-container">
         <form onSubmit={(e) => handleSubmit(e)} className="Auth-form">
           <div className="Auth-form-content">
