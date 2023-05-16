@@ -235,8 +235,8 @@ export default function Detail() {
 
   const handleViewPublicMintPage = (e) => {
     e.preventDefault();
-    window.location.reload(false);
     window.open(`/collection/public-mint/${id}`, "_blank");
+    window.location.reload(false);
     handleModal5Close();
   };
 
