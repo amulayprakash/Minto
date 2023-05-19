@@ -38,11 +38,11 @@ const collectionSchema = new mongoose.Schema({
   }, 
   image:{
     type: String,
-    default: "../uploads/image-1680386360842.jpg",
+    default: "image-1680386360842.jpg",
   },
   banner:{
     type: String,
-    default: "../uploads/banner-1682264113383.png",
+    default: "banner-1683577537427.jpg",
   }, 
   preRevealImage:{
     type: String,
@@ -86,8 +86,8 @@ const collectionSchema = new mongoose.Schema({
   },
   network: {
     type: String,
-    enum: ['Ethereum Mainnet','Polygon Mainnet','Arbitrum'],
-    default: 'Ethereum Mainnet'
+    enum: ['Polygon Testnet','Ethereum Mainnet','Polygon Mainnet','Arbitrum'],
+    default: 'Polygon Testnet'
   }
 });
 

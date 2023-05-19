@@ -153,6 +153,8 @@ export default function Membership() {
           <div className="mint-creator-button">
             {isLoading ? (
               <div>Loading...</div>
+            ) : data.length === 0 ? (
+              <p> No Passes Found! </p>
             ) : (
               <Row className="g-4">
                 {data.map((e, idx) => (

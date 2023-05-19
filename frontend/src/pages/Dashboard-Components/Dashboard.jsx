@@ -6,6 +6,8 @@ import axios from "axios";
 import "../../index.css";
 import { toast, ToastContainer } from "react-toastify";
 import Container from "react-bootstrap/Container";
+import { OverlayTrigger, Popover } from "react-bootstrap";  
+
 // import Dropdown from 'react-bootstrap/Dropdown';
 import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
@@ -61,8 +63,8 @@ export default function Dashboard() {
   useEffect(() => {
     // console.log("sdsdsdsds");
 
-    console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL);
-    console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL + `/${localStorage.getItem("MINTO-imageURL").replace(/['"]+/g, "")}`);
+    // console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL);
+    // console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL + `/${localStorage.getItem("MINTO-imageURL").replace(/['"]+/g, "")}`);
     // console.log(localStorage.getItem("MINTO-imageURL"));
     return () => {
       setShowFirstModal(false);
@@ -80,10 +82,10 @@ export default function Dashboard() {
 
       setImage("");
       setBanner("");
-      setSelectedOption("Ethereum Mainnet");
+      setSelectedOption("Polygon Testnet");
     };
   }, []);
-  const [selectedOption, setSelectedOption] = useState("Ethereum Mainnet");
+  const [selectedOption, setSelectedOption] = useState("Polygon Testnet");
 
   const handleSelect = (eventKey) => {
     setSelectedOption(eventKey);
@@ -155,6 +157,9 @@ export default function Dashboard() {
     localStorage.setItem(PREFIX + "imageURL", JSON.stringify(data.user.photo));
   };
 
+  const handleReveneSplitCreate =()=>{
+
+  }
   const styles1 = {
     display: "flex",
     alignItems: "center",
@@ -299,9 +304,9 @@ export default function Dashboard() {
         </Nav>
         <br></br>
         <div className="profile-content-div">
-          {activeKey === "/collections" && ( <Collections />)}
+          {activeKey === "/collections" && ( <Collections onButtonClick={handleFirstModalShow}/>)}
           {activeKey === "/mypass" && <MyPass />}
-          {activeKey === "/revenvesplit" && <RevenveSplit />}
+          {activeKey === "/revenvesplit" && <RevenveSplit onButtonClick={handleReveneSplitCreate}/>}
         </div>
       </div>
 
@@ -383,25 +388,30 @@ export default function Dashboard() {
           <Form className="form-class">
             <Form.Group controlId="formDropdown">
               <br></br>
-              <Form.Label>Network</Form.Label>
+              <Form.Label>Network *</Form.Label>
               <Dropdown onSelect={handleSelect}>
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                  {selectedOption || "Ethereum Mainnet"}
+                  {selectedOption || "Polygon Testnet"}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item eventKey="Ethereum Mainnet">
+                  <Dropdown.Item eventKey="Polygon Testnet" >
+                    Polygon Testnet
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="Ethereum Mainnet" disabled>
                     Ethereum Mainnet
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="Polygon Mainnet">
+                  <Dropdown.Item eventKey="Polygon Mainnet" disabled>
                     Polygon Mainnet
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="Arbitrum">Arbitrum</Dropdown.Item>
+                  <Dropdown.Item eventKey="Arbitrum" disabled>
+                    Arbitrum
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasic">
               <br></br>
-              <Form.Label>Contract Name</Form.Label>
+              <Form.Label>Contract Name *</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Minto Collection"
@@ -410,7 +420,7 @@ export default function Dashboard() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Contract Symbol</Form.Label>
+              <Form.Label>Contract Symbol *</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="MCL"
@@ -484,28 +494,73 @@ export default function Dashboard() {
           Please define your collection revenue address and royalty percentage.
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Wallet address to receive primary sales</Form.Label>
+              <Form.Label>Wallet address to receive primary sales *</Form.Label>
+              <div style={{display: "flex"}}>
               <Form.Control
                 type="text"
-                placeholder="0xB9e76B08227E88D7066d35E9E4355e724dA8030e"
+                placeholder={localStorage.getItem("REIGNKIT-address")==null ? 0x0 : localStorage.getItem("REIGNKIT-address").replace(/['"]+/g, "")}
                 value={primary}
                 onChange={(event) => setPrimary(event.target.value)}
+                style={{width:"90%"}}
               />
+              <OverlayTrigger
+                trigger="click"
+                placement="bottom"
+                overlay={
+                  <Popover id="popover-basic">
+                  <Popover.Header as="h3">Create Revenve Split </Popover.Header>
+                  <Popover.Body> Add Recipients . Set Split Amount
+                  </Popover.Body>
+                  </Popover>
+                }
+              >
+              <Form.Control
+                type="button"
+                value="<>"
+                // onChange={(event) => setPrimary(event.target.value)}
+                // onClick
+                style={{width:"10%"}}
+              />
+              </OverlayTrigger>
+              </div>
             </Form.Group>
+            
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Wallet address to receive secondary sales</Form.Label>
+              <Form.Label>Wallet address to receive secondary sales *</Form.Label>
+              <div style={{display: "flex"}}>
               <Form.Control
                 type="text"
-                placeholder="0x80dCC025a1A8D821e87a310d57feD12A18C25F00"
+                placeholder={localStorage.getItem("REIGNKIT-address")==null ? 0x0 : localStorage.getItem("REIGNKIT-address").replace(/['"]+/g, "")}
                 value={secondary}
                 onChange={(event) => setSecondary(event.target.value)}
+                style={{width:"90%"}}
               />
+              <OverlayTrigger
+                trigger="click"
+                placement="bottom"
+                overlay={
+                  <Popover id="popover-basic">
+                  <Popover.Header as="h3">Create Revenve Split</Popover.Header>
+                  <Popover.Body> Add Recipients . Set Split Amount
+                  </Popover.Body>
+                  </Popover>
+                }
+              >
+              <Form.Control
+                type="button"
+                value="<>"
+                // onChange={(event) => setPrimary(event.target.value)}
+                // onClick
+                style={{width:"10%"}}
+              />
+              </OverlayTrigger>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Secondary sale royalty percentage</Form.Label>
+              <Form.Label>Secondary sale royalty percentage  *</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="3%"
+                placeholder="5%"
                 value={rpercent}
                 onChange={(event) => setRpercent(event.target.value)}
                 required

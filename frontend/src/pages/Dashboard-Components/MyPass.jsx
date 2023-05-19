@@ -139,9 +139,14 @@ export default function MyPass(props) {
       {isLoading ? (
         <div> Loading...</div>
       ) : data === 0 ? (
-        <Button size="lg" as={Link} to="/profile" variant="dark">
-          Activate Your Pass
+        <>
+        <Button size="lg" as={Link} to="/profile" variant="dark" style={{marginRight:"1rem"}}>
+          ACTIVATE YOUR PASS
         </Button>
+        <Button as={Link}  to="/pass" variant="dark" size="lg" style={{marginLeft:"1rem"}}>
+          MINT CREATOR PASS
+        </Button>
+        </>
       ) : (
         <>
           {/* <div>{data}</div> */}

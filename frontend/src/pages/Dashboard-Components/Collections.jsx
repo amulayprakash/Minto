@@ -8,7 +8,7 @@ import axios from "axios";
 import Cards from "./Cards";
 import "../../index.css";
 
-export default function Collections() {
+export default function Collections(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [collections, setCollections] = useState(null);
 
@@ -47,7 +47,7 @@ export default function Collections() {
         {isLoading ? (
           <div>Loading...</div>
         ) : collections.length === 0 ? (
-          <p> No Collection Found </p>
+          <p> No Collection Found - <span className="create-collection-span" onClick={props.onButtonClick}><i><u>Create Collection</u></i></span></p>
         ) : (
           <>
             {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

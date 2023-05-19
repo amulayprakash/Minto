@@ -93,9 +93,6 @@ label {
   color: rgb(34, 34, 34);
 }
 
-/* .nav-link{
-  color: white !important;
-} */
 
 .profile-image{
   height: 150px;
@@ -326,16 +323,9 @@ label {
 .detail-collection-name{
   font-weight: 1000;
 }
-/* .nav-link{ */
-  /* color: black !important; */
-/* } */
 
 .nav-link.active {
   border-bottom: 2px solid black;
-}
-
-.nav-link:hover {
-  color: black;
 }
 
 .overview-card{
@@ -379,4 +369,12 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.special-nav-link {
+  color: white !important;
+}
+
+.create-collection-span{
+  cursor: pointer;
 }

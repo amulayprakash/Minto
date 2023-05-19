@@ -187,7 +187,7 @@ export default function Drop({ collection }) {
             <th>Reveal Status</th>
             <th>Mint Status</th>
           </tr>
-          <tr>
+          {/* <tr>
             <th></th>
             <th>Pre-Reveal (N/A)</th>
             <th>
@@ -239,7 +239,7 @@ export default function Drop({ collection }) {
             </th>
             <th>N/A</th>
             <th>N/A</th>
-          </tr>
+          </tr> */}
         </thead>
         <tbody>
           {/* <tr>

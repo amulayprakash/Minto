@@ -122,7 +122,7 @@ export default function MintPass() {
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <Button style={{width: "100%"}} variant="dark" size="lg">MINT ADVANCED PASS</Button>
+                <Button style={{width: "100%"}} variant="dark" size="lg" disabled>MINT ADVANCED PASS</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -135,7 +135,7 @@ export default function MintPass() {
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <Button style={{width: "100%"}} variant="dark" size="lg">MINT PRO PASS</Button>
+                <Button style={{width: "100%"}} variant="dark" size="lg" disabled>MINT PRO PASS</Button>
               </Card.Body>
             </Card>
           </Col>

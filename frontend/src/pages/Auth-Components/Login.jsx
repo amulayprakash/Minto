@@ -90,6 +90,18 @@ function Login() {
   return (
     <>
       <AuthNavbar onData={handleChildData}></AuthNavbar>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="Auth-form-container">
         <form onSubmit={(e) => handleSubmit(e)} className="Auth-form">
           <div className="Auth-form-content">

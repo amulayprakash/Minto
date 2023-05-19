@@ -158,8 +158,8 @@ app.post( "/api/createCollection", upload.fields([
       primary: primary,
       secondary: secondary,
       rpercent: rpercent,
-      image: req.files["image"][0].filename,
-      banner: req.files["banner"][0].filename,
+      image: req.files["image"]==undefined?"image-1680386360842.jpg":req.files["image"][0].filename,
+      banner: req.files["banner"]==undefined?"banner-1683577537427.jpg":req.files["banner"][0].filename,
       description: description,
       network: network,
     });

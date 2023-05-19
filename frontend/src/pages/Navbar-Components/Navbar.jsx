@@ -6,10 +6,13 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { ethers } from "ethers";
+import { OverlayTrigger, Popover } from "react-bootstrap";  
+// import Popover from 'react-bootstrap/Popover';
+
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import "../../index.css";
-import logo from "../../assets/ReignLabsLogo.png";
+import logo from "../../assets/LogoMinto.png";
 const PREFIX = "REIGNKIT-";
 
 function MyNavbar(props) {
@@ -112,13 +115,13 @@ function MyNavbar(props) {
         </Navbar.Brand> */}
         <Container>
           <Navbar.Brand as={Link} to="/dashboard">
-            {/* <img
+            <img
               alt=""
               src={logo}
               width="35"
               height="35"
               className="d-inline-block align-top"
-            />{' '} */}
+            />{' '}
             Minto
           </Navbar.Brand>
         </Container>
@@ -127,10 +130,10 @@ function MyNavbar(props) {
           <Nav className="me-auto">
             {/* <Nav.Link as={Link} to="/login">Login</Nav.Link> */}
             {/* <Nav.Link as={Link} to="/register">Signup</Nav.Link> */}
-            <Nav.Link as={Link} to="/profile">
+            <Nav.Link className="special-nav-link" as={Link} to="/profile">
               Profile
             </Nav.Link>
-            <Nav.Link onClick={logOut}>Logout</Nav.Link>
+            <Nav.Link className="special-nav-link" onClick={logOut}>Logout</Nav.Link>
             {/*             
             <NavDropdown title="Profile" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/dashboard">Home</NavDropdown.Item>
@@ -148,9 +151,19 @@ function MyNavbar(props) {
                 Connect
               </Button>
             ) : (
-              <Nav.Link as={Link} to="/">
-                {address}
+              <OverlayTrigger
+              trigger="click"
+              placement="bottom"
+              overlay={
+                <Popover id="popover-basic">
+                <Popover.Header as="h3">{address}</Popover.Header>
+              </Popover>
+              }
+            >
+              <Nav.Link className="special-nav-link">
+                {address.substring(0,4)+"..."}
               </Nav.Link>
+              </OverlayTrigger>
             )}
           </Nav>
         </Navbar.Collapse>

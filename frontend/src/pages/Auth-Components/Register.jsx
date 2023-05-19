@@ -65,7 +65,7 @@ function Register() {
       localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
       localStorage.setItem(PREFIX + "username",JSON.stringify(data.user.username));
       localStorage.setItem(PREFIX + "imageURL",JSON.stringify(data.user.photo));
-
+      
       if (data) {
         if (data.errors) {
           console.log("data.errors")
@@ -74,6 +74,7 @@ function Register() {
           else if (password) generateError(password);
         } else {
           console.log("Navigate to login")
+          alert("Registered successfully! Now you can login.");
           navigate("/login");
         }
       }
@@ -84,6 +85,7 @@ function Register() {
   return (
     <>
       <AuthNavbar onData={handleChildData}></AuthNavbar>
+
       <div className="Auth-form-container">
         <form onSubmit={(e) => handleSubmit(e)} className="Auth-form">
           <div className="Auth-form-content">
