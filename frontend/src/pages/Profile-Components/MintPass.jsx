@@ -104,11 +104,21 @@ export default function MintPass() {
               <Card.Body>
                 {/* <Card.Title>Basic Pass</Card.Title> */}
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                Best for those getting started and learning smart contracts and NFTs.
+                <ul>
+                  <li>
+                  5% primary sales fees
+                  </li>
+                  <li>
+                  Basic Support (48 hours)
+                  </li>
+                </ul>
                 </Card.Text>
-                <Button style={{width: "100%"}} onClick={handleClick} variant="dark" size="lg">
-                MINT BASIC PASS
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleClick} variant="dark" size="lg">
+                BUY WITH CRYPTO
+                </Button> <br></br>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleClick} variant="dark" size="lg" disabled>
+                BUY WITH CREDIT CARD
                 </Button>
               </Card.Body>
             </Card>
@@ -119,10 +129,22 @@ export default function MintPass() {
               <Card.Body>
                 {/* <Card.Title>Advanced Pass</Card.Title> */}
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                Best for creators who want more flexibility over their NFT projects.
+                <ul>
+                  <li>
+                  2.5% primary sales fees
+                  </li>
+                  <li>
+                  priority Support (24 hours)
+                  </li>
+                </ul>
                 </Card.Text>
-                <Button style={{width: "100%"}} variant="dark" size="lg" disabled>MINT ADVANCED PASS</Button>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleClick} variant="dark" size="lg" disabled>
+                BUY WITH CRYPTO
+                </Button> <br></br>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleClick} variant="dark" size="lg" disabled>
+                BUY WITH CREDIT CARD
+                </Button>
               </Card.Body>
             </Card>
           </Col>
@@ -132,11 +154,23 @@ export default function MintPass() {
               <Card.Body>
                 {/* <Card.Title>Pro Pass</Card.Title> */}
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                Best for creators who want more flexibility over their NFT projects.
+                <ul>
+                  <li>
+                  0% primary sales fees
+                  </li>
+                  <li>
+                  priority Support (48 hours)
+                  </li>
+                </ul>
                 </Card.Text>
-                <Button style={{width: "100%"}} variant="dark" size="lg" disabled>MINT PRO PASS</Button>
-              </Card.Body>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleClick} variant="dark" size="lg" disabled>
+                BUY WITH CRYPTO
+                </Button> <br></br>
+                <Button style={{ display: "block", width: "100%", boxSizing: "border-box", }} onClick={handleClick} variant="dark" size="lg" disabled>
+                BUY WITH CREDIT CARD
+                </Button>
+                </Card.Body>
             </Card>
           </Col>
         </Row>
