@@ -6,7 +6,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { ethers } from "ethers";
-import { OverlayTrigger, Popover } from "react-bootstrap";  
+import { OverlayTrigger, Popover } from "react-bootstrap";
 // import Popover from 'react-bootstrap/Popover';
 
 import axios from "axios";
@@ -95,7 +95,7 @@ function MyNavbar(props) {
 
   const logOut = () => {
     removeCookie("jwt");
-    console.log("Logout called")
+    console.log("Logout called");
     // navigate("/dashboard");
     window.location.reload();
   };
@@ -114,15 +114,17 @@ function MyNavbar(props) {
 
         </Navbar.Brand> */}
         <Container>
-          <Navbar.Brand as={Link} to="/dashboard">
-            <img
-              alt=""
-              src={logo}
-              width="35"
-              height="35"
-              className="d-inline-block align-top"
-            />{' '}
-            minto
+          <Navbar.Brand className="ali" as={Link} to="/dashboard">
+            <div className="align">
+              <img
+                alt=""
+                src={logo}
+                width="35"
+                height="35"
+                className="d-inline-block align-top"
+              />{" "}
+              minto
+            </div>
           </Navbar.Brand>
         </Container>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -133,7 +135,9 @@ function MyNavbar(props) {
             <Nav.Link className="special-nav-link" as={Link} to="/profile">
               Profile
             </Nav.Link>
-            <Nav.Link className="special-nav-link" onClick={logOut}>Logout</Nav.Link>
+            <Nav.Link className="special-nav-link" onClick={logOut}>
+              Logout
+            </Nav.Link>
             {/*             
             <NavDropdown title="Profile" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/dashboard">Home</NavDropdown.Item>
@@ -152,17 +156,17 @@ function MyNavbar(props) {
               </Button>
             ) : (
               <OverlayTrigger
-              trigger="click"
-              placement="bottom"
-              overlay={
-                <Popover id="popover-basic">
-                <Popover.Header as="h3">{address}</Popover.Header>
-              </Popover>
-              }
-            >
-              <Nav.Link className="special-nav-link">
-                {address.substring(0,4)+"..."}
-              </Nav.Link>
+                trigger="click"
+                placement="bottom"
+                overlay={
+                  <Popover id="popover-basic">
+                    <Popover.Header as="h3">{address}</Popover.Header>
+                  </Popover>
+                }
+              >
+                <Nav.Link className="special-nav-link">
+                  {address.substring(0, 4) + "..."}
+                </Nav.Link>
               </OverlayTrigger>
             )}
           </Nav>

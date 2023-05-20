@@ -9,8 +9,8 @@ import { ethers } from "ethers";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import "../../index.css";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";  
-import Popover from 'react-bootstrap/Popover';
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import Popover from "react-bootstrap/Popover";
 
 import logo from "../../assets/LogoMinto.png";
 const PREFIX = "REIGNKIT-";
@@ -96,15 +96,17 @@ function AuthNavbar(props) {
     >
       <Container>
         <Container>
-          <Navbar.Brand as={Link} to="/dashboard">
-            <img
-              alt=""
-              src={logo}
-              width="35"
-              height="35"
-              className="d-inline-block align-top"
-            />{' '}
-            minto
+          <Navbar.Brand className="ali" as={Link} to="/dashboard">
+            <div className="align">
+              <img
+                alt=""
+                src={logo}
+                width="35"
+                height="35"
+                className="d-inline-block align-top"
+              />{" "}
+              minto
+            </div>
           </Navbar.Brand>
         </Container>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -134,17 +136,17 @@ function AuthNavbar(props) {
               </Button>
             ) : (
               <OverlayTrigger
-              trigger="click"
-              placement="bottom"
-              overlay={
-                <Popover id="popover-basic">
-                <Popover.Header as="h3">{address}</Popover.Header>
-              </Popover>
-              }
-            >
-              <Nav.Link className="special-nav-link">
-                {address.substring(0,4)+"..."}
-              </Nav.Link>
+                trigger="click"
+                placement="bottom"
+                overlay={
+                  <Popover id="popover-basic">
+                    <Popover.Header as="h3">{address}</Popover.Header>
+                  </Popover>
+                }
+              >
+                <Nav.Link className="special-nav-link">
+                  {address.substring(0, 4) + "..."}
+                </Nav.Link>
               </OverlayTrigger>
             )}
           </Nav>
