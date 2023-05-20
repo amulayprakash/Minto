@@ -1,3 +1,13 @@
+.align {
+  display: flex;
+  align-items: center;
+}
+.align img {
+  margin-right: 10px;
+}
+.ali {
+  display: flex;
+}
 .container {
   width: 100%;
   overflow: hidden;
@@ -10,13 +20,13 @@
   float: left;
 }
 
-.breadcrumb-div{
+.breadcrumb-div {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.breadcrumb-tabs{
+.breadcrumb-tabs {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,29 +36,29 @@
   min-height: 160vh;
 }
 
-.footer--pin{
+.footer--pin {
   position: relative;
   left: 0;
   bottom: 0;
   top: 90vh;
 }
 
-.mint-creator-button{
+.mint-creator-button {
   margin-top: 3 0px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.form-class{
+.form-class {
   width: 70vh;
 }
 
-.save-changes-btn{
+.save-changes-btn {
   width: inherit;
 }
 
-.table-div{
+.table-div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,24 +103,23 @@ label {
   color: rgb(34, 34, 34);
 }
 
-
-.profile-image{
+.profile-image {
   height: 150px;
   width: 150px;
   border-radius: 50%;
 }
 
-.collection-image{
+.collection-image {
   height: 150px;
   width: 150px;
   border-radius: 50%;
 }
 
-.dropdown-container{
+.dropdown-container {
   border: 2px solid;
 }
 
-.modal-content{
+.modal-content {
   width: 90%;
 }
 
@@ -123,42 +132,38 @@ label {
   overflow: hidden;
 }
 
-.modal-content{
-  width:400 !important;
+.modal-content {
+  width: 400 !important;
 }
 
-.outer-div{
+.outer-div {
   display: flex;
 }
-.inner-left-div{
+.inner-left-div {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.inner-rigth-div{
+.inner-rigth-div {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.cards-div{
+.cards-div {
   /* display: flex; */
   justify-content: center;
 }
-.login-name{
+.login-name {
   font-size: 2rem;
   font-weight: bold;
 }
 
-.collection-container{
+.collection-container {
   margin-top: 30px;
 }
-
-
-
-
 
 .tempcard-card {
   width: 600px;
@@ -170,8 +175,8 @@ label {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.tempcard-card:hover{
-  background-color:rgb(247, 244, 244)
+.tempcard-card:hover {
+  background-color: rgb(247, 244, 244);
 }
 
 .tempcard-banner {
@@ -201,7 +206,6 @@ label {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  
 }
 
 .tempcard-dropdown {
@@ -220,7 +224,6 @@ label {
   opacity: 1;
   visibility: visible;
 }
-
 
 .tempcard-dropdown ul {
   list-style: none;
@@ -260,7 +263,7 @@ label {
 
 .tempcard-heading {
   font-size: 30px;
-  font-weight:1000;
+  font-weight: 1000;
   text-align: center;
 }
 
@@ -269,18 +272,18 @@ label {
   text-align: center;
 }
 
-.MuiBox-root{
+.MuiBox-root {
   min-height: 60vh;
   padding: 0 17% !important;
   /* text-align: center; */
 }
-.profile-content-div{
+.profile-content-div {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.detail-banner{
+.detail-banner {
   position: relative;
 }
 
@@ -296,7 +299,7 @@ label {
   z-index: 1;
 }
 
-.detail-image-div{
+.detail-image-div {
   padding: 0 17% !important;
   position: absolute;
   top: 50vh;
@@ -304,7 +307,7 @@ label {
   z-index: 2;
 }
 
-.detail-image{
+.detail-image {
   height: 150px;
   width: 150px;
   border-radius: 15%;
@@ -312,7 +315,7 @@ label {
   border: 5px solid white;
 }
 
-.detail-deploy-button{  
+.detail-deploy-button {
   margin-top: 10px;
   padding: 0 17% 10px !important;
   /* display: flex; */
@@ -320,7 +323,7 @@ label {
   text-align: right;
 }
 
-.detail-collection-name{
+.detail-collection-name {
   font-weight: 1000;
 }
 
@@ -328,7 +331,7 @@ label {
   border-bottom: 2px solid black;
 }
 
-.overview-card{
+.overview-card {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -336,11 +339,11 @@ label {
   border-radius:0%;
 } */
 
-.modal-header{
+.modal-header {
   border-bottom: 0cm;
 }
 
-.modal-footer{
+.modal-footer {
   border-top: 0cm;
 }
 
@@ -359,13 +362,12 @@ footer {
   margin-top: auto;
 }
 
-
-.public-mint-footer{
+.public-mint-footer {
   color: white;
   background-color: black;
 }
 
-.pass-cards-outer-div{
+.pass-cards-outer-div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -375,6 +377,6 @@ footer {
   color: white !important;
 }
 
-.create-collection-span{
+.create-collection-span {
   cursor: pointer;
 }
