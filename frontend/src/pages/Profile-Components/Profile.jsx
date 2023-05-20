@@ -8,6 +8,8 @@ import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Account from "./Account";
+import {Container, Row, Col, Button} from "react-bootstrap";
+
 import Membership from "./Membership";
 import Notification from "./Notification";
 import Footer from "../Footer-Components/Footer";
@@ -67,7 +69,7 @@ export default function Profile() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "25vh",
+    height: "20vh",
   };
   const styles2 = {
     display: "flex",
@@ -78,15 +80,32 @@ export default function Profile() {
   return (
     <>
       <MyNavbar onData={handleChildData}></MyNavbar>
-      <div>
+      <Container>
+        <Row>
+          <Col style={styles1}>
+          </Col>
+          <Col xs={6} style={styles1}>
+            <img className="profile-image" src={process.env.REACT_APP_PRODUCTION_URL + `/${account.photo}`}/>
+          </Col>
+          <Col style={styles1}>
+           <Button as={Link}  to="/dashboard" variant="outline-dark" size="md">
+              {"<- BACK TO DASHBOARD"}
+            </Button>
+          </Col>
+        </Row> 
+        <Row>
+          <Col style={styles2}>
+            <h2>{account.username}</h2>
+          </Col>
+        </Row>
+      </Container>
+      {/* <div>
         <div style={styles1}>
-          <img className="profile-image" src={process.env.REACT_APP_PRODUCTION_URL + `/${account.photo}`}/>
 
         </div>
         <div style={styles2}>
-          <h2>{account.username}</h2>
         </div>
-      </div>
+      </div> */}
       <div className="MuiBox-root">
         <Nav
           fill
