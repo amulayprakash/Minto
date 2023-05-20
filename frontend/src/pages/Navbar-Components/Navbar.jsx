@@ -122,7 +122,7 @@ function MyNavbar(props) {
               height="35"
               className="d-inline-block align-top"
             />{' '}
-            Minto
+            minto
           </Navbar.Brand>
         </Container>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
