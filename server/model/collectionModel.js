@@ -46,6 +46,7 @@ const collectionSchema = new mongoose.Schema({
   }, 
   preRevealImage:{
     type: String,
+    default: "preRevealImage-1683616185834.gif",
   }, 
   description: {
     type: String,
@@ -74,11 +75,11 @@ const collectionSchema = new mongoose.Schema({
   },
   preRevealName:{
     type:String,
-    default:""
+    default:"Collection Name"
   },
   preRevealDescription:{
     type:String,
-    default:""
+    default:"Collection Description"
   },
   waitlistlive:{
     type:Boolean,
