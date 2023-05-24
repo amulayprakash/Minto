@@ -11,6 +11,7 @@ import { ethers } from "ethers";
 import DropCollection from "../../artifacts/contracts/DropCollection.sol/DropCollection.json";
 import Overview from "./Overview";
 import Members from "./Members";
+import maticlogo from "../../assets/polygon-matic-logo.png";
 import Form from "react-bootstrap/Form";
 import Drop from "./Drop";
 import Waitlist from "./Waitlist";
@@ -408,18 +409,35 @@ export default function Detail() {
                     className="create-dropdown"
                     onClick={handlePrepareDropClick}
                     size="md"
-                    variant="light"
+                    variant="dark"
+                    style={{marginRight:"1.5rem"}}
                   >
                     PREPARE DROP
                   </Button>
                   <Button
+                    className="create-dropdown"
+                    // onClick={handlePrepareDropClick}
+                    as={Link}  
+                    to={`https://mumbai.polygonscan.com/address/${collection.deployedAddress}`}
+                    size="sm"
+                    variant="light"
+                  >
+                    <img
+                      alt=""
+                      src={maticlogo}
+                      width="25"
+                      height="25"
+                      className="d-inline-block align-top"
+                    />
+                  </Button>
+                  {/* <Button
                     className="create-dropdown"
                     onClick={handleButtonClick}
                     size="md"
                     variant="light"
                   >
                     WITHDRAW
-                  </Button>
+                  </Button> */}
                 </>
               ) : (
                 <Button
@@ -452,29 +470,29 @@ export default function Detail() {
                 <Nav.Item>
                   <Nav.Link eventKey="/overview">OVERVIEW</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                {/* <Nav.Item>
                   <Nav.Link eventKey="/members">MEMBERS</Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
                 <Nav.Item>
                   <Nav.Link eventKey="/drop">DROP</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="/waitlist">WAITLIST</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                {/* <Nav.Item>
                   <Nav.Link eventKey="/tokenaccess">TOKEN ACCESS</Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
               </Nav>
               <br></br>
               {activeKey === "/overview" && (
                 <Overview collection={collection} />
               )}
-              {activeKey === "/members" && <Members />}
+              {/* {activeKey === "/members" && <Members />} */}
               {activeKey === "/drop" && <Drop collection={collection} />}
               {activeKey === "/waitlist" && (
                 <Waitlist collection={collection} />
               )}
-              {activeKey === "/tokenaccess" && <TokenAccess />}
+              {/* {activeKey === "/tokenaccess" && <TokenAccess />} */}
             </div>
 
             <Modal

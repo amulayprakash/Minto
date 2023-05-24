@@ -99,6 +99,13 @@ function MyNavbar(props) {
     // navigate("/dashboard");
     window.location.reload();
   };
+  
+  function extractLetters(string) {    
+    var firstFour = string.substring(0, 4);
+    var lastFour = string.substring(string.length - 4);
+    
+    return  firstFour + "..." + lastFour;
+  }
 
   return (
     <Navbar
@@ -165,7 +172,7 @@ function MyNavbar(props) {
                 }
               >
                 <Nav.Link className="special-nav-link">
-                  {address.substring(0, 4) + "..."}
+                  {extractLetters(address)}
                 </Nav.Link>
               </OverlayTrigger>
             )}
