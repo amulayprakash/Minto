@@ -265,23 +265,9 @@ export default function Drop({ collection }) {
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
-          disabled
+          onClick={handleButton4Click}
         >
           REVEAL
-        </Button>
-        <Button
-          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
-          variant="outline-dark"
-          disabled
-        >
-          CSV EXPORT
-        </Button>
-        <Button
-          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
-          variant="outline-dark"
-          disabled
-        >
-          DELETE
         </Button>
       </div>
       <br></br>
