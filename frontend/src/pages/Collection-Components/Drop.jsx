@@ -56,6 +56,7 @@ export default function Drop({ collection }) {
   const [values, setValues] = useState([]);
 
   const [inpFile, setInpFile] = useState(null);
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
     const run = async () => {
@@ -71,7 +72,7 @@ export default function Drop({ collection }) {
     };
 
     run();
-  }, []);
+  }, [trigger]);
 
   console.log(revealArray);
 
@@ -238,8 +239,9 @@ export default function Drop({ collection }) {
         },
         { withCredentials: true }
       );
+      setTrigger((curr) => !curr);
 
-      console.log(data);
+      handleModal4Close();
     } catch (err) {
       console.log(err);
       toast(err?.message || "Something went wrong!");
