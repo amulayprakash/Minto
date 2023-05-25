@@ -7,6 +7,8 @@ import "../../index.css";
 import { toast, ToastContainer } from "react-toastify";
 import Container from "react-bootstrap/Container";
 import { OverlayTrigger, Popover } from "react-bootstrap";  
+import logo from "../../assets/LogoMinto.png";
+
 
 // import Dropdown from 'react-bootstrap/Dropdown';
 import Row from "react-bootstrap/Row";
@@ -32,40 +34,87 @@ export default function Dashboard() {
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [showThirdModal, setShowThirdModal] = useState(false);
   const [showFourthModal, setShowFourthModal] = useState(false);
+  
+  ////////////////////////////
+  const [showFirstModalRevenueSplit, setShowFirstModalRevenueSplit] = useState(false);
+  const [showSecondModalRevenueSplit, setShowSecondModalRevenueSplit] = useState(false);
+  const [showThirdModalRevenueSplit, setShowThirdModalRevenueSplit] = useState(false);
 
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
   const [url, setUrl] = useState("");
-
-  const [primary, setPrimary] = useState("");
-  const [secondary, setSecondary] = useState("");
-  const [rpercent, setRpercent] = useState("");
+  
+  const [primary, setPrimary] = useState(localStorage.getItem("REIGNKIT-address")==null ? 0x0 : localStorage.getItem("REIGNKIT-address").replace(/['"]+/g, ""));
+  const [secondary, setSecondary] = useState(localStorage.getItem("REIGNKIT-address")==null ? 0x0 : localStorage.getItem("REIGNKIT-address").replace(/['"]+/g, ""));
+  const [rpercent, setRpercent] = useState("5");
 
   const [image, setImage] = useState("");
   const [banner, setBanner] = useState("");
   const [description, setDescription] = useState("");
+  
+  ////////////////////////////
 
+  const [nameRevenueSplit, setNameRevenueSplit] = useState("");
   const handleFirstModalClose = () => setShowFirstModal(false);
   const handleFirstModalShow = () => setShowFirstModal(true);
+
   const handleSecondModalClose = () => setShowSecondModal(false);
   const handleSecondModalShow = () => setShowSecondModal(true);
+  
   const handleThirdModalClose = () => setShowThirdModal(false);
   const handleThirdModalShow = () => setShowThirdModal(true);
+  
   const handleFourthModalClose = () => setShowFourthModal(false);
   const handleFourthModalShow = () => setShowFourthModal(true);
+
+  ///////////////////////////
+  const handleFirstModalRevenueSplitClose = () => setShowFirstModalRevenueSplit(false);
+  const handleFirstModalRevenueSplitShow = () => setShowFirstModalRevenueSplit(true);
+
+  const handleSecondModalRevenueSplitClose = () => setShowSecondModalRevenueSplit(false);
+  const handleSecondModalRevenueSplitShow = () => setShowSecondModalRevenueSplit(true);
   
+  const handleThirdModalRevenueSplitClose = () => setShowThirdModalRevenueSplit(false);
+  const handleThirdModalRevenueSplitShow = () => setShowThirdModalRevenueSplit(true);
+
   const [activeKey, setActiveKey] = useState("/collections");
+  const [fields, setFields] = useState([{ address: '', split: '' }]);
+
   const handleSelectKey = (selectedKey) => {
     setActiveKey(selectedKey);
   };
 
+  const handleFieldChange = (index, fieldName, value) => {
+    const updatedFields = [...fields];
+    updatedFields[index][fieldName] = value;
+    setFields(updatedFields);
+  };
+
+  const handleAddField = () => {
+    const lastField = fields[fields.length - 1];
+    if (lastField.name !== '' && lastField.quantity !== 0) {
+      setFields([...fields, { address: '', split: '' }]);
+    }
+  };
+
+  const handleDeleteField = (index) => {
+    if (fields.length === 1) return;
+    const updatedFields = [...fields];
+    updatedFields.splice(index, 1);
+    setFields(updatedFields);
+  };
+
+  const handleRevenueSplitFormSubmit = (event) => {
+    console.log("Hello");
+    event.preventDefault();
+    console.log(fields);
+    console.log(selectedOptionRevenueSplit);
+    console.log(nameRevenueSplit);
+  };
+
 
   useEffect(() => {
-    // console.log("sdsdsdsds");
 
-    // console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL);
-    // console.log("Called from card",process.env.REACT_APP_PRODUCTION_URL + `/${localStorage.getItem("MINTO-imageURL").replace(/['"]+/g, "")}`);
-    // console.log(localStorage.getItem("MINTO-imageURL"));
     return () => {
       setShowFirstModal(false);
       setShowSecondModal(false);
@@ -85,10 +134,16 @@ export default function Dashboard() {
       setSelectedOption("Polygon Testnet");
     };
   }, []);
+
   const [selectedOption, setSelectedOption] = useState("Polygon Testnet");
+  const [selectedOptionRevenueSplit, setSelectedOptionRevenueSplit] = useState("Polygon Testnet");
 
   const handleSelect = (eventKey) => {
     setSelectedOption(eventKey);
+  };
+
+  const handleSelectRevenueSplit = (eventKey) => {
+    setSelectedOptionRevenueSplit(eventKey);
   };
 
   const handleDraftSave = (event) => {
@@ -135,6 +190,42 @@ export default function Dashboard() {
     handleFourthModalClose();
   };
 
+
+  const handleDraftSaveRevenueSplit = async(event) => {
+    event.preventDefault();
+
+    const username =localStorage.getItem("MINTO-username").replace(/['"]+/g, "");
+
+    // handleFirstModalRevenueSplitClose();
+    // handleSecondModalRevenueSplitClose();
+    let addresses=[];
+    let splits=[];
+    for(let i=0; i<fields.length;i++){
+      addresses.push(fields[i].address)
+      splits.push(Number(fields[i].split))
+    }
+    
+    try {
+      const document={
+        username: username,
+        name: nameRevenueSplit,
+        addresses: addresses,
+        splits: splits,
+        network: selectedOptionRevenueSplit,
+      }
+      console.log(document);
+      const { data } = await axios.post(
+        process.env.REACT_APP_PRODUCTION_URL + "/createRevenueSplit",document,
+        { withCredentials: true }
+      );
+      console.log(data);
+      window.location.reload(false);
+    } catch (ex) {
+      console.log(ex);
+    } 
+
+  };
+
   const handleDeployment = () => {
     handleSecondModalClose();
     handleFirstModalClose();
@@ -160,18 +251,21 @@ export default function Dashboard() {
   const handleReveneSplitCreate =()=>{
 
   }
+  
   const styles1 = {
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
     height: "30vh",
   };
+  
   const styles2 = {
     display: "flex",
     alignItems: "left",
     justifyContent: "left",
     height: "5vh",
   };
+
   const styles3 = {
     display: "flex",
     alignItems: "right",
@@ -241,7 +335,7 @@ export default function Dashboard() {
                     <Dropdown.Item onClick={handleFirstModalShow}>
                       COLLECTION
                     </Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
+                    <Dropdown.Item  onClick={handleFirstModalRevenueSplitShow}>
                       REVENUE SPLIT
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -384,7 +478,7 @@ export default function Dashboard() {
           <Modal.Title>Collection Details (1 of 3)</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Please define your collection contract network, name and symbol.
+          Please define your collection contract network, name, symbol and collection URI.
           <Form className="form-class">
             <Form.Group controlId="formDropdown">
               <br></br>
@@ -414,7 +508,7 @@ export default function Dashboard() {
               <Form.Label>Contract Name *</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Minto Collection"
+                placeholder="Enter a name for your contract"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
@@ -423,7 +517,8 @@ export default function Dashboard() {
               <Form.Label>Contract Symbol *</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="MCL"
+                placeholder="Enter a symobl for your contract"
+                style={{ '::placeholder': { color: 'green' } }}
                 value={symbol}
                 onChange={(event) => setSymbol(event.target.value)}
               />
@@ -432,10 +527,12 @@ export default function Dashboard() {
               <Form.Label>Collection URL</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="app.minto.com/collections/"
                 value={url}
                 onChange={(event) => setUrl(event.target.value)}
               />
+            <Form.Text className="text-muted">
+            If you have a server configured for throwing the metadata for your collection you can fill this URI, otherwise leave it blank.
+            </Form.Text>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -501,7 +598,7 @@ export default function Dashboard() {
                 placeholder={localStorage.getItem("REIGNKIT-address")==null ? 0x0 : localStorage.getItem("REIGNKIT-address").replace(/['"]+/g, "")}
                 value={primary}
                 onChange={(event) => setPrimary(event.target.value)}
-                style={{width:"90%"}}
+                style={{width:"90%",marginRight:'1rem'}}
               />
               <OverlayTrigger
                 trigger="click"
@@ -516,7 +613,8 @@ export default function Dashboard() {
               >
               <Form.Control
                 type="button"
-                value="<>"
+                value=""
+                className="split-image"
                 // onChange={(event) => setPrimary(event.target.value)}
                 // onClick
                 style={{width:"10%"}}
@@ -533,7 +631,7 @@ export default function Dashboard() {
                 placeholder={localStorage.getItem("REIGNKIT-address")==null ? 0x0 : localStorage.getItem("REIGNKIT-address").replace(/['"]+/g, "")}
                 value={secondary}
                 onChange={(event) => setSecondary(event.target.value)}
-                style={{width:"90%"}}
+                style={{width:"90%",marginRight:'1rem'}}
               />
               <OverlayTrigger
                 trigger="click"
@@ -546,18 +644,24 @@ export default function Dashboard() {
                   </Popover>
                 }
               >
+                {/* <Button>
+                  Hey
+                </Button> */}
               <Form.Control
                 type="button"
-                value="<>"
+                value=""
+                className="split-image"
                 // onChange={(event) => setPrimary(event.target.value)}
                 // onClick
                 style={{width:"10%"}}
-              />
+              >
+                
+              </Form.Control>
               </OverlayTrigger>
               </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Secondary sale royalty percentage  *</Form.Label>
+              <Form.Label>Secondary sale royalty percentage (%)  *</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="5%"
@@ -620,7 +724,7 @@ export default function Dashboard() {
           <Modal.Title>Collection Details (3 of 3)</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Please add a unique image and description for your collection.
+          Please add a image, banner and description for your collection.
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>Upload image</Form.Label>
@@ -662,13 +766,194 @@ export default function Dashboard() {
           >
             SAVE AS DRAFT
           </Button>{" "}
-          <br></br>
+          {/* <br></br>
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             onClick={handleDeployment}
             variant="dark"
           >
             CREATE NOW
+          </Button>{" "}
+          <br></br> */}
+        </Modal.Footer>
+      </Modal>
+
+
+      {/* REVENUE - SPLIT MODALS */}
+
+      <Modal
+        show={showFirstModalRevenueSplit}
+        onHide={handleFirstModalRevenueSplitClose}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        animation={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Revenue Split</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="content">
+          Revenue split gives you the ability to add additional recipients to your NFT sales. <br>
+          </br>These recipients can be contributors, collaborators or donation-based to receive<br></br>
+           a portion of revenue from existing and future projects.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+
+          <Button
+            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
+            onClick={handleFirstModalRevenueSplitClose}
+            variant="dark"
+          >
+            CANCEL
+          </Button>{" "}
+          <br></br>
+          <Button
+            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
+            onClick={() => {
+              handleFirstModalRevenueSplitClose();
+              handleSecondModalRevenueSplitShow();
+            }}
+            variant="dark"
+          >
+            CONTINUE
+          </Button>{" "}
+          <br></br>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showSecondModalRevenueSplit}
+        onHide={handleSecondModalRevenueSplitClose}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        animation={false}
+        centered
+      >
+        <Modal.Header closeButton>
+          <a
+            onClick={() => {
+              handleSecondModalRevenueSplitClose();
+              handleFirstModalRevenueSplitShow();
+            }}
+          >
+            <b>{"<-"}&nbsp;&nbsp;&nbsp;</b>
+          </a>
+          <Modal.Title>Revenue Split Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        Please enter a unique name for your revenue split and define each recipient’s wallet address and split amount. The overall split amount must total 100.
+          <Form className="form-class">
+            <Form.Group controlId="formDropdown">
+              <br></br>
+              <Form.Label>Network</Form.Label>
+
+              <Dropdown onSelect={handleSelectRevenueSplit}>
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                  {selectedOptionRevenueSplit || "Polygon Testnet"}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item eventKey="Polygon Testnet" >
+                    Polygon Testnet
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="Ethereum Mainnet" disabled>
+                    Ethereum Mainnet
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="Polygon Mainnet" disabled>
+                    Polygon Mainnet
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="Arbitrum" disabled>
+                    Arbitrum
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasic">
+              <br></br>
+              <Form.Label>Revenue Split Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter a name"
+                value={nameRevenueSplit}
+                onChange={(event) => setNameRevenueSplit(event.target.value)} 
+              />
+            </Form.Group>
+            {fields.map((field, index) => (
+                  <Row key={index} style={{marginBottom:"1rem"}}>
+                    <Col md={8}>
+                    <Form.Label>Wallet Address</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={field.address}
+                        onChange={(event) => handleFieldChange(index, 'address', event.target.value)}
+                        placeholder="Enter address"
+                        />
+                    </Col>
+                    <Col md={3}>
+                        <Form.Label>Split Amount</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={field.split}
+                        onChange={(event) => handleFieldChange(index, 'split', event.target.value)}
+                        placeholder="Enter split"
+                        />
+                    </Col>
+                    <Col md={1}>
+                      {index === fields.length - 1 ? (
+                      <>
+                        <Form.Label style={{marginBottom:"1.6rem"}}></Form.Label>
+                        <Form.Control
+                          type="button"
+                          disabled={field.name === '' || field.quantity === ''}
+                          value=""
+                          className="add-image"
+                          onClick={handleAddField}
+                          style={{width:"10%", marginRight:'1rem'}}
+                          />
+                      </>
+                      ) : (
+                        <>
+                          <Form.Label style={{marginBottom:"1.6rem"}}></Form.Label>
+                          <Form.Control
+                            type="button"
+                            value=""
+                            className="delete-image"
+                            onClick={() => handleDeleteField(index)}
+                            style={{width:"10%"}}
+                            />
+                        </>
+                      )}
+                    </Col>
+                  </Row>
+                ))}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+
+
+          <Button
+            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
+            onClick={() => {
+              handleSecondModalRevenueSplitClose();
+              handleFirstModalRevenueSplitShow();
+            }}
+            variant="dark"
+          >
+            CANCEL
+          </Button>{" "}
+          <br></br>
+          <Button
+            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
+            onClick={handleDraftSaveRevenueSplit}
+            // onClick={() => {
+            //   handleSecondModalRevenueSplitClose();
+            //   // handleThirdModalRevenueSplitShow();
+            // }}
+            variant="dark"
+          >
+            CREATE DRAFT
           </Button>{" "}
           <br></br>
         </Modal.Footer>

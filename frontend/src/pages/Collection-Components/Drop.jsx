@@ -265,9 +265,23 @@ export default function Drop({ collection }) {
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
-          onClick={handleButton4Click}
+          disabled
         >
           REVEAL
+        </Button>
+        <Button
+          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+          variant="outline-dark"
+          disabled
+        >
+          CSV EXPORT
+        </Button>
+        <Button
+          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+          variant="outline-dark"
+          disabled
+        >
+          DELETE
         </Button>
       </div>
       <br></br>
@@ -361,7 +375,8 @@ export default function Drop({ collection }) {
             </>
           )}
           <br></br>
-
+          <hr></hr>
+          <p>Or Airdrop Manually</p>
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>ADDRESS</Form.Label>

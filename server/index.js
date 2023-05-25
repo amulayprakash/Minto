@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const Collection = require("./model/collectionModel");
 const Presalelist = require("./model/preSaleListModel");
 const Waitlist = require("./model/waitlistModel");
+const RevenueSplit = require("./model/revenueSplitModel");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const path = require("path");
@@ -192,11 +193,51 @@ app.post(
   }
 );
 
+app.post( "/api/createRevenueSplit",(req, res) => {
+    const { username } = req.body;
+    const { name } = req.body;
+    const { network } = req.body;
+    const { addresses } = req.body;
+    const { splits } = req.body;
+
+    const document = new RevenueSplit({
+      username: username,
+      name: name,
+      addresses: addresses,
+      splits: splits,
+      network: network,
+    });
+    console.log("Document",document);
+
+    document.save((err) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      } else {
+        console.log("New Document Saved");
+        res.sendStatus(200);
+      }
+    });
+  }
+);
+
 app.get("/api/viewCollections", async (req, res) => {
   try {
     const username = req.query.username;
-    console.log(username);
+    // console.log(username);
     const docs = await Collection.find({ username: username });
+    res.json(docs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+app.get("/api/viewRevenueSplits", async (req, res) => {
+  try {
+    const username = req.query.username;
+    // console.log(username);
+    const docs = await RevenueSplit.find({ username: username });
     res.json(docs);
   } catch (error) {
     console.error(error);

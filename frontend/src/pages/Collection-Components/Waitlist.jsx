@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
-import Papa from "papaparse";
+import Papa from "papaparse"; 
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 // import { solidityKeccak256 } from 'ethereumjs-abi';
 import DropCollection from "../../artifacts/contracts/DropCollection.sol/DropCollection.json";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"; 
 
 const { MerkleTree } = require("merkletreejs");
 
@@ -211,12 +211,14 @@ export default function Waitlist({ collection }) {
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
+          disabled
         >
           CSV EXPORT
         </Button>
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
+          disabled
         >
           DELETE
         </Button>
@@ -297,6 +299,8 @@ export default function Waitlist({ collection }) {
             UPLOAD ADDRESSES VIA CSV
           </Button>{" "}
           <br></br>
+          <hr></hr>
+          <p>Or Upload Manually</p>
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>ADDRESS</Form.Label>

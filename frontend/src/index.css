@@ -380,3 +380,26 @@ footer {
 .create-collection-span {
   cursor: pointer;
 }
+
+.split-image{
+  background-image: url("./assets/icons8-split-24.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: cover; */
+}
+.add-image{
+  background-image: url("./assets/icons8-add-32.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: cover; */
+  /* height: 30px; */
+  /* width: 30px; */
+  border: none !important;
+}
+.delete-image{
+  background-image: url("./assets/icons8-delete-30.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none !important;
+  /* background-size: cover; */
+}

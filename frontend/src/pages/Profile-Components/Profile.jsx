@@ -69,7 +69,7 @@ export default function Profile() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "20vh",
+    height: "25vh",
   };
   const styles2 = {
     display: "flex",
@@ -83,14 +83,14 @@ export default function Profile() {
       <Container>
         <Row>
           <Col style={styles1}>
+           <Button as={Link}  to="/dashboard" variant="outline-dark" size="md">
+              {"<- BACK TO DASHBOARD"}
+            </Button>
           </Col>
           <Col xs={6} style={styles1}>
             <img className="profile-image" src={process.env.REACT_APP_PRODUCTION_URL + `/${account.photo}`}/>
           </Col>
           <Col style={styles1}>
-           <Button as={Link}  to="/dashboard" variant="outline-dark" size="md">
-              {"<- BACK TO DASHBOARD"}
-            </Button>
           </Col>
         </Row> 
         <Row>
