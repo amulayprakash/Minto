@@ -6,10 +6,10 @@ async function main() {
   // const DropCollection = await hre.ethers.getContractFactory("DropCollection");
   // const dropCollection = await DropCollection.deploy("Name","Symbol","0x5daCcC5653C7D640EbB2a1EdAeB91305842a8125","0x5daCcC5653C7D640EbB2a1EdAeB91305842a8125",3);
   // await dropCollection.deployed(); 
-  const DropKitPass = await hre.ethers.getContractFactory("DropKitPass");
-  const dropKitPass = await DropKitPass.deploy();
-  await dropKitPass.deployed(); 
-  console.log(`DropKitPass contracts deployed to ${dropKitPass.address}`);
+  const RevenueSplit = await hre.ethers.getContractFactory("RevenueSplit");
+  const split = await RevenueSplit.deploy(["0x55481FcE35409e1e2b2c8e26eE0abcf344B90adB"],[100]);
+  await split.deployed(); 
+  console.log(`RevenueSplit contracts deployed to ${split.address}`);
 
 }
 

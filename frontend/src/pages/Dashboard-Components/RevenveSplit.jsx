@@ -15,7 +15,7 @@ export default function RevenveSplit(props) {
   const [splits, setSplits] = useState(null);
   useEffect(() => {
     if (localStorage.getItem("MINTO-username") == null) {
-      console.log("No collection found!");
+      console.log("No user found!");
     }
     const getSplits = async () => {
       try { 

@@ -8,8 +8,6 @@ import { toast, ToastContainer } from "react-toastify";
 import Container from "react-bootstrap/Container";
 import { OverlayTrigger, Popover } from "react-bootstrap";  
 import logo from "../../assets/LogoMinto.png";
-
-
 // import Dropdown from 'react-bootstrap/Dropdown';
 import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
@@ -80,6 +78,10 @@ export default function Dashboard() {
   const [activeKey, setActiveKey] = useState("/collections");
   const [fields, setFields] = useState([{ address: '', split: '' }]);
 
+  ////////////////////////////
+  const [isLoading, setIsLoading] = useState(true);
+  const [splits, setSplits] = useState(null);
+
   const handleSelectKey = (selectedKey) => {
     setActiveKey(selectedKey);
   };
@@ -114,6 +116,22 @@ export default function Dashboard() {
 
 
   useEffect(() => {
+    if (localStorage.getItem("MINTO-username") == null) {
+      console.log("No user found!");
+    }
+    const getSplits = async () => {
+      try { 
+        const res = await axios.get(process.env.REACT_APP_PRODUCTION_URL + `/viewRevenueSplits?username=${localStorage.getItem("MINTO-username").replace(/['"]+/g, "")}`);
+        setSplits(res.data);
+        setIsLoading(false);
+        console.log("Splits- ", res.data);
+        
+      } catch (err) {
+        console.error(err.message);
+        setIsLoading(false);
+      }
+    };
+    getSplits();
 
     return () => {
       setShowFirstModal(false);
@@ -132,8 +150,11 @@ export default function Dashboard() {
       setImage("");
       setBanner("");
       setSelectedOption("Polygon Testnet");
+      setIsLoading(true);
+      setSplits(null);
     };
-  }, []);
+
+  }, [localStorage.getItem("MINTO-username").replace(/['"]+/g, "")]);
 
   const [selectedOption, setSelectedOption] = useState("Polygon Testnet");
   const [selectedOptionRevenueSplit, setSelectedOptionRevenueSplit] = useState("Polygon Testnet");
@@ -347,38 +368,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* <div className="breadcrumb-div">
-          <Breadcrumb>
-            <Breadcrumb.Item
-              onClick={() => handleTabClick("collections")}
-              active={activeTab === "collections"}
-            >
-              {" "}
-              COLLECTIONS{" "}
-            </Breadcrumb.Item>
-            <Breadcrumb.Item
-              onClick={() => handleTabClick("revenvesplit")}
-              active={activeTab === "revenvesplit"}
-            >
-              {" "}
-              REVENUE-SPLIT{" "}
-            </Breadcrumb.Item>
-            <Breadcrumb.Item
-              onClick={() => handleTabClick("mypass")}
-              active={activeTab === "mypass"}
-            >
-              {" "}
-              MY-PASS{" "}
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-
-        <hr></hr>
-        {activeTab === "collections" && <Collections />}
-        {activeTab === "mypass" && <MyPass />}
-        {activeTab === "revenvesplit" && <RevenveSplit />} */}
-
-        <div className="MuiBox-root">
+      <div className="MuiBox-root">
         <Nav
           fill
           variant="tabs"
@@ -443,7 +433,7 @@ export default function Dashboard() {
           >
             GO BACK
           </Button>{" "}
-          <br></br>
+          {/* <br></br> */}
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             onClick={() => {
@@ -553,7 +543,7 @@ export default function Dashboard() {
           >
             GO BACK
           </Button>{" "}
-          <br></br>
+          {/* <br></br> */}
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             onClick={() => {
@@ -590,6 +580,16 @@ export default function Dashboard() {
         <Modal.Body>
           Please define your collection revenue address and royalty percentage.
           <Form className="form-class">
+
+            {/* <Row>
+              <Col md={11}>
+
+              </Col>
+              <Col md={1}>
+              
+              </Col>
+            </Row> */}
+
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>Wallet address to receive primary sales *</Form.Label>
               <div style={{display: "flex"}}>
@@ -606,7 +606,23 @@ export default function Dashboard() {
                 overlay={
                   <Popover id="popover-basic">
                   <Popover.Header as="h3">Create Revenve Split </Popover.Header>
-                  <Popover.Body> Add Recipients . Set Split Amount
+                  <Popover.Body> 
+                    {
+                      isLoading ? (
+                        <div>Loading...</div>
+                      ): splits.length===0 ?(
+                        "No Revenue Split Contract found"
+                      ):(
+                        <>
+                          {/* {splits.map((split,index)=>{
+                            <>
+                              {split.name} 
+                              <hr></hr> 
+                            </>
+                          })} */}
+                        </>   
+                      )
+                    }
                   </Popover.Body>
                   </Popover>
                 }
@@ -660,6 +676,7 @@ export default function Dashboard() {
               </OverlayTrigger>
               </div>
             </Form.Group>
+
             <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>Secondary sale royalty percentage (%)  *</Form.Label>
               <Form.Control
@@ -689,7 +706,7 @@ export default function Dashboard() {
           >
             GO BACK
           </Button>{" "}
-          <br></br>
+          {/* <br></br> */}
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             onClick={() => {
@@ -808,7 +825,7 @@ export default function Dashboard() {
           >
             CANCEL
           </Button>{" "}
-          <br></br>
+          {/* <br></br> */}
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             onClick={() => {
@@ -939,20 +956,11 @@ export default function Dashboard() {
               handleSecondModalRevenueSplitClose();
               handleFirstModalRevenueSplitShow();
             }}
-            variant="dark"
-          >
+            variant="dark">
             CANCEL
           </Button>{" "}
-          <br></br>
-          <Button
-            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
-            onClick={handleDraftSaveRevenueSplit}
-            // onClick={() => {
-            //   handleSecondModalRevenueSplitClose();
-            //   // handleThirdModalRevenueSplitShow();
-            // }}
-            variant="dark"
-          >
+          
+          <Button style={{ display: "block", width: "100%", boxSizing: "border-box" }} onClick={handleDraftSaveRevenueSplit} variant="dark">
             CREATE DRAFT
           </Button>{" "}
           <br></br>

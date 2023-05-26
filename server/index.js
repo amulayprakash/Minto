@@ -280,6 +280,27 @@ app.put("/api/updateCollection", async (req, res) => {
   }
 });
 
+app.put("/api/updateRevenueSplit", async (req, res) => {
+  try {
+    const id = req.query.splitID;
+    const address = req.query.address;
+    const doc = await RevenueSplit.findOneAndUpdate(
+      { _id: id },
+      { isDeployed: true, deployedAddress: address },
+      { new: true }
+    );
+    console.log(doc);
+    res.json(doc);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+
+
+
 app.put("/api/updateCollectionPreSale", async (req, res) => {
   try {
     const id = req.query.collectionID;

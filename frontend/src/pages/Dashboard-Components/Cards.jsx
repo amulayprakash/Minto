@@ -47,6 +47,7 @@ const Cards = ({ collection, idx }) => {
     console.log("handleCardEdit");
     console.log(item);
   };
+
   const handleCardDelete = async (item) => {
     console.log("handleCardDelete");
     console.log(item.collectionID);
@@ -62,14 +63,14 @@ const Cards = ({ collection, idx }) => {
       console.log(response.data);
     } catch (err) {
       console.error(err);
-    }
-  };
+    } 
+  }; 
 
   function truncate(str, n) {
     return str.length > n ? str.slice(0, n - 1) + " ..." : str;
-  }
+  } 
 
-  return (
+  return ( 
     <div
       key={idx}
       className="tempcard-card"
@@ -105,7 +106,7 @@ const Cards = ({ collection, idx }) => {
           }
           alt="Profile"
         />
-      </div>
+      </div> 
       <div className="tempcard-content">
         <h4 className="tempcard-heading">{collection.name}</h4>
         {collection.isDeployed ? (
@@ -118,9 +119,9 @@ const Cards = ({ collection, idx }) => {
           </p>
         )}
         <p className="tempcard-text">{truncate(collection.description, 40)}</p>
-      </div>
+      </div> 
     </div>
-  );
+  ); 
 };
 
 export default Cards;

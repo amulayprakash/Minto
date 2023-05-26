@@ -29,7 +29,7 @@ module.exports = {
       // url: "https://rpc-mumbai.maticvigil.com",
       url: "https://matic.getblock.io/89cf7a1a-375d-4b1c-b82a-d03eb4cde880/testnet/",
       // accounts: [process.env.PRIVATE_KEY] // Seller private key
-      accounts: ["fd87ebea96d89f8511d28ffd7bb772338d668bcd2a6762095aae7e69b75991ac"] // Seller private key
+      accounts: ["fb190d53170c6e8319e593127230ba2f1c56a59eef5742b5ef0472a72d5bf3b7"] // Seller private key
     },
     // mainnet:{
     //   url :"https://mainnet.infura.io/v3/08d0a9d1045146dc888e62677f83e772",
