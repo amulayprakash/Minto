@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
+const jsonRoutes = require("./routes/jsonRoutes");
 const bodyParser = require("body-parser");
 const Collection = require("./model/collectionModel");
 const Presalelist = require("./model/preSaleListModel");
@@ -22,6 +23,7 @@ app.use(
 );
 
 app.use(express.json());
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -70,23 +72,26 @@ app.use(
   })
 );
 
-app.post("/api/createPresalelistEntry",async (req, res) => {
+// handle json files
+app.use("/api/jsonreturn", jsonRoutes);
+
+app.post("/api/createPresalelistEntry", async (req, res) => {
   try {
     const { documents } = req.body;
-    console.log(documents)
+    console.log(documents);
     const result = await Presalelist.insertMany(documents);
-    console.log(result)
+    console.log(result);
     res.status(200).send(result);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error saving documents');
+    res.status(500).send("Error saving documents");
   }
 });
 
 app.get("/api/viewPreSaleListbyCollectionID", async (req, res) => {
   try {
-    const collectionID = req.query.collectionID; 
-    console.log(collectionID); 
+    const collectionID = req.query.collectionID;
+    console.log(collectionID);
     const doc = await Presalelist.find({ collectionID: collectionID });
     res.json(doc);
   } catch (error) {
@@ -99,8 +104,11 @@ app.get("/api/checkInPreSaleList", async (req, res) => {
   try {
     const collectionID = req.query.collectionID;
     const walletAddress = req.query.walletAddress;
-    const entry = await Presalelist.find({ collectionID:collectionID, walletAddress: walletAddress.toLowerCase() });
-    res.json(entry); 
+    const entry = await Presalelist.find({
+      collectionID: collectionID,
+      walletAddress: walletAddress.toLowerCase(),
+    });
+    res.json(entry);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
@@ -134,7 +142,9 @@ app.post("/api/createWaitlist", (req, res) => {
   });
 });
 
-app.post( "/api/createCollection", upload.fields([
+app.post(
+  "/api/createCollection",
+  upload.fields([
     { name: "image", maxCount: 1 },
     { name: "banner", maxCount: 1 },
   ]),
@@ -159,8 +169,14 @@ app.post( "/api/createCollection", upload.fields([
       primary: primary,
       secondary: secondary,
       rpercent: rpercent,
-      image: req.files["image"]==undefined?"image-1680386360842.jpg":req.files["image"][0].filename,
-      banner: req.files["banner"]==undefined?"banner-1683577537427.jpg":req.files["banner"][0].filename,
+      image:
+        req.files["image"] == undefined
+          ? "image-1680386360842.jpg"
+          : req.files["image"][0].filename,
+      banner:
+        req.files["banner"] == undefined
+          ? "banner-1683577537427.jpg"
+          : req.files["banner"][0].filename,
       description: description,
       network: network,
     });
@@ -367,7 +383,10 @@ app.put("/api/updateCollectionTotalWeiEarned", async (req, res) => {
   }
 });
 
-app.put("/api/updateCollectionPreReveal", upload.fields([{ name: "preRevealImage", maxCount: 1 }]), async (req, res) => {
+app.put(
+  "/api/updateCollectionPreReveal",
+  upload.fields([{ name: "preRevealImage", maxCount: 1 }]),
+  async (req, res) => {
     try {
       const id = req.body.collectionID;
       const preRevealName = req.body.preRevealName;
