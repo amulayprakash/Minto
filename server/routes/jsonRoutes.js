@@ -16,6 +16,7 @@ const upload = multer({ storage: storage });
 
 router.get("/:collectionId/:index", returnJsonController.getJson);
 router.get("/:id", returnJsonController.getAllNftInfo);
+router.get("/placeholder/json/:id", returnJsonController.getPlaceholderJson);
 
 router.post(
   "/:filenm",
@@ -27,6 +28,13 @@ router.post(
   "/update/revealstatus",
   verify,
   returnJsonController.updateRevealStatus
+);
+
+router.post(
+  "/placeholder/:filenm",
+  // verify,
+  upload.single("file"),
+  returnJsonController.savePlaceholderJson
 );
 
 module.exports = router;

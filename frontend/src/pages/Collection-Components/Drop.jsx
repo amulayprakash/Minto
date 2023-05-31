@@ -28,6 +28,8 @@ export default function Drop({ collection }) {
   const [modal2Show, setModal2Show] = useState(false);
   const [modal3Show, setModal3Show] = useState(false);
   const [modal4Show, setModal4Show] = useState(false);
+  const [modal5Show, setModal5Show] = useState(false);
+  const [modal6Show, setModal6Show] = useState(false);
 
   const [address, setAddress] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -40,16 +42,21 @@ export default function Drop({ collection }) {
     stIndx: 0,
     endIdx: 0,
   });
+  const [unrevealed, setUnrevealed] = useState({});
 
   const handleModalClose = () => setModalShow(false);
   const handleModal2Close = () => setModal2Show(false);
   const handleModal3Close = () => setModal3Show(false);
   const handleModal4Close = () => setModal4Show(false);
+  const handleModal5Close = () => setModal5Show(false);
+  const handleModal6Close = () => setModal6Show(false);
 
   const handleButtonClick = () => setModalShow(true);
   const handleButton2Click = () => setModal2Show(true);
   const handleButton3Click = () => setModal3Show(true);
   const handleButton4Click = () => setModal4Show(true);
+  const handleButton5Click = () => setModal5Show(true);
+  const handleButton6Click = () => setModal6Show(true);
 
   const [parsedData, setParsedData] = useState([]);
   const [tableRows, setTableRows] = useState([]);
@@ -59,7 +66,20 @@ export default function Drop({ collection }) {
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    const run = async () => {
+    const run1 = async () => {
+      try {
+        const { data } = await axios.get(
+          process.env.REACT_APP_PRODUCTION_URL +
+            "/jsonreturn/placeholder/json/" +
+            collection._id
+        );
+
+        setUnrevealed(() => data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const run2 = async () => {
       try {
         const { data } = await axios.get(
           process.env.REACT_APP_PRODUCTION_URL + "/jsonreturn/" + collection._id
@@ -71,10 +91,11 @@ export default function Drop({ collection }) {
       }
     };
 
-    run();
+    run1();
+    run2();
   }, [trigger]);
 
-  console.log(revealArray);
+  console.log(unrevealed);
 
   const handleAirdropClick = async (event) => {
     event.preventDefault();
@@ -247,6 +268,60 @@ export default function Drop({ collection }) {
       toast(err?.message || "Something went wrong!");
     }
   };
+
+  const handleUploadPlaceholderAsset = async () => {
+    try {
+      const formData = new FormData();
+      if (!inpFile) {
+        throw new Error("No file uploaded!");
+      }
+      formData.append("file", inpFile);
+      formData.append("id", collection._id);
+      formData.append("collectionID", collection.collectionID);
+
+      const { data } = await axios.post(
+        process.env.REACT_APP_PRODUCTION_URL +
+          "/jsonreturn/placeholder/" +
+          collection._id +
+          "-placeholder",
+        formData,
+        { withCredentials: true }
+      );
+
+      handleModal5Close();
+
+      toast(data.msg);
+
+      setTrigger((curr) => !curr);
+    } catch (err) {
+      console.log(err);
+      toast(err?.message || "Something went wrong!");
+    }
+  };
+
+  const setBaseURIcontract = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await window.ethereum.enable();
+    const signer = provider.getSigner();
+    const myContract = new ethers.Contract(
+      collection.deployedAddress,
+      DropCollection.abi,
+      signer
+    );
+    const transaction =
+      // await myContract.startSale(
+      //   NFTCount,
+      //   quantityT,
+      //   quantityW,
+      //   perNFTPrice,
+      //   true
+      // );
+      toast("Transaction Started");
+    handleModal2Close();
+    await transaction.wait();
+
+    toast("Base URI set seccessfully");
+  };
   return (
     <>
       <div className="drop-button-row">
@@ -270,6 +345,20 @@ export default function Drop({ collection }) {
           onClick={handleButton4Click}
         >
           REVEAL
+        </Button>
+        <Button
+          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+          variant="outline-dark"
+          onClick={handleButton5Click}
+        >
+          UNREVEAL ASSET
+        </Button>
+        <Button
+          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+          variant="outline-dark"
+          onClick={handleButton6Click}
+        >
+          SET BASE URI
         </Button>
       </div>
       <br></br>
@@ -595,6 +684,122 @@ export default function Drop({ collection }) {
           </Button>{" "}
           <br></br>
         </Modal.Footer>
+      </Modal>
+
+      <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={modal5Show}
+        onHide={handleModal5Close}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            UPLOAD PLACEHOLDER NFT (JSON FILE)
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <h5>Current Placeholder</h5>
+            {!unrevealed ? (
+              "Placeholder Not set"
+            ) : (
+              <>
+                <img src={unrevealed?.image} alt="Placeholder" />
+                <br />
+                Name: {unrevealed?.name || "Name cannot be read"}
+              </>
+            )}
+          </div>
+          <br />
+          <h5>
+            To download sample json file:{" "}
+            <em>
+              <Link to="/file/sample-placeholder.json" target="_blank" download>
+                Click Here
+              </Link>
+            </em>
+          </h5>
+
+          <div>
+            <br />
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label>
+                <h3> Upload the Placeholder JSON File</h3>
+              </Form.Label>
+              <Form.Control
+                onChange={(e) => handleFileUpload(e)}
+                type="file"
+                size="lg"
+                accept=".json"
+              />
+            </Form.Group>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ display: "block", width: "100%", boxSizing: "border-box" }}
+            variant="dark"
+            onClick={handleUploadPlaceholderAsset}
+          >
+            UPLOAD PLACEHOLDER ASSET
+          </Button>{" "}
+          <br></br>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={modal6Show}
+        onHide={handleModal6Close}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            SET BASE URI IN CONTRACT
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <h5>The base uri will be:</h5>
+            <a
+              href={`${process.env.REACT_APP_PRODUCTION_URL}/jsonreturn/${collection._id}/`}
+            >{`${process.env.REACT_APP_PRODUCTION_URL}/jsonreturn/${collection._id}/`}</a>
+          </div>
+          <br />
+          {collection.isDeployed ? (
+            <>
+              <Button
+                style={{
+                  display: "block",
+                  width: "100%",
+                  boxSizing: "border-box",
+                }}
+                onClick={handleAirdropCSV}
+                variant="dark"
+              >
+                SET BASE URI
+              </Button>{" "}
+            </>
+          ) : (
+            <>
+              <Button
+                style={{
+                  display: "block",
+                  width: "100%",
+                  boxSizing: "border-box",
+                }}
+                onClick={setBaseURIcontract}
+                variant="dark"
+                disabled
+              >
+                {" "}
+                CONTRACT NOT DEPLOYED (DISABLED)
+              </Button>{" "}
+            </>
+          )}
+        </Modal.Body>
       </Modal>
     </>
   );

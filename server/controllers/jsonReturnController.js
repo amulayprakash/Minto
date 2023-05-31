@@ -137,7 +137,25 @@ module.exports.getJson = async (req, res) => {
     if (revealStatus[0].revealArray[Number(index) - 1] === 1) {
       return res.status(200).json(data["collection"][Number(index) - 1]);
     } else {
-      return res.status(200).json({ name: "", image: null });
+      let unreveal = null;
+      try {
+        unreveal = fs.readFileSync(
+          path.resolve(
+            __dirname,
+            `../json-uploads/${collectionId}-placeholder.json`
+          ),
+          "utf-8"
+        );
+        unreveal = JSON.parse(unreveal);
+      } catch (err) {
+        console.log(err);
+        return res.status(403).json({ ok: false, msg: "Cannot read the file" });
+      }
+      if (!unreveal) {
+        return res.status(200).json({ name: "", image: null });
+      } else {
+        return res.status(200).json(unreveal);
+      }
     }
   } catch (err) {
     console.log(err);
@@ -189,6 +207,51 @@ module.exports.updateRevealStatus = async (req, res) => {
     return res
       .status(200)
       .json({ ok: true, msg: "the file saved successfully" });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ ok: false, msg: err?.message || "Something went wrong!" });
+  }
+};
+
+module.exports.savePlaceholderJson = async (req, res) => {
+  try {
+    let data = fs.readFileSync(req.file.path, "utf-8");
+    data = JSON.parse(data);
+
+    if (!data.name || !data.image) {
+      return res
+        .status(404)
+        .json({ ok: false, msg: "The file format of json is not correct" });
+    }
+
+    res.json({ ok: true, msg: "Placeholder saved successfully" });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ ok: false, msg: err?.message || "Something went wrong!" });
+  }
+};
+
+module.exports.getPlaceholderJson = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let data;
+    try {
+      data = fs.readFileSync(
+        path.resolve(__dirname, `../json-uploads/${id}-placeholder.json`),
+        "utf-8"
+      );
+      data = JSON.parse(data);
+    } catch (err) {
+      console.log(err);
+      return res.json({ ok: false, msg: "Cannot read the file" });
+    }
+
+    res.status(200).json({ ok: true, data });
   } catch (err) {
     console.log(err);
     res
