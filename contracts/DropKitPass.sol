@@ -68,7 +68,7 @@ contract DropKitPass is
         );  
         _;   
     }   
-    constructor() ERC721("ReignLabs", "RCP"){ 
+    constructor() ERC721("Minto", "MINTO"){ 
         _treasury = msg.sender;
         _defaultFeeRate = 10;
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -208,7 +208,7 @@ contract DropKitPass is
             getMaxAllowedPassMembers(tokenId) >=
                 _membersByToken[tokenId].length() + membersLength,
             "Reached Maximum Members"
-        );
+        ); 
 
         for (uint64 i = 0; i < membersLength; ) {
             _addPassMember(tokenId, members[i]);
