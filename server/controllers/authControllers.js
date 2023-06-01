@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const fileUpload = require("express-fileupload");
 
 const maxAge = 3 * 24 * 60 * 60;
+
 const createToken = (id) => {
   return jwt.sign({ id }, "password", {
     expiresIn: maxAge,
@@ -37,15 +38,21 @@ const handleErrors = (err) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    // console.log("Register called!");
     console.log(req.body);
-    const { email, username, name, password } = req.body;
-    // console.log(email);
-    // console.log(username);
-    // console.log(name);
-    // console.log(password);
+    const { email, username, name, password, origin, photo } = req.body;
 
-    const user = new User({ email, username, name, password });
+    let user;
+    if (origin === "google") {
+      user = new User({
+        email,
+        username,
+        name,
+        password: "google",
+        origin: "google",
+      });
+    } else {
+      user = new User({ email, username, name, password });
+    }
     if (req.files && req.files.photo) {
       const photo = req.files.photo;
       const photoPath = `/uploads/${username}_photo.jpeg`;
@@ -54,12 +61,6 @@ module.exports.register = async (req, res, next) => {
     }
     await user.save();
     const token = createToken(user._id);
-
-    // res.cookie("jwt", token, {
-    //   withCredentials: true,
-    //   httpOnly: false,
-    //   maxAge: maxAge * 1000,
-    // });
 
     const cokie = {
       token,
@@ -75,11 +76,17 @@ module.exports.register = async (req, res, next) => {
 };
 
 module.exports.login = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password, origin, credential } = req.body;
   try {
-    const user = await User.login(email, username, password);
+    let user;
+    if (origin === "google") {
+      const res = jwt.decode(credential);
+      user = await User.find({ email: res.email });
+      user = user[0];
+    } else {
+      user = await User.login(email, username, password);
+    }
     const token = createToken(user._id);
-    // res.cookie("jwt", token, { httpOnly: false, maxAge: maxAge * 1000 });
 
     const cokie = {
       token,
