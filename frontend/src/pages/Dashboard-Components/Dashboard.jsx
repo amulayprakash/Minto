@@ -101,6 +101,7 @@ export default function Dashboard() {
 
   const handleSelectKey = (selectedKey) => {
     setActiveKey(selectedKey);
+    localStorage.setItem('activeKey', selectedKey);
   };
 
   const handleFieldChange = (index, fieldName, value) => {
@@ -134,6 +135,10 @@ export default function Dashboard() {
   useEffect(() => {
     if (localStorage.getItem("MINTO-username") == null) {
       console.log("No user found!");
+    }
+    const savedActiveKey = localStorage.getItem('activeKey');
+    if (savedActiveKey) {
+      setActiveKey(savedActiveKey);
     }
     const getSplits = async () => {
       try {
@@ -172,6 +177,7 @@ export default function Dashboard() {
       setSelectedOption("Polygon Testnet");
       setIsLoading(true);
       setSplits(null);
+      localStorage.removeItem('activeKey');
     };
   }, [localStorage.getItem("MINTO-username").replace(/['"]+/g, "")]);
 

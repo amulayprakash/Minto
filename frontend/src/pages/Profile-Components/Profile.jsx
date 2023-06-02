@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Account from "./Account";
 import {Container, Row, Col, Button} from "react-bootstrap";
-
+import Spinner from 'react-bootstrap/Spinner';
 import Membership from "./Membership";
 import Notification from "./Notification";
 import Footer from "../Footer-Components/Footer";
@@ -17,53 +17,36 @@ import "../../index.css";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("myaccount");
   const [cookies, setCookie, removeCookie] = useCookies([]);
-  const [account, setAccount] = useState("");
+  
   const [activeKey, setActiveKey] = useState("/myaccount");
+
+  const [isLoading, setisLoading] =useState(true);
+
   const handleSelect = (selectedKey) => {
     setActiveKey(selectedKey);
+    localStorage.setItem('activeKey', selectedKey);
   };
 
   const [childData, setChildData] = useState("");
+
   const handleChildData = (data) => {
-    setChildData(data);
-  };
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+    // console.log("Data in profile -",data);
+    setChildData(data.user);
+    setisLoading(false);
   };
 
   useEffect(() => {
-    const verifyUser = async () => {
-      if (!cookies.jwt) {
-        navigate("/login");
-      } else {
-        const { data } = await axios.post(
-          process.env.REACT_APP_PRODUCTION_URL,
-          {
-            token: cookies.jwt,
-          },
-          {
-            withCredentials: true,
-          }
-        );
-        console.log(data.user);
-        setAccount(data.user);
-
-        if (!data.status) {
-          removeCookie("jwt");
-          navigate("/login");
-        } else console.log("Loggedin successfully!");
-      }
-    };
-
-    verifyUser();
+    console.log("Called");
+    const savedActiveKey = localStorage.getItem('activeKey');
+    if (savedActiveKey) {
+      setActiveKey(savedActiveKey);
+    }
 
     return () => {
-      setActiveTab("myaccount");
-      setAccount("");
+      localStorage.removeItem('activeKey');
     };
-  }, [cookies, navigate, removeCookie]);
+  }, [cookies, navigate, removeCookie,childData]);
 
   const styles1 = {
     display: "flex",
@@ -80,6 +63,13 @@ export default function Profile() {
   return (
     <>
       <MyNavbar onData={handleChildData}></MyNavbar>
+      {
+      isLoading?
+        <div style={{textAlign:"center"}}>
+          <Spinner animation="grow" />
+        </div>
+        :
+        <>
       <Container>
         <Row>
           <Col style={styles1}>
@@ -88,24 +78,18 @@ export default function Profile() {
             </Button>
           </Col>
           <Col xs={6} style={styles1}>
-            <img className="profile-image" src={process.env.REACT_APP_PRODUCTION_URL + `/${account.photo}`}/>
+            <img className="profile-image" src={process.env.REACT_APP_PRODUCTION_URL + `/${childData.photo}`}/>
           </Col>
           <Col style={styles1}>
           </Col>
         </Row> 
         <Row>
           <Col style={styles2}>
-            <h2>{account.username}</h2>
+            <h2>{childData.username}</h2>
           </Col>
         </Row>
       </Container>
-      {/* <div>
-        <div style={styles1}>
 
-        </div>
-        <div style={styles2}>
-        </div>
-      </div> */}
       <div className="MuiBox-root">
         <Nav
           fill
@@ -126,11 +110,13 @@ export default function Profile() {
         </Nav>
         <br></br>
         <div className="profile-content-div">
-          {activeKey === "/myaccount" && ( <Account childData={account} />)}
+          {activeKey === "/myaccount" && ( <Account childData={childData} setChildData={setChildData} />)}
           {activeKey === "/membership" && <Membership />}
           {activeKey === "/notification" && <Notification />}
         </div>
       </div>
+        </>
+      }
 
       <div className="footer--pin">
         <Footer />

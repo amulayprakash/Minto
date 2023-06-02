@@ -314,9 +314,6 @@ app.put("/api/updateRevenueSplit", async (req, res) => {
 });
 
 
-
-
-
 app.put("/api/updateCollectionPreSale", async (req, res) => {
   try {
     const id = req.query.collectionID;
@@ -418,4 +415,5 @@ app.listen(4000, (err) => {
 });
 
 app.use("/api", authRoutes);
+
 // https://minto-dev.onrender.com/register

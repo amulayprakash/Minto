@@ -141,7 +141,7 @@ export default function Membership() {
       <Container>
         <Row>
           <div className="mint-creator-button">
-            <Button as={Link}  to="/pass" variant="dark" size="lg">
+            <Button as={Link}  to="/pass" variant="outline-dark" size="md">
               MINT CREATOR PASS
             </Button>
             <br></br>

@@ -10,10 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 // import { Container } from '../../FooterStyles';
 
-const defaultSrc =
-  "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
-
-export default function Account({ childData }) {
+export default function Account({ childData, setChildData }) {
   const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
@@ -25,56 +22,80 @@ export default function Account({ childData }) {
   const [showModal, setShowModal] = useState(false);
 
   // const [image, setImage] = useState(defaultSrc);
-  const [cropData, setCropData] = useState("#");
+  // const [cropData, setCropData] = useState("#");
 
-  const cropperRef = useRef(null);
+  // const cropperRef = useRef(null);
+  // useEffect(() => {
+  //   console.log("Called From Account");
+  //   return () => {
+  //     setImage('')
+  //     setEmail('')
+  //     setFullName('')
+  //     setPassword('')
+  //   }
+  // }, [childData])
+  
+  // const onChange = (e) => {
+  //   e.preventDefault();
+  //   let files;
+  //   if (e.dataTransfer) {
+  //     files = e.dataTransfer.files;
+  //   } else if (e.target) {
+  //     files = e.target.files;
+  //   }
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     setImage(reader.result);
+  //     setShowModal(true);
+  //   };
+  //   reader.readAsDataURL(files[0]);
+  // };
 
-  const onChange = (e) => {
-    e.preventDefault();
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-      setShowModal(true);
-    };
-    reader.readAsDataURL(files[0]);
-  };
+  // const getCropData = () => {
+  //   if (typeof cropperRef.current.cropper !== "undefined") {
+  //     setCropData(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
+  //     console.log(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
+  //     setShowModal(false);
+  //   }
+  // };
 
-  const getCropData = () => {
-    if (typeof cropperRef.current.cropper !== "undefined") {
-      setCropData(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
-      console.log(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
-      setShowModal(false);
-    }
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  // const handleImageChange = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("image", cropData);
-    formData.append("fullName", fullName);
-    formData.append("username", username);
+    // const formData = new FormData();
+    // formData.append("email", email);
+    // formData.append("password", password);
+    // formData.append("image", cropData);
+    // formData.append("fullName", fullName);
+    // formData.append("username", username);
+    const user ={
+      email:email,
+      password:password,
+      fullName:fullName,
+      username:username,
+    }
     axios
-      .post(process.env.REACT_APP_PRODUCTION_URL + "/update", formData, {
+      .post(process.env.REACT_APP_PRODUCTION_URL + "/update", user, {
         withCredentials: true,
       })
       .then((response) => {
-        // console.log(response);
-        window.location.reload(false);
+        console.log("Response",response);
+        if(response.data.errors){
+          // Validation pending...
+          window.location.reload(false);
+        }else{
+          setChildData(response.data.message)
+          setImage('')
+          setEmail('')
+          setFullName('')
+          setPassword('')
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -87,14 +108,14 @@ export default function Account({ childData }) {
   return (
     <>
       <Form className="form-class" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasic1">
+        {/* <Form.Group className="mb-3" controlId="formBasic1">
           <Form.Label>Upload image</Form.Label>
           <Form.Control
             type="file"
             accept=".jpg,.jpeg,.png"
             onChange={onChange}
           />
-        </Form.Group>
+        </Form.Group> */}
         <Form.Group className="mb-3" controlId="formBasic2">
           <Form.Label>Full Name</Form.Label>
           <Form.Control
@@ -135,11 +156,12 @@ export default function Account({ childData }) {
           />
         </Form.Group>
         <Button className="save-changes-btn" variant="dark" type="submit">
-          Save Changes
+          SAVE CHANGES
         </Button>
         {/* <Crop></Crop> */}
       </Form>
-      <Modal
+
+      {/* <Modal
         show={showModal}
         onHide={handleCloseModal}
         size="lg"
@@ -154,13 +176,7 @@ export default function Account({ childData }) {
         <Modal.Body>
           <div className="outer-div">
             <div className="inner-left-div">
-              {/* {image && (
-            <img
-            src={URL.createObjectURL(image)}
-            alt="Selected Image"
-            style={{ maxWidth: "100%" }}
-            />
-          )} */}
+
               {image && (
                 <Cropper
                   style={{ height: 400, width: "100%" }}
@@ -191,8 +207,8 @@ export default function Account({ childData }) {
             Continue
           </Button>
         </Modal.Footer>
-      </Modal>
-      {/* <img style={{ width: "100%" }} src={cropData} alt="cropped" /> */}
+      </Modal> */}
+
     </>
   );
 }

@@ -22,6 +22,7 @@ export default function MyPass(props) {
   const contractAddress = "0xA190DA981d7c48694A26b505e4c3543fF5C0C08c";
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
+  const [tokenOwner, setTokenOwner] = useState("");
   const [contractInstance, setContractInstance] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
@@ -64,10 +65,11 @@ export default function MyPass(props) {
 
         const result = await maticContract.getActivatedTokenByOwner(
           signerAddress
-        );
-        const count = await maticContract.getPassMembersCount(
-          result.toNumber()
-        );
+        ); 
+        const count = await maticContract.getPassMembersCount(result.toNumber());
+        const owner = await maticContract.getActivatedOwnerByToken(result.toNumber());
+        setTokenOwner(owner);
+
         for (let i = 0; i < count; i++) {
           const address = await maticContract.getPassMemberAt(
             result.toNumber(),
@@ -149,7 +151,6 @@ export default function MyPass(props) {
         </>
       ) : (
         <>
-          {/* <div>{data}</div> */}
           <div className="table-div">
             <Container>
               <br></br>
@@ -181,10 +182,16 @@ export default function MyPass(props) {
                     </tr>
                   </thead>
                   <tbody>
+                      <tr>
+                        <td>{0}</td>
+                        <td colSpan={2}>{tokenOwner}</td>
+                        <td>Owner</td>
+                      </tr>
                     {members.map((data, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{data}</td>
+                        <td colSpan={2}>{data}</td>
+                        <td>Member</td>
                       </tr>
                     ))}
                   </tbody>
@@ -211,7 +218,7 @@ export default function MyPass(props) {
               <Form.Label>Public Address</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="0x000000000000000000000000000000000000"
+                placeholder="Enter address to add"
                 autoFocus
                 value={newMember}
                 onChange={handleMember}
@@ -240,7 +247,7 @@ export default function MyPass(props) {
               <Form.Label>Public Address</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="0x000000000000000000000000000000000000"
+                placeholder="Enter address to remove"
                 autoFocus
                 value={newMember}
                 onChange={handleMember}

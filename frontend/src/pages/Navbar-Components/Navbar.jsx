@@ -30,12 +30,11 @@ function MyNavbar(props) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     const verifyUser = async () => {
-      console.log(cookies);
       if (!cookies.jwt) {
         navigate("/register");
       } else {
-        const { data } = await axios.post(
-          process.env.REACT_APP_PRODUCTION_URL,
+
+        const { data } = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/`,
           {
             token: cookies.jwt,
           },
@@ -44,7 +43,7 @@ function MyNavbar(props) {
           }
         );
 
-        console.log(data);
+        // console.log("Data",data);
         props.onData(data);
         if (!data.status) {
           // removeCookie("jwt");

@@ -75,9 +75,16 @@ export default function Detail() {
 
   const handleSelect = (selectedKey) => {
     setActiveKey(selectedKey);
+    localStorage.setItem('activeKey', selectedKey);
+
   };
 
   useEffect(() => {
+    const savedActiveKey = localStorage.getItem('activeKey');
+    if (savedActiveKey) {
+      setActiveKey(savedActiveKey);
+    }
+
     const getCollections = async () => {
       try {
         const res = await axios.get(
@@ -106,6 +113,7 @@ export default function Detail() {
       setQuantityWPublic(null);
       setQuantityTPublic(null);
       setActiveKey("/overview");
+      localStorage.removeItem('activeKey');
     };
   }, []);
 
