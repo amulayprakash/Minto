@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import AuthNavbar from "../Navbar-Components/AuthNavbar";
 import Footer from "../Footer-Components/Footer";
 import "../../index.css";
+import { GoogleLogin } from "@react-oauth/google";
 import Cookies from "universal-cookie";
 const PREFIX = "MINTO-";
 
@@ -42,6 +43,7 @@ function Login() {
     toast.error(error, {
       position: "bottom-right",
     });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -52,11 +54,6 @@ function Login() {
         },
         { withCredentials: true }
       );
-
-      // ckies.set("jwt", data.cookie.token, {
-      //   path: "/",
-      //   maxAge: data.cookie.maxAge,
-      // });
 
       setCookie("jwt", data.cookie.token, {
         path: "/",
@@ -79,7 +76,49 @@ function Login() {
           if (email) generateError(email);
           else if (password) generateError(password);
         } else {
-          console.log("Navigate to dashboard")
+          console.log("Navigate to dashboard");
+          navigate("/dashboard");
+        }
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const handleGoogleLogin = async (decoded) => {
+    try {
+      const { data } = await axios.post(
+        process.env.REACT_APP_PRODUCTION_URL + "/login",
+        {
+          origin: "google",
+          credential: decoded,
+        },
+        { withCredentials: true }
+      );
+
+      setCookie("jwt", data.cookie.token, {
+        path: "/",
+        maxAge: data.cookie.maxAge,
+      });
+
+      localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
+      localStorage.setItem(
+        PREFIX + "username",
+        JSON.stringify(data.user.username)
+      );
+      localStorage.setItem(
+        PREFIX + "imageURL",
+        JSON.stringify(data.user.photo)
+      );
+      localStorage.setItem(PREFIX + "origin", "google");
+      console.log(data);
+      if (data) {
+        if (data.errors) {
+          const { email, username, password } = data.errors;
+          if (email) generateError(email);
+          else if (password) generateError(password);
+        } else {
+          console.log("Navigate to dashboard");
           navigate("/dashboard");
         }
       }
@@ -146,6 +185,16 @@ function Login() {
               <button type="submit" className="btn btn-dark">
                 Submit
               </button>
+              <div style={{ textAlign: "center", margin: "20px auto" }}>
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    handleGoogleLogin(credentialResponse.credential);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+              </div>
             </div>
             <p className="forgot-password text-right mt-2">
               Don't have an account ? <Link to="/register">Register</Link>

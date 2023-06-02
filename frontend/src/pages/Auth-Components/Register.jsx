@@ -7,6 +7,8 @@ import AuthNavbar from "../Navbar-Components/AuthNavbar";
 import Footer from "../Footer-Components/Footer";
 import Cookies from "universal-cookie";
 import "../../index.css";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 const PREFIX = "MINTO-";
 
 function Register() {
@@ -48,8 +50,6 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // console.log("Values",values);
-      // console.log("REACT_APP_PRODUCTION_URL",process.env.REACT_APP_PRODUCTION_URL)
       const { data } = await axios.post(
         process.env.REACT_APP_PRODUCTION_URL + "/register",
         {
@@ -57,23 +57,74 @@ function Register() {
         },
         { withCredentials: true }
       );
-      console.log("data",data)
-      // ckies.set("jwt", data.cookie.token, {
-      //   path: "/",
-      //   maxAge: data.cookie.maxAge,
-      // });
+      console.log("data", data);
+
       localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
-      localStorage.setItem(PREFIX + "username",JSON.stringify(data.user.username));
-      localStorage.setItem(PREFIX + "imageURL",JSON.stringify(data.user.photo));
-      
+      localStorage.setItem(
+        PREFIX + "username",
+        JSON.stringify(data.user.username)
+      );
+      localStorage.setItem(
+        PREFIX + "imageURL",
+        JSON.stringify(data.user.photo)
+      );
+
       if (data) {
         if (data.errors) {
-          console.log("data.errors")
+          console.log("data.errors");
           const { email, username, name, password } = data.errors;
           if (email) generateError(email);
           else if (password) generateError(password);
         } else {
-          console.log("Navigate to login")
+          console.log("Navigate to login");
+          alert("Registered successfully! Now you can login.");
+          navigate("/login");
+        }
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const handleGoogleSubmit = async (decoded) => {
+    console.log(decoded);
+    const final = {
+      email: decoded.email,
+      username: decoded.given_name + Date.now(),
+      name: decoded.name,
+      password: "",
+      origin: "google",
+      photo: decoded.picture,
+    };
+
+    try {
+      const { data } = await axios.post(
+        process.env.REACT_APP_PRODUCTION_URL + "/register",
+        {
+          ...final,
+        },
+        { withCredentials: true }
+      );
+      console.log("data", data);
+
+      localStorage.setItem(PREFIX + "name", JSON.stringify(data.user.name));
+      localStorage.setItem(
+        PREFIX + "username",
+        JSON.stringify(data.user.username)
+      );
+      localStorage.setItem(
+        PREFIX + "imageURL",
+        JSON.stringify(data.user.photo)
+      );
+
+      if (data) {
+        if (data.errors) {
+          console.log("data.errors");
+          const { email, username, name, password } = data.errors;
+          if (email) generateError(email);
+          else if (password) generateError(password);
+        } else {
+          console.log("Navigate to login");
           alert("Registered successfully! Now you can login.");
           navigate("/login");
         }
@@ -142,6 +193,17 @@ function Register() {
               <button type="submit" className="btn btn-dark">
                 Submit
               </button>
+              <div style={{ textAlign: "center", margin: "20px auto" }}>
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    let decoded = jwt_decode(credentialResponse.credential);
+                    handleGoogleSubmit(decoded);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+              </div>
             </div>
             <p className="forgot-password text-right mt-2">
               Already have an account ?<Link to="/login"> Login</Link>

@@ -1,13 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import "./index.css";
+import App from "./App";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <GoogleOAuthProvider clientId={process.env.REACT_APP_client_id}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </GoogleOAuthProvider>,
+  document.getElementById("root")
 );
-

@@ -141,6 +141,7 @@ export default function Account({ childData, setChildData }) {
             placeholder={childData.email}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            disabled
           />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.

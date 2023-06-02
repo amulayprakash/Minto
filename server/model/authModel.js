@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required: [true, "Username is Required"],
+    // required: [true, "Username is Required"],
     unique: true,
   },
   name: {
@@ -19,11 +19,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is Required"],
-  }, 
-  photo:{
+  },
+  photo: {
     type: String,
     default: "uploads/default_photo.png",
-  } 
+  },
+  origin: { type: String, default: "password" },
 });
 
 userSchema.pre("save", async function (next) {
@@ -32,7 +33,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.statics.login = async function (email,username, password) {
+userSchema.statics.login = async function (email, username, password) {
   const user = await this.findOne({ email });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);

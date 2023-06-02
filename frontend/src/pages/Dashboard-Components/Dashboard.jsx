@@ -332,6 +332,7 @@ export default function Dashboard() {
                   <div>Loading...</div>
                 ) : (
                   <img
+                    alt="dp"
                     className="profile-image"
                     src={
                       process.env.REACT_APP_PRODUCTION_URL +
