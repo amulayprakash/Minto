@@ -1,28 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.ba21ca9c.css",
-<<<<<<< HEAD
-    "main.js": "/static/js/main.0085df72.js",
-=======
-    "main.js": "/static/js/main.aaaaa478.js",
->>>>>>> 36cd4f83085a56cb4c9e6ab38c533259ebe34edb
+    "main.js": "/static/js/main.6d99d7ed.js",
     "static/media/banner.png": "/static/media/banner.84b15ef823d85c4df4b2.png",
     "static/media/polygon-matic-logo.png": "/static/media/polygon-matic-logo.1140771b39c8269a6d1b.png",
     "static/media/image.jpg": "/static/media/image.58326d1e4dd82806276d.jpg",
     "index.html": "/index.html",
     "main.ba21ca9c.css.map": "/static/css/main.ba21ca9c.css.map",
-<<<<<<< HEAD
-    "main.0085df72.js.map": "/static/js/main.0085df72.js.map"
+    "main.6d99d7ed.js.map": "/static/js/main.6d99d7ed.js.map"
   },
   "entrypoints": [
     "static/css/main.ba21ca9c.css",
-    "static/js/main.0085df72.js"
-=======
-    "main.aaaaa478.js.map": "/static/js/main.aaaaa478.js.map"
-  },
-  "entrypoints": [
-    "static/css/main.ba21ca9c.css",
-    "static/js/main.aaaaa478.js"
->>>>>>> 36cd4f83085a56cb4c9e6ab38c533259ebe34edb
+    "static/js/main.6d99d7ed.js"
   ]
 }
