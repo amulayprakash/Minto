@@ -153,7 +153,7 @@ app.post(
     const { username } = req.body;
     const { name } = req.body;
     const { symbol } = req.body;
-    const { url } = req.body;
+    // const { url } = req.body;
     const { primary } = req.body;
     const { secondary } = req.body;
     const { rpercent } = req.body;
@@ -165,7 +165,7 @@ app.post(
       collectionID: id,
       name: name,
       symbol: symbol,
-      url: url,
+      // url: url,
       primary: primary,
       secondary: secondary,
       rpercent: rpercent,

@@ -75,6 +75,9 @@ export default function Overview({ collection }) {
         pauseOnHover
         theme="light"
       />
+      {
+        collection.isDeployed ?
+        <>
       <Card className="overview-card" style={{ width: "100%" }}>
         <Card.Body style={{ display: "flex", alignItems: "center" }}>
           <div style={{ width: "80%", textAlign: "left" }}>
@@ -104,6 +107,12 @@ export default function Overview({ collection }) {
           </div>
         </Card.Body>
       </Card>
+        </>
+        :
+        <>
+        <div>Collection is currently in draft stage. This section will become active once you deploy the contract</div>
+        </>
+      }
     </>
   );
 }

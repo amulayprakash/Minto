@@ -62,7 +62,7 @@ export default function Detail() {
 
   const [NFTCount, setNFTCount] = useState(null);
   const [perNFTPrice, setPerNFTPrice] = useState(null);
-  const [quantityW, setQuantityW] = useState(null);
+  // const [quantityW, setQuantityW] = useState(null);
   const [quantityT, setQuantityT] = useState(null);
 
   const [NFTCountPublic, setNFTCountPublic] = useState(null);
@@ -70,7 +70,7 @@ export default function Detail() {
   const [quantityWPublic, setQuantityWPublic] = useState(null);
   const [quantityTPublic, setQuantityTPublic] = useState(null);
 
-  const [activeKey, setActiveKey] = useState("/overview");
+  const [activeKey, setActiveKey] = useState("/drop");
   const { id } = useParams();
 
   const handleSelect = (selectedKey) => {
@@ -105,7 +105,7 @@ export default function Detail() {
       setAddress(null);
       setNFTCount(null);
       setPerNFTPrice(null);
-      setQuantityW(null);
+      // setQuantityW(null);
       setQuantityT(null);
 
       setNFTCountPublic(null);
@@ -149,6 +149,7 @@ export default function Detail() {
       collection.secondary,
       collection.rpercent
     );
+    window.location.reload(false);
     await contract.deployed();
 
     console.log("Contract deployed successfully", contract.address);
@@ -162,7 +163,7 @@ export default function Detail() {
     } catch (error) {
       console.log(error);
     }
-    window.location.reload(false);
+    
     event.preventDefault();
     handleModalClose();
   };
@@ -184,7 +185,8 @@ export default function Detail() {
     const transaction = await myContract.startSale(
       NFTCount,
       quantityT,
-      quantityW,
+      // quantityW,
+      10,
       perNFTPrice,
       true
     );
@@ -413,7 +415,7 @@ export default function Detail() {
             <div className="detail-deploy-button">
               {collection.isDeployed ? (
                 <>
-                  <Button
+                  {/* <Button
                     className="create-dropdown"
                     onClick={handlePrepareDropClick}
                     size="md"
@@ -421,7 +423,45 @@ export default function Detail() {
                     style={{marginRight:"1.5rem"}}
                   >
                     PREPARE DROP
-                  </Button>
+                  </Button> */}
+                {collection.publicSaleLive ? (
+                  <>
+                    <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleStopPublicSale}  variant="outline-dark" > STOP PUBLIC SALE </Button>{" "}
+                    <br></br>
+                    <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleViewPublicMintPage} variant="outline-dark"> VIEW PUBLIC MINT PAGE </Button>{" "}
+                    <br></br>
+                  </>
+                ) : (
+                  collection.waitlistlive ? (
+                    <>
+                    <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleStopWaitList}  variant="outline-dark" > STOP WAITLIST </Button>{" "}
+                    {/* <br></br> */}
+                    <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleViewWaitlistPage} variant="outline-dark"> VIEW WAITLIST PAGE</Button>{" "}
+                    {/* <br></br> */}
+                   </>
+                  ) : (
+                    <>
+                    {collection.preSaleLive ? (
+                      <>
+                      <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleStopPreSale} variant="outline-dark" > STOP PRESALE</Button>{" "}
+                      {/* <br></br> */}
+                      <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleViewWaitlistPage} variant="outline-dark"> VIEW PRESALE PAGE</Button>{" "}
+                      {/* <br></br> */}
+                      </>
+                    ) : (
+                      <>
+                        {/* <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handleWailistMoadalClick} variant="outline-dark" > CONFIGURE WAITLIST </Button> */}
+                        {/* <br></br> */}
+                        <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handlePreSaleClick} variant="outline-dark"> START PRESALE </Button>{" "}
+                        {/* <br></br> */}
+                        <Button style={{ borderRadius: 0, marginLeft: "0.2rem" }} onClick={handlePublicSaleClick} variant="outline-dark"> START PUBLIC SALE </Button>{" "}
+                        {/* <br></br> */}
+                      </>
+                    )}
+                    
+                    </>
+                  )
+                )}
                   <Button
                     className="create-dropdown"
                     // onClick={handlePrepareDropClick}
@@ -454,16 +494,17 @@ export default function Detail() {
                   size="md"
                   variant="dark"
                 >
-                  CREATE CONTRACT
+                  DEPLOY CONTRACT
                 </Button>
               )}
             </div>
+
             <div className="MuiBox-root">
               <h2 className="detail-collection-name">{collection.name}</h2>
               <br></br>
               <h6>
                 {collection.symbol} . {collection.rpercent}% Royalty .{" "}
-                {collection.network}
+                {collection.network} . {collection.isDeployed ? <span style={{color:"Blue"}}>Live</span>: <span style={{color:"Green"}}>Draft</span>}
               </h6>
               <h6>{collection.description}</h6>
               <br></br>
@@ -658,7 +699,7 @@ export default function Detail() {
                       onChange={(event) => setPerNFTPrice(event.target.value)}
                     />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasic">
+                  {/* <Form.Group className="mb-3" controlId="formBasic">
                     <Form.Label>MAX QUANTITY PER WALLET ADDRESS</Form.Label>
                     <Form.Control
                       type="number"
@@ -666,12 +707,12 @@ export default function Detail() {
                       value={quantityW}
                       onChange={(event) => setQuantityW(event.target.value)}
                     />
-                  </Form.Group>
+                  </Form.Group> */}
                   <Form.Group className="mb-3" controlId="formBasic">
                     <Form.Label>MAX QUANTITY PER MINT TRANSACTION</Form.Label>
                     <Form.Control
                       type="number"
-                      placeholder="1"
+                      placeholder="10"
                       value={quantityT}
                       onChange={(event) => setQuantityT(event.target.value)}
                     />
@@ -725,7 +766,7 @@ export default function Detail() {
                     <Form.Label>MAX QUANTITY PER WALLET ADDRESS</Form.Label>
                     <Form.Control
                       type="number"
-                      placeholder="1"
+                      placeholder="10"
                       value={quantityWPublic || ""}
                       onChange={(event) =>
                         setQuantityWPublic(event.target.value)
@@ -736,7 +777,7 @@ export default function Detail() {
                     <Form.Label>MAX QUANTITY PER MINT TRANSACTION</Form.Label>
                     <Form.Control
                       type="number"
-                      placeholder="1"
+                      placeholder="10"
                       value={quantityTPublic || ""}
                       onChange={(event) =>
                         setQuantityTPublic(event.target.value)

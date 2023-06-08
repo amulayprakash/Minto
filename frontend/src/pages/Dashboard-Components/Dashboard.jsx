@@ -43,7 +43,7 @@ export default function Dashboard() {
 
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
-  const [url, setUrl] = useState("");
+  // const [url, setUrl] = useState("");
 
   const [primary, setPrimary] = useState(
     localStorage.getItem("REIGNKIT-address") == null
@@ -166,7 +166,7 @@ export default function Dashboard() {
 
       setName("");
       setSymbol("");
-      setUrl("");
+      // setUrl("");
 
       setPrimary("");
       setSecondary("");
@@ -204,7 +204,7 @@ export default function Dashboard() {
     );
     formData.append("name", name);
     formData.append("symbol", symbol);
-    formData.append("url", url);
+    // formData.append("url", url);
     formData.append("primary", primary);
     formData.append("secondary", secondary);
     formData.append("rpercent", rpercent);
@@ -295,8 +295,12 @@ export default function Dashboard() {
     );
     localStorage.setItem(PREFIX + "imageURL", JSON.stringify(data.user.photo));
   };
-
-  const handleReveneSplitCreate = () => {};
+  
+  const handleNoSplitFound = () => {
+    console.log("Called");
+    handleThirdModalClose();
+    handleFirstModalRevenueSplitShow();
+  };
 
   const styles1 = {
     display: "flex",
@@ -418,7 +422,7 @@ export default function Dashboard() {
             )}
             {activeKey === "/mypass" && <MyPass />}
             {activeKey === "/revenvesplit" && (
-              <RevenveSplit onButtonClick={handleReveneSplitCreate} />
+              <RevenveSplit onButtonClick={handleFirstModalRevenueSplitShow} />
             )}
           </div>
         </div>
@@ -542,7 +546,7 @@ export default function Dashboard() {
                 onChange={(event) => setSymbol(event.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasic">
+            {/* <Form.Group className="mb-3" controlId="formBasic">
               <Form.Label>Collection URL</Form.Label>
               <Form.Control
                 type="text"
@@ -553,7 +557,7 @@ export default function Dashboard() {
                 If you have a server configured for throwing the metadata for
                 your collection you can fill this URI, otherwise leave it blank.
               </Form.Text>
-            </Form.Group>
+            </Form.Group> */}
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -632,13 +636,13 @@ export default function Dashboard() {
                   overlay={
                     <Popover id="popover-basic">
                       <Popover.Header as="h3">
-                        Create Revenve Split{" "}
+                        Revenve Splits{" "}
                       </Popover.Header>
                       <Popover.Body>
                         {isLoading ? (
                           <div>Loading...</div>
                         ) : splits.length === 0 ? (
-                          "No Revenue Split Contract found"
+                          <div onClick={()=>{handleNoSplitFound()}}>No Revenue Split Contract found</div>
                         ) : (
                           <>
                             {splits.map((split, i) => {
@@ -699,13 +703,13 @@ export default function Dashboard() {
                   overlay={
                     <Popover id="popover-basic">
                       <Popover.Header as="h3">
-                        Create Revenve Split
+                        Revenve Splits
                       </Popover.Header>
                       <Popover.Body>
                         {isLoading ? (
                           <div>Loading...</div>
                         ) : splits.length === 0 ? (
-                          "No Revenue Split Contract found"
+                          <div onClick={()=>{handleNoSplitFound()}}>No Revenue Split Contract found</div>
                         ) : (
                           <>
                             {splits.map((split, i) => {
@@ -811,21 +815,21 @@ export default function Dashboard() {
           Please add a image, banner and description for your collection.
           <Form className="form-class">
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Upload image</Form.Label>
+              <Form.Label>Upload image (Optional)</Form.Label>
               <Form.Control
                 type="file"
                 onChange={(event) => setImage(event.target.files[0])}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Upload banner</Form.Label>
+              <Form.Label>Upload banner (Optional)</Form.Label>
               <Form.Control
                 type="file"
                 onChange={(event) => setBanner(event.target.files[0])}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasic">
-              <Form.Label>Collection Description</Form.Label>
+              <Form.Label>Collection Description (Optional)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Tell us about your collection"
@@ -927,8 +931,8 @@ export default function Dashboard() {
         </Modal.Header>
         <Modal.Body>
           Please enter a unique name for your revenue split and define each
-          recipient’s wallet address and split amount. The overall split amount
-          must total 100.
+          recipient’s wallet address and split amount. The overall split precentage
+          must total 100 percent.
           <Form className="form-class">
             <Form.Group controlId="formDropdown">
               <br></br>
@@ -979,7 +983,7 @@ export default function Dashboard() {
                   />
                 </Col>
                 <Col md={3}>
-                  <Form.Label>Split Amount</Form.Label>
+                  <Form.Label>Split Percentage</Form.Label>
                   <Form.Control
                     type="number"
                     value={field.split}

@@ -332,6 +332,8 @@ export default function Drop({ collection }) {
         >
           IMPORT ASSETS
         </Button>
+        {collection.isDeployed?
+        <>
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
@@ -342,24 +344,29 @@ export default function Drop({ collection }) {
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
-          onClick={handleButton4Click}
-        >
-          REVEAL
-        </Button>
-        <Button
-          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
-          variant="outline-dark"
           onClick={handleButton5Click}
         >
-          UNREVEAL ASSET
+          SET REVEAL PLACEHOLDER's
         </Button>
-        <Button
+        <Button 
+          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+          variant="outline-dark"
+          onClick={handleButton4Click}
+        >
+          REVEAL ASSETS
+        </Button> 
+        {/* <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
           onClick={handleButton6Click}
         >
           SET BASE URI
-        </Button>
+        </Button> */}
+        </>
+        :
+        <>
+        </>
+        }
       </div>
       <br></br>
 
@@ -368,11 +375,39 @@ export default function Drop({ collection }) {
           <tr>
             <th>Token ID</th>
             <th>Name</th>
+            <th>Description</th>
             <th>Revealed</th>
             <th>Minted</th>
           </tr>
         </thead>
         <tbody>
+          {collection.isDeployed?
+          <>
+          <tr>
+            <td>
+            <Button
+              style={{ borderRadius: 0}}
+              variant="outline-dark"
+              
+              onClick={handleButton2Click}
+            >
+              SET REVEAL PLACEHOLDER's
+            </Button>
+            </td>
+            <td>
+              {collection.preRevealName ? collection.preRevealName : <></>}
+            </td>
+            <td>
+              {collection.preRevealDescription ? collection.preRevealDescription : <></>}
+            </td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          </>
+          :
+          <>
+          </>}
+          
           {revealArray.map((curr, i) => {
             return (
               <tr key={i}>
@@ -419,38 +454,18 @@ export default function Drop({ collection }) {
             }}
           />
           <br></br>
-          {collection.isDeployed ? (
-            <>
-              <Button
+          <Button
                 style={{
                   display: "block",
                   width: "100%",
                   boxSizing: "border-box",
                 }}
                 onClick={handleAirdropCSV}
-                variant="dark"
-              >
+                variant="dark" >
                 {" "}
                 AIRDROP NFTs VIA CSV{" "}
-              </Button>{" "}
-            </>
-          ) : (
-            <>
-              <Button
-                style={{
-                  display: "block",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-                onClick={handleAirdropCSV}
-                variant="dark"
-                disabled
-              >
-                {" "}
-                CONTRACT NOT DEPLOYED (DISABLED)
-              </Button>{" "}
-            </>
-          )}
+          </Button>{" "}
+            
           <br></br>
           <hr></hr>
           <p>Or Airdrop Manually</p>
@@ -486,41 +501,22 @@ export default function Drop({ collection }) {
             CLOSE
           </Button>{" "}
           <br></br>
-          {collection.isDeployed ? (
-            <>
-              <Button
-                style={{
-                  display: "block",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-                onClick={handleAirdropClick}
-                variant="dark"
-              >
-                SEND TRANSACTION
-              </Button>{" "}
-              <br></br>
-            </>
-          ) : (
-            <>
-              <Button
-                style={{
-                  display: "block",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-                onClick={handleAirdropClick}
-                variant="dark"
-                disabled
-              >
-                CONTRACT NOT DEPLOYED (DISABLED)
-              </Button>{" "}
-              <br></br>
-            </>
-          )}
+          <Button
+            style={{
+              display: "block",
+              width: "100%",
+              boxSizing: "border-box",
+            }}
+            onClick={handleAirdropClick}
+            variant="dark"
+          >
+            SEND TRANSACTION
+          </Button>{" "}
+          <br></br>
         </Modal.Footer>
       </Modal>
 
+      {/* UNUSED */}
       <Modal
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
@@ -623,7 +619,7 @@ export default function Drop({ collection }) {
             variant="dark"
             onClick={handleUploadAsset}
           >
-            UPDATE THESE VALUES
+            UPLOAD ASSETS
           </Button>{" "}
           <br></br>
         </Modal.Footer>

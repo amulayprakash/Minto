@@ -196,10 +196,12 @@ export default function Waitlist({ collection }) {
         >
           IMPORT/ADD
         </Button>
-        <OverlayTrigger placement="bottom" overlay={
+        {/* <OverlayTrigger placement="bottom" overlay={
             <Tooltip id="tooltip-text">
               Publish the Merkle Root for the Waitlist Addresses
-            </Tooltip>}>
+            </Tooltip>}> */}
+          {collection.isDeployed ?
+          <>
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
@@ -207,20 +209,24 @@ export default function Waitlist({ collection }) {
           >
           PUBLISH
         </Button>
-        </OverlayTrigger>
+          </>
+          :
+          <>
+          </>}
+        {/* </OverlayTrigger> */}
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
           disabled
         >
-          CSV EXPORT
+          DELETE ALL
         </Button>
         <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
           disabled
         >
-          DELETE
+          CSV EXPORT
         </Button>
       </div>
       <br></br>

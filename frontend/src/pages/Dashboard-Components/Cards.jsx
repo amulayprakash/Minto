@@ -4,7 +4,8 @@ import Image from "../../assets/image.jpg";
 import Banner from "../../assets/banner.png";
 import axios from "axios";
 import Detail from "../Collection-Components/Detail";
-
+import editlogo from "../../assets/icons8-edit-30.png";
+import deletelogo from "../../assets/icons8-delete-30.png";
 import "../../index.css";
 
 const Cards = ({ collection, idx }) => {
@@ -84,7 +85,7 @@ const Cards = ({ collection, idx }) => {
           }
           alt="Banner"
         />
-        <button className="tempcard-dropdown-btn" onClick={toggleDropdown}>
+        {/* <button className="tempcard-dropdown-btn" onClick={toggleDropdown}>
           :
         </button>
         <div
@@ -93,10 +94,10 @@ const Cards = ({ collection, idx }) => {
           onClick={handleDropdownClick}
         >
           <ul>
-            <li onClick={() => handleCardEdit(collection)}>Edit</li>
-            <li onClick={() => handleCardDelete(collection)}>Delete</li>
+            <li >Edit</li>
+            <li >Delete</li>
           </ul>
-        </div>
+        </div> */}
 
         <img
           className="tempcard-profile-img"
@@ -119,7 +120,25 @@ const Cards = ({ collection, idx }) => {
           </p>
         )}
         <p className="tempcard-text">{truncate(collection.description, 40)}</p>
-      </div> 
+        <div >
+        <img style={{marginRight:'20px'}}
+            onClick={() => handleCardEdit(collection)}
+            alt=""
+            src={editlogo}
+            width="35"
+            height="35"
+            className="d-inline-block align-top"
+          />
+        <img style={{marginRight:'0px'}}
+            onClick={() => handleCardDelete(collection)}
+            alt=""
+            src={deletelogo}
+            width="35"
+            height="35"
+            className="d-inline-block align-top"
+          />
+        </div>
+      </div>       
     </div>
   ); 
 };
