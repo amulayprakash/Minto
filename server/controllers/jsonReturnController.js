@@ -1,5 +1,6 @@
 const fs = require("fs");
 const NFTRevealModel = require("./../model/NFTRevealModel");
+const Collection = require("./../model/collectionModel");
 const path = require("path");
 
 module.exports.saveJson = async (req, res) => {
@@ -73,7 +74,6 @@ module.exports.getAllNftInfo = async (req, res) => {
       );
       data = JSON.parse(data);
     } catch (err) {
-      console.log(err);
       return res.status(403).json({ ok: false, msg: "Cannot read the file" });
     }
 
@@ -121,7 +121,6 @@ module.exports.getJson = async (req, res) => {
       );
       data = JSON.parse(data);
     } catch (err) {
-      console.log(err);
       return res.status(403).json({ ok: false, msg: "Cannot read the file" });
     }
 
@@ -139,22 +138,30 @@ module.exports.getJson = async (req, res) => {
     } else {
       let unreveal = null;
       try {
-        unreveal = fs.readFileSync(
-          path.resolve(
-            __dirname,
-            `../json-uploads/${collectionId}-placeholder.json`
-          ),
-          "utf-8"
-        );
-        unreveal = JSON.parse(unreveal);
+        // unreveal = fs.readFileSync(
+        //   path.resolve(
+        //     __dirname,
+        //     `../json-uploads/${collectionId}-placeholder.json`
+        //   ),
+        //   "utf-8"
+        // );
+        // unreveal = JSON.parse(unreveal);
+        unreveal = await Collection.find({ _id: collectionId });
+        if (unreveal.length !== 1) throw Error();
       } catch (err) {
         console.log(err);
-        return res.status(403).json({ ok: false, msg: "Cannot read the file" });
+        return res.status(403).json({ ok: false, msg: "Something went wrong" });
       }
-      if (!unreveal) {
+
+      if (!unreveal[0].preRevealImage) {
         return res.status(200).json({ name: "", image: null });
       } else {
-        return res.status(200).json(unreveal);
+        return res.status(200).json({
+          name: unreveal[0].preRevealName,
+          description: unreveal[0].preRevealDescription,
+          image: `http://localhost:4000/api/uploads/${unreveal[0].preRevealImage}`,
+          // image: `http://3.136.161.65/api/uploads/${unreveal[0].preRevealImage}`,
+        });
       }
     }
   } catch (err) {
@@ -247,7 +254,6 @@ module.exports.getPlaceholderJson = async (req, res) => {
       );
       data = JSON.parse(data);
     } catch (err) {
-      console.log(err);
       return res.json({ ok: false, msg: "Cannot read the file" });
     }
 
