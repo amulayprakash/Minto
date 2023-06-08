@@ -20,6 +20,9 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
+import jf from "./../../assets/jf.png";
+import ml from "./../../assets/ml.png";
+
 import "react-toastify/dist/ReactToastify.css";
 import "../../index.css";
 
@@ -28,8 +31,8 @@ export default function Drop({ collection }) {
   const [modal2Show, setModal2Show] = useState(false);
   const [modal3Show, setModal3Show] = useState(false);
   const [modal4Show, setModal4Show] = useState(false);
-  const [modal5Show, setModal5Show] = useState(false);
   const [modal6Show, setModal6Show] = useState(false);
+  const [modal7Show, setModal7Show] = useState(false);
 
   const [address, setAddress] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -48,15 +51,15 @@ export default function Drop({ collection }) {
   const handleModal2Close = () => setModal2Show(false);
   const handleModal3Close = () => setModal3Show(false);
   const handleModal4Close = () => setModal4Show(false);
-  const handleModal5Close = () => setModal5Show(false);
   const handleModal6Close = () => setModal6Show(false);
+  const handleModal7Close = () => setModal7Show(false);
 
   const handleButtonClick = () => setModalShow(true);
   const handleButton2Click = () => setModal2Show(true);
   const handleButton3Click = () => setModal3Show(true);
   const handleButton4Click = () => setModal4Show(true);
-  const handleButton5Click = () => setModal5Show(true);
   const handleButton6Click = () => setModal6Show(true);
+  const handleButton7Click = () => setModal7Show(true);
 
   const [parsedData, setParsedData] = useState([]);
   const [tableRows, setTableRows] = useState([]);
@@ -288,8 +291,6 @@ export default function Drop({ collection }) {
         { withCredentials: true }
       );
 
-      handleModal5Close();
-
       toast(data.msg);
 
       setTrigger((curr) => !curr);
@@ -328,45 +329,38 @@ export default function Drop({ collection }) {
         <Button
           style={{ borderRadius: 0 }}
           variant="outline-dark"
-          onClick={handleButton3Click}
+          onClick={handleButton7Click}
         >
           IMPORT ASSETS
         </Button>
-        {collection.isDeployed?
-        <>
-        <Button
-          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
-          variant="outline-dark"
-          onClick={handleButtonClick}
-        >
-          AIRDROP
-        </Button>
-        <Button
-          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
-          variant="outline-dark"
-          onClick={handleButton5Click}
-        >
-          SET REVEAL PLACEHOLDER's
-        </Button>
-        <Button 
-          style={{ borderRadius: 0, marginLeft: "0.2rem" }}
-          variant="outline-dark"
-          onClick={handleButton4Click}
-        >
-          REVEAL ASSETS
-        </Button> 
-        {/* <Button
+        {collection.isDeployed ? (
+          <>
+            <Button
+              style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+              variant="outline-dark"
+              onClick={handleButtonClick}
+            >
+              AIRDROP
+            </Button>
+
+            <Button
+              style={{ borderRadius: 0, marginLeft: "0.2rem" }}
+              variant="outline-dark"
+              onClick={handleButton4Click}
+            >
+              REVEAL ASSETS
+            </Button>
+            {/* <Button
           style={{ borderRadius: 0, marginLeft: "0.2rem" }}
           variant="outline-dark"
           onClick={handleButton6Click}
         >
           SET BASE URI
         </Button> */}
-        </>
-        :
-        <>
-        </>
-        }
+          </>
+        ) : (
+          <></>
+        )}
       </div>
       <br></br>
 
@@ -375,39 +369,42 @@ export default function Drop({ collection }) {
           <tr>
             <th>Token ID</th>
             <th>Name</th>
-            <th>Description</th>
+            {/* <th>Description</th> */}
             <th>Revealed</th>
             <th>Minted</th>
           </tr>
         </thead>
         <tbody>
-          {collection.isDeployed?
-          <>
-          <tr>
-            <td>
-            <Button
-              style={{ borderRadius: 0}}
-              variant="outline-dark"
-              
-              onClick={handleButton2Click}
-            >
-              SET REVEAL PLACEHOLDER's
-            </Button>
-            </td>
-            <td>
-              {collection.preRevealName ? collection.preRevealName : <></>}
-            </td>
-            <td>
-              {collection.preRevealDescription ? collection.preRevealDescription : <></>}
-            </td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          </>
-          :
-          <>
-          </>}
-          
+          {collection.isDeployed ? (
+            <>
+              <tr>
+                <td>
+                  <Button
+                    style={{ borderRadius: 0 }}
+                    variant="outline-dark"
+                    onClick={handleButton2Click}
+                  >
+                    SET REVEAL PLACEHOLDER's
+                  </Button>
+                </td>
+                <td>
+                  {collection.preRevealName ? collection.preRevealName : <></>}
+                </td>
+                {/* <td>
+                  {collection.preRevealDescription ? (
+                    collection.preRevealDescription
+                  ) : (
+                    <></>
+                  )}
+                </td> */}
+                <td>-</td>
+                <td>-</td>
+              </tr>
+            </>
+          ) : (
+            <></>
+          )}
+
           {revealArray.map((curr, i) => {
             return (
               <tr key={i}>
@@ -455,17 +452,17 @@ export default function Drop({ collection }) {
           />
           <br></br>
           <Button
-                style={{
-                  display: "block",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-                onClick={handleAirdropCSV}
-                variant="dark" >
-                {" "}
-                AIRDROP NFTs VIA CSV{" "}
+            style={{
+              display: "block",
+              width: "100%",
+              boxSizing: "border-box",
+            }}
+            onClick={handleAirdropCSV}
+            variant="dark"
+          >
+            {" "}
+            AIRDROP NFTs VIA CSV{" "}
           </Button>{" "}
-            
           <br></br>
           <hr></hr>
           <p>Or Airdrop Manually</p>
@@ -646,6 +643,7 @@ export default function Drop({ collection }) {
               type="Number"
               placeholder="Starting index of NFT to be revealed"
               min={0}
+              value={revealIndex.stIndx}
               onChange={(e) => {
                 setRevealIndex((data) => {
                   return { ...data, stIndx: Number(e.target.value) };
@@ -662,6 +660,7 @@ export default function Drop({ collection }) {
               placeholder="Ending index of NFT to be revealed"
               max={revealArray.length}
               min={0}
+              value={revealIndex.endIdx}
               onChange={(e) => {
                 setRevealIndex((data) => {
                   return { ...data, endIdx: Number(e.target.value) };
@@ -674,71 +673,21 @@ export default function Drop({ collection }) {
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             variant="dark"
-            onClick={handleRevealNft}
+            onClick={() => {
+              setRevealIndex((data) => {
+                return { ...data, stIndx: 1, endIdx: revealArray.length };
+              });
+            }}
           >
-            Reveal these NFTs
-          </Button>{" "}
-          <br></br>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        show={modal5Show}
-        onHide={handleModal5Close}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            UPLOAD PLACEHOLDER NFT (JSON FILE)
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            <h5>Current Placeholder</h5>
-            {!unrevealed ? (
-              "Placeholder Not set"
-            ) : (
-              <>
-                <img src={unrevealed?.image} alt="Placeholder" />
-                <br />
-                Name: {unrevealed?.name || "Name cannot be read"}
-              </>
-            )}
-          </div>
+            Select All
+          </Button>
           <br />
-          <h5>
-            To download sample json file:{" "}
-            <em>
-              <Link to="/file/sample-placeholder.json" target="_blank" download>
-                Click Here
-              </Link>
-            </em>
-          </h5>
-
-          <div>
-            <br />
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>
-                <h3> Upload the Placeholder JSON File</h3>
-              </Form.Label>
-              <Form.Control
-                onChange={(e) => handleFileUpload(e)}
-                type="file"
-                size="lg"
-                accept=".json"
-              />
-            </Form.Group>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
           <Button
             style={{ display: "block", width: "100%", boxSizing: "border-box" }}
             variant="dark"
-            onClick={handleUploadPlaceholderAsset}
+            onClick={handleRevealNft}
           >
-            UPLOAD PLACEHOLDER ASSET
+            Reveal these NFTs
           </Button>{" "}
           <br></br>
         </Modal.Footer>
@@ -795,6 +744,42 @@ export default function Drop({ collection }) {
               </Button>{" "}
             </>
           )}
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={modal7Show}
+        onHide={handleModal7Close}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            SET BASE URI IN CONTRACT
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <br />
+          <div className="options">
+            <div className="one-op">
+              <img src={jf} alt="" />
+              <h5
+                onClick={() => {
+                  handleModal7Close();
+                  handleButton3Click();
+                }}
+              >
+                Upload a metadata JSON file
+              </h5>
+            </div>
+            <div className="two-op">
+              <img src={ml} alt="" />
+              <a href="https://hashlips.io" target="_blank" rel="noreferrer">
+                <h5>Make your collection</h5>
+              </a>
+            </div>
+          </div>
         </Modal.Body>
       </Modal>
     </>

@@ -1,7 +1,37 @@
+.options {
+  display: flex;
+  justify-content: center;
+}
+.one-op {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+}
+.two-op {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.one-op img {
+  width: 100px;
+  margin-bottom: 10px;
+}
+.two-op img {
+  width: 100px;
+  margin-bottom: 22px;
+}
+
 .align {
   display: flex;
   align-items: center;
 }
+
 .align img {
   margin-right: 10px;
 }
@@ -381,13 +411,13 @@ footer {
   cursor: pointer;
 }
 
-.split-image{
+.split-image {
   background-image: url("./assets/icons8-split-24.png");
   background-repeat: no-repeat;
   background-position: center;
   /* background-size: cover; */
 }
-.add-image{
+.add-image {
   background-image: url("./assets/icons8-add-32.png");
   background-repeat: no-repeat;
   background-position: center;
@@ -396,7 +426,7 @@ footer {
   /* width: 30px; */
   border: none !important;
 }
-.delete-image{
+.delete-image {
   background-image: url("./assets/icons8-delete-30.png");
   background-repeat: no-repeat;
   background-position: center;
